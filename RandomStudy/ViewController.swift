@@ -12,7 +12,10 @@ class ViewController: UIViewController {
     let test = UILabel()
     let button = UIButton()
     let toolbar = UIToolbar()
-    let toolbarItem1 = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: nil)
+    lazy var toolbarItem1: UIBarButtonItem = {
+        let item = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: nil)
+        return item
+    }()
     var items: [UIBarButtonItem] = []
     
     
@@ -50,12 +53,12 @@ class ViewController: UIViewController {
     }
     
     @objc private func presentAddVC() {
-        let vc = AddCategoryViewController()
-        
-        let navVC = UINavigationController(rootViewController: vc)
-        navVC.modalPresentationStyle = .fullScreen
-        
-        present(navVC, animated: true)
+//        let vc = AddCategoryViewController()
+//
+//        let navVC = UINavigationController(rootViewController: vc)
+//        navVC.modalPresentationStyle = .fullScreen
+//
+//        present(navVC, animated: true)
     }
 
 }

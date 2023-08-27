@@ -18,7 +18,6 @@
 		B58D28F62A2D830300947A24 /* RandomStudyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58D28F52A2D830300947A24 /* RandomStudyTests.swift */; };
 		B58D29002A2D830300947A24 /* RandomStudyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58D28FF2A2D830300947A24 /* RandomStudyUITests.swift */; };
 		B58D29022A2D830300947A24 /* RandomStudyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58D29012A2D830300947A24 /* RandomStudyUITestsLaunchTests.swift */; };
-		B58D290F2A2DFF9900947A24 /* AddCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58D290E2A2DFF9900947A24 /* AddCategoryViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,7 +59,6 @@
 		B58D28FB2A2D830300947A24 /* RandomStudyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RandomStudyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B58D28FF2A2D830300947A24 /* RandomStudyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomStudyUITests.swift; sourceTree = "<group>"; };
 		B58D29012A2D830300947A24 /* RandomStudyUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomStudyUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		B58D290E2A2DFF9900947A24 /* AddCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,7 +99,6 @@
 				839648DEB82B2A9924B21F46 /* Pods-RandomStudyTests.debug.xcconfig */,
 				029CD4FF570328AD23323F99 /* Pods-RandomStudyTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -143,7 +140,6 @@
 				B58D28DE2A2D830100947A24 /* AppDelegate.swift */,
 				B58D28E02A2D830100947A24 /* SceneDelegate.swift */,
 				B58D28E22A2D830100947A24 /* ViewController.swift */,
-				B58D290E2A2DFF9900947A24 /* AddCategoryViewController.swift */,
 				B58D28E72A2D830200947A24 /* Assets.xcassets */,
 				B58D28E92A2D830200947A24 /* LaunchScreen.storyboard */,
 				B58D28EC2A2D830200947A24 /* Info.plist */,
@@ -406,7 +402,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B58D290F2A2DFF9900947A24 /* AddCategoryViewController.swift in Sources */,
 				B58D28E32A2D830100947A24 /* ViewController.swift in Sources */,
 				B58D28DF2A2D830100947A24 /* AppDelegate.swift in Sources */,
 				B58D28E12A2D830100947A24 /* SceneDelegate.swift in Sources */,
