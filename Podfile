@@ -7,7 +7,7 @@ target 'RandomStudy' do
 
   # Pods for RandomStudy
 
-  pod 'lottie-ios', '4.1.2'
+  pod 'lottie-ios', '3.4.4'
 
   target 'RandomStudyTests' do
     inherit! :search_paths
