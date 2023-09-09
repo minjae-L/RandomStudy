@@ -25,6 +25,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         return 100
     }
     
+    let btn = UIButton()
     var tableView = UITableView()
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,16 +42,35 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         // TableView
         tableView = UITableView()
         view.addSubview(tableView)
-//        tableView.backgroundColor = .red
+        
+        btn.setTitle("Random", for: .normal)
+        btn.backgroundColor = .systemBlue
+        view.addSubview(btn)
+        
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: btn.topAnchor).isActive = true
         tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        
+
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "studyCell")
+        
+        
+        // Button
+        
+//        btn.setTitle("Hello", for: .normal)
+//        btn.backgroundColor = .systemBlue
+//        view.addSubview(btn)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        btn.topAnchor.constraint(equalTo: tableView.bottomAnchor).isActive = true
+        btn.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        btn.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        btn.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
