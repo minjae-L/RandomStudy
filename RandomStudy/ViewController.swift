@@ -7,58 +7,61 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    var cellData = StudyServer.getData()
     
-    let test = UILabel()
-    let button = UIButton()
-    let toolbar = UIToolbar()
-    lazy var toolbarItem1: UIBarButtonItem = {
-        let item = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: nil)
-        return item
-    }()
-    var items: [UIBarButtonItem] = []
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        cellData.count
+    }
     
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "studyCell", for: indexPath)
+        cell.textLabel?.text = cellData[indexPath.row].name
+        return cell
+    }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
+    }
     
+    var tableView = UITableView()
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        view.addSubview(test)
-        view.addSubview(toolbar)
         
-        test.text = "text"
-        test.translatesAutoresizingMaskIntoConstraints = false
-        test.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        test.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        // NavigationBar
+        self.navigationItem.title = "Today"
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(goAddVC))
+        self.navigationController?.navigationBar.prefersLargeTitles = true
+        self.navigationItem.largeTitleDisplayMode = .always
+        self.navigationController?.navigationBar.backgroundColor = .white
         
-        self.navigationItem.title = "Main"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "+", style: .plain, target: self, action: #selector(presentAddVC))
-        items.append(toolbarItem1)
         
-        toolbar.translatesAutoresizingMaskIntoConstraints = false
-        toolbar.leadingAnchor.constraint(equalToSystemSpacingAfter: view.safeAreaLayoutGuide.leadingAnchor, multiplier: 0).isActive = true
-        toolbar.bottomAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.bottomAnchor, multiplier: 0).isActive = true
-        toolbar.trailingAnchor.constraint(equalToSystemSpacingAfter: view.safeAreaLayoutGuide.trailingAnchor, multiplier: 0).isActive = true
-        toolbar.setItems([toolbarItem1], animated: true)
+        // TableView
+        tableView = UITableView()
+        view.addSubview(tableView)
+//        tableView.backgroundColor = .red
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         
-        button.setTitle("Show", for: .normal)
-        view.addSubview(button)
-        button.backgroundColor = .systemBlue
-        button.frame = CGRect(x: 100, y: 100, width: 200, height: 50)
-        button.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
-    }
-
-    @objc private func didTapButton() {
-
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "studyCell")
     }
     
-    @objc private func presentAddVC() {
-//        let vc = AddCategoryViewController()
-//
-//        let navVC = UINavigationController(rootViewController: vc)
-//        navVC.modalPresentationStyle = .fullScreen
-//
-//        present(navVC, animated: true)
+    override func viewWillAppear(_ animated: Bool) {
+        cellData = StudyServer.getData()
+        tableView.reloadData()
+    }
+    
+    @objc private func goAddVC() {
+        let vc = AddViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
+        
     }
 
 }
