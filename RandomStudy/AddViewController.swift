@@ -8,58 +8,25 @@
 import UIKit
 
 
-// Study data
-struct Study {
-    let name: String?
-}
-
-class StudyServer {
-    static var dataArray = [Study]()
+class AddViewController: UIViewController {
     
-    static func getData() -> [Study] {
-        if dataArray.isEmpty {
-            return [Study(name: "비어있습니다.")]
-        } else {
-            return dataArray
+    private var study = StudyServer.dataArray {
+        didSet {
+            StudyServer.dataArray = study
+            print("didset \(StudyServer.getData())")
+            tableView.reloadData()
         }
     }
-    static func addData(str: String?) {
-        guard let data = str else {
-            return print("Optional")
-        }
-        dataArray.append(Study(name: data))
-    }
-}
-
-
-
-class AddViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    private var tableView = UITableView()
     
-    private var study = StudyServer.getData()
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return study.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "studyCell", for: indexPath)
-        cell.textLabel?.text = study[indexPath.row].name
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
-    }
-    
-    func updateData() {
-        tbView.reloadData()
-    }
-    
-    var tbView = UITableView()
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    private func addSubView() {
+        view.addSubview(tableView)
+        settingUI()
         
-        // NavigationBar
+    }
+    
+    private func settingUI() {
+        //NavigationBar
         self.view.backgroundColor = .white
         self.navigationItem.title = "add"
         self.navigationItem.largeTitleDisplayMode = .never
@@ -67,42 +34,68 @@ class AddViewController: UIViewController, UITableViewDataSource, UITableViewDel
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "pencil"), style: .plain, target: self, action: #selector(addCategory))
         
         // TableView
-        tbView = UITableView()
-        view.addSubview(tbView)
-        //        tbView.backgroundColor = .green
-        tbView.separatorStyle = .none
-        tbView.translatesAutoresizingMaskIntoConstraints = false
-        tbView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        tbView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        tbView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        tbView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        tbView.dataSource = self
-        tbView.delegate = self
-        tbView.register(UITableViewCell.self, forCellReuseIdentifier: "studyCell")
-        
+        tableView.separatorStyle = .none
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "studyCell")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        addSubView()
         
     }
     
     @objc func addCategory() {
         let alert = UIAlertController(title: "추가하기", message: "", preferredStyle: .alert)
         
-        let yes = UIAlertAction(title: "OK", style: .default) { (yes) in
-            let str = alert.textFields?[0].text
-            StudyServer.addData(str: str)
-            print("add \(str)")
-            print(StudyServer.getData())
-            self.study = StudyServer.getData()
-            self.updateData()
+        let addAction = UIAlertAction(title: "추가", style: .default) { (yes) in
+            self.study.append(Study(name: alert.textFields?[0].text))
         }
+        addAction.isEnabled = false
         
-        let cancel = UIAlertAction(title: "NO", style: .cancel)
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
         
-        alert.addTextField()
-        alert.addAction(yes)
-        alert.addAction(cancel)
+        alert.addAction(addAction)
+        alert.addAction(cancelAction)
+        alert.addTextField() { (textField) in
+            textField.addTarget(alert, action: #selector(alert.checkTextFieldBlank(_:)), for: UIControl.Event.editingChanged)
+        }
         self.present(alert, animated: true, completion: nil)
     }
     
 }
 
+// 테이블 뷰
+extension AddViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return study.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var cell = tableView.dequeueReusableCell(withIdentifier: "studyCell", for: indexPath)
+        cell.textLabel?.text = study[indexPath.row].name
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
+    }
+}
+
+// 텍스트필드 공백 검사
+extension UIAlertController {
+    @objc func checkTextFieldBlank(_ sender: UITextField) {
+        if (sender.text?.count == 0) {
+            self.actions[0].isEnabled = false
+        } else {
+            self.actions[0].isEnabled = true
+        }
+    }
+}
 
