@@ -25,7 +25,7 @@ class ViewController: UIViewController {
         
         // NavigationItem
         self.navigationItem.title = "Today"
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(goAddVC))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "gearshape"), style: .plain, target: self, action: #selector(goSettingVC))
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.largeTitleDisplayMode = .always
         self.navigationController?.navigationBar.backgroundColor = .white
@@ -64,8 +64,8 @@ class ViewController: UIViewController {
         tableView.reloadData()
     }
     
-    @objc private func goAddVC() {
-        let vc = AddViewController()
+    @objc private func goSettingVC() {
+        let vc = SettingViewController()
         self.navigationController?.pushViewController(vc, animated: true)
         
     }

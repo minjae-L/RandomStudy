@@ -22,16 +22,15 @@ class AddViewController: UIViewController {
     private func addSubView() {
         view.addSubview(tableView)
         settingUI()
-        
     }
     
     private func settingUI() {
         //NavigationBar
         self.view.backgroundColor = .white
-        self.navigationItem.title = "add"
+        self.navigationItem.title = "공부 목록"
         self.navigationItem.largeTitleDisplayMode = .never
         self.navigationController?.navigationBar.backgroundColor = .white
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "pencil"), style: .plain, target: self, action: #selector(addCategory))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(addCategory))
         
         // TableView
         tableView.separatorStyle = .none
@@ -48,19 +47,17 @@ class AddViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         addSubView()
-        
     }
     
     @objc func addCategory() {
-        let alert = UIAlertController(title: "추가하기", message: "", preferredStyle: .alert)
         
+        let alert = UIAlertController(title: "추가하기", message: "", preferredStyle: .alert)
         let addAction = UIAlertAction(title: "추가", style: .default) { (yes) in
             self.study.append(Study(name: alert.textFields?[0].text))
         }
-        addAction.isEnabled = false
-        
         let cancelAction = UIAlertAction(title: "취소", style: .cancel)
         
+        addAction.isEnabled = false
         alert.addAction(addAction)
         alert.addAction(cancelAction)
         alert.addTextField() { (textField) in
