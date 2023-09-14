@@ -19,6 +19,7 @@
 		B58D29002A2D830300947A24 /* RandomStudyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58D28FF2A2D830300947A24 /* RandomStudyUITests.swift */; };
 		B58D29022A2D830300947A24 /* RandomStudyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58D29012A2D830300947A24 /* RandomStudyUITestsLaunchTests.swift */; };
 		B5B7EB962AA4FCA0006944A8 /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B7EB952AA4FCA0006944A8 /* AddViewController.swift */; };
+		B5C126852AB3660400DBF902 /* TodayTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C126842AB3660400DBF902 /* TodayTableViewCell.swift */; };
 		B5CC3B1D2AB141E700D9FA24 /* StudyServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CC3B1C2AB141E700D9FA24 /* StudyServer.swift */; };
 		B5CC3B282AB2079000D9FA24 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CC3B272AB2079000D9FA24 /* SettingViewController.swift */; };
 		B5CC3B2B2AB207E500D9FA24 /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CC3B2A2AB207E500D9FA24 /* SwitchTableViewCell.swift */; };
@@ -65,6 +66,7 @@
 		B58D28FF2A2D830300947A24 /* RandomStudyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomStudyUITests.swift; sourceTree = "<group>"; };
 		B58D29012A2D830300947A24 /* RandomStudyUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomStudyUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		B5B7EB952AA4FCA0006944A8 /* AddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
+		B5C126842AB3660400DBF902 /* TodayTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayTableViewCell.swift; sourceTree = "<group>"; };
 		B5CC3B1C2AB141E700D9FA24 /* StudyServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyServer.swift; sourceTree = "<group>"; };
 		B5CC3B272AB2079000D9FA24 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		B5CC3B2A2AB207E500D9FA24 /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
@@ -183,6 +185,7 @@
 			children = (
 				B5CC3B2A2AB207E500D9FA24 /* SwitchTableViewCell.swift */,
 				B5CC3B2C2AB2080300D9FA24 /* SettingTableViewCell.swift */,
+				B5C126842AB3660400DBF902 /* TodayTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -429,6 +432,7 @@
 				B58D28DF2A2D830100947A24 /* AppDelegate.swift in Sources */,
 				B5CC3B2B2AB207E500D9FA24 /* SwitchTableViewCell.swift in Sources */,
 				B5CC3B1D2AB141E700D9FA24 /* StudyServer.swift in Sources */,
+				B5C126852AB3660400DBF902 /* TodayTableViewCell.swift in Sources */,
 				B5B7EB962AA4FCA0006944A8 /* AddViewController.swift in Sources */,
 				B58D28E12A2D830100947A24 /* SceneDelegate.swift in Sources */,
 				B5CC3B2D2AB2080300D9FA24 /* SettingTableViewCell.swift in Sources */,

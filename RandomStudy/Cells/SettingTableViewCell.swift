@@ -34,6 +34,7 @@ class SettingTableViewCell: UITableViewCell {
         return label
     }()
     
+    // 생성 함수 여기서 이미지뷰와 라벨을 커스텀뷰에 넣는다.
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(label)
@@ -55,7 +56,6 @@ class SettingTableViewCell: UITableViewCell {
         
         let imageSize: CGFloat = size/1.5
         iconImageView.frame = CGRect(x: (size-imageSize)/2, y: (size-imageSize)/2, width: imageSize, height: imageSize)
-//        iconImageView.center = iconContainer.center
         
         label.frame = CGRect(
             x: 25 + iconContainer.frame.size.width,
@@ -65,6 +65,7 @@ class SettingTableViewCell: UITableViewCell {
         )
     }
     
+    // 셀이 재사용 될때 한번 초기화해주는 코드
     override func prepareForReuse() {
         super.prepareForReuse()
         iconImageView.image = nil
@@ -72,6 +73,7 @@ class SettingTableViewCell: UITableViewCell {
         iconContainer.backgroundColor = nil
     }
     
+    // 셀에 있는 이미지뷰와 라벨을 미리 정했던 구조체와 연결
     public func configure(with model: SettingsOption) {
         label.text = model.title
         iconImageView.image = model.icon

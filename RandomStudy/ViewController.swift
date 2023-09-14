@@ -39,7 +39,7 @@ class ViewController: UIViewController {
 
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "studyCell")
+        tableView.register(TodayTableViewCell.self, forCellReuseIdentifier: TodayTableViewCell.identifier)
         
         // Button
         btn.setTitle("Random", for: .normal)
@@ -78,12 +78,20 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "studyCell", for: indexPath)
-        cell.textLabel?.text = cellData[indexPath.row].name
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "studyCell", for: indexPath)
+//        cell.textLabel?.text = cellData[indexPath.row].name
+        let study = cellData[indexPath.row]
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: TodayTableViewCell.identifier,
+            for: indexPath
+        ) as? TodayTableViewCell else {
+            return UITableViewCell()
+        }
+        cell.configure(with: study)
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
+        return 80
     }
 }

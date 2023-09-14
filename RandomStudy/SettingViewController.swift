@@ -74,7 +74,7 @@ class SettingViewController: UIViewController {
         
     }
     
-    // Setting List
+    // 설정 목록
     func configure() {
         models.append(Section(title: "일반", options: [
             .switchCell(model: SettingSwitchOption(title: "다크 모드", icon: UIImage(systemName: "moon"), iconBackgroundColor: .systemRed, handler: {
@@ -85,6 +85,7 @@ class SettingViewController: UIViewController {
                 self.navigationController?.pushViewController(vc, animated: true)
             })
         ]))
+        
     }
 
 }
