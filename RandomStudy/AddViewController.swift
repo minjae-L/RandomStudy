@@ -71,6 +71,12 @@ class AddViewController: UIViewController {
 // 테이블 뷰
 extension AddViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if study.count == 0 {
+            tableView.setEmptyView(title: "비어있음",
+                                   message: "목록을 추가해주세요.")
+        } else {
+            tableView.restore()
+        }
         return study.count
     }
     
@@ -81,7 +87,7 @@ extension AddViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
+        return 80
     }
 }
 

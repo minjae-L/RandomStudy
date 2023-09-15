@@ -16,7 +16,7 @@ class StudyServer {
     
     static func getData() -> [Study] {
         if dataArray.isEmpty {
-            return [Study(name: "비어있습니다.")]
+            return []
         } else {
             return dataArray
         }

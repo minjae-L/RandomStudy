@@ -54,7 +54,7 @@ class SettingViewController: UIViewController {
     
     private func settingUI() {
         // View
-        self.view.backgroundColor = .white
+//        self.view.backgroundColor = .white
         
         // NavigationBar
         self.navigationItem.title = "설정"
