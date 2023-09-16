@@ -9,7 +9,18 @@ import UIKit
 
 
 class ViewController: UIViewController {
-    private var cellData = StudyServer.dataArray
+    private var todayStudy = [Study]() {
+        didSet {
+            tableView.reloadData()
+        }
+    }
+    private var cellData = StudyServer.dataArray {
+        didSet {
+            StudyServer.dataArray = cellData
+            print("didSet \(StudyServer.dataArray)")
+            tableView.reloadData()
+        }
+    }
     private var btn = UIButton()
     private var tableView = UITableView()
     
@@ -42,7 +53,7 @@ class ViewController: UIViewController {
         tableView.register(TodayTableViewCell.self, forCellReuseIdentifier: TodayTableViewCell.identifier)
         
         // Button
-        btn.setTitle("Random", for: .normal)
+        btn.setTitle("불러오기", for: .normal)
         btn.backgroundColor = .systemBlue
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.heightAnchor.constraint(equalToConstant: 50).isActive = true
@@ -50,7 +61,7 @@ class ViewController: UIViewController {
         btn.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         btn.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         btn.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        
+        btn.addTarget(self, action: #selector(uploadStudyList), for: .touchUpInside)
     }
     
     override func viewDidLoad() {
@@ -61,13 +72,51 @@ class ViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         cellData = StudyServer.getData()
-        tableView.reloadData()
     }
     
     @objc private func goSettingVC() {
         let vc = SettingViewController()
         self.navigationController?.pushViewController(vc, animated: true)
-        
+    }
+    
+    @objc private func uploadStudyList() {
+        let studyServer = StudyServer.dataArray
+        if studyServer.isEmpty {
+            print("Empty")
+        } else {
+            if isEqualArray(toadyList: todayStudy, studyData: studyServer) {
+                print("모든 목록 불러오기 완료")
+            } else {
+                var num = Int.random(in: 0..<studyServer.count)
+                var random = studyServer[num]
+                
+                while todayStudy.filter{ $0.name == random.name}.count > 0 {
+                    num = Int.random(in: 0..<studyServer.count)
+                    random = studyServer[num]
+                }
+                todayStudy.append(random)
+                print("불러오기 완료\(random)")
+                print(studyServer)
+                print(todayStudy)
+            }
+        }
+    }
+    
+    private func isEqualArray(toadyList: [Study], studyData: [Study]) -> Bool {
+        var result = 0
+        for i in 0..<toadyList.count {
+            for j in 0..<studyData.count {
+                if toadyList[i].name == studyData[j].name {
+                    result += 1
+                    break
+                }
+            }
+        }
+        if result == studyData.count {
+            return true
+        } else {
+            return false
+        }
     }
 
 }
@@ -80,13 +129,11 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         } else {
             tableView.restore()
         }
-        return cellData.count
+        return todayStudy.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "studyCell", for: indexPath)
-//        cell.textLabel?.text = cellData[indexPath.row].name
-        let study = cellData[indexPath.row]
+        let study = todayStudy[indexPath.row]
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: TodayTableViewCell.identifier,
             for: indexPath
@@ -94,6 +141,9 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
             return UITableViewCell()
         }
         cell.configure(with: study)
+        cell.deleteBtn.tag = indexPath.row
+        cell.deleteBtn.addTarget(self, action: #selector(deleteBtnTapped(sender:)), for: .touchUpInside)
+        cell.checkBtn.addTarget(self, action: #selector(checkBtnTapped(sender:)), for: .touchUpInside)
         cell.selectionStyle = .none
         return cell
     }
@@ -102,5 +152,15 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         return 80
     }
     
+    @objc func deleteBtnTapped(sender: UIButton) {
+//        print("Tapped deleteBtn")
+        todayStudy.remove(at: sender.tag)
+        
+    }
+    @objc func checkBtnTapped(sender: UIButton) {
+//        print("Tapped checkBtn")
+//        cellData.remove(at: index)
+//        tableView.reloadData()
+    }
 }
 

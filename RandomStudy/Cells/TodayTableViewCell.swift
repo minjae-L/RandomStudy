@@ -12,7 +12,6 @@ class TodayTableViewCell: UITableViewCell {
     
     let label: UILabel = {
         let lbl = UILabel()
-//        lbl.backgroundColor = .red
         lbl.numberOfLines = 1
         
         return lbl
@@ -21,7 +20,6 @@ class TodayTableViewCell: UITableViewCell {
     let deleteBtn: UIButton = {
         let btn = UIButton()
         btn.setImage(UIImage(systemName: "trash"), for: .normal)
-//        btn.backgroundColor = .orange
         btn.tintColor = .systemBlue
         btn.contentVerticalAlignment = .fill
         btn.contentHorizontalAlignment = .fill
@@ -32,7 +30,6 @@ class TodayTableViewCell: UITableViewCell {
     let checkBtn: UIButton = {
         let btn = UIButton()
         btn.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
-//        btn.backgroundColor = .blue
         btn.tintColor = .systemBlue
         btn.contentVerticalAlignment = .fill
         btn.contentHorizontalAlignment = .fill

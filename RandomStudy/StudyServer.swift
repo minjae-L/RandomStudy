@@ -7,8 +7,12 @@
 
 import Foundation
 
-struct Study {
+struct Study: Equatable {
     let name: String?
+    
+    static func ==(lhs: Study, rhs: Study) -> Bool {
+        return lhs.name == rhs.name
+    }
 }
 
 class StudyServer {

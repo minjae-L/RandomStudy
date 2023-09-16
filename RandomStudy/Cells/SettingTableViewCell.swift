@@ -34,11 +34,21 @@ class SettingTableViewCell: UITableViewCell {
         return label
     }()
     
+    private let rightLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.textColor = .lightGray
+        lbl.numberOfLines = 1
+        lbl.textAlignment = .center
+        
+        return lbl
+    }()
+    
     // 생성 함수 여기서 이미지뷰와 라벨을 커스텀뷰에 넣는다.
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(label)
         contentView.addSubview(iconContainer)
+//        contentView.addSubview(rightLabel)
         iconContainer.addSubview(iconImageView)
         
         contentView.clipsToBounds = true
@@ -63,6 +73,10 @@ class SettingTableViewCell: UITableViewCell {
             width: contentView.frame.size.width - 15 - iconContainer.frame.size.width,
             height: contentView.frame.size.height
         )
+//        rightLabel.frame = CGRect(x: <#T##CGFloat#>,
+//                                  y: <#T##CGFloat#>,
+//                                  width: <#T##CGFloat#>,
+//                                  height: <#T##CGFloat#>)
     }
     
     // 셀이 재사용 될때 한번 초기화해주는 코드

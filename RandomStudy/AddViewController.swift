@@ -41,7 +41,7 @@ class AddViewController: UIViewController {
         tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "studyCell")
+        tableView.register(AddTableViewCell.self, forCellReuseIdentifier: AddTableViewCell.identifier)
     }
     
     override func viewDidLoad() {
@@ -53,7 +53,10 @@ class AddViewController: UIViewController {
         
         let alert = UIAlertController(title: "추가하기", message: "", preferredStyle: .alert)
         let addAction = UIAlertAction(title: "추가", style: .default) { (yes) in
-            self.study.append(Study(name: alert.textFields?[0].text))
+            guard let text = alert.textFields?[0].text else { return }
+            if !self.isContainsElement(str: text) {
+                self.study.append(Study(name: alert.textFields?[0].text))
+            }
         }
         let cancelAction = UIAlertAction(title: "취소", style: .cancel)
         
@@ -64,6 +67,17 @@ class AddViewController: UIViewController {
             textField.addTarget(alert, action: #selector(alert.checkTextFieldBlank(_:)), for: UIControl.Event.editingChanged)
         }
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func isContainsElement(str: String) -> Bool {
+        var isContain = false
+        for i in 0..<study.count {
+            if study[i].name == str {
+                isContain = true
+                break
+            }
+        }
+        return isContain
     }
     
 }
@@ -81,13 +95,25 @@ extension AddViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCell(withIdentifier: "studyCell", for: indexPath)
-        cell.textLabel?.text = study[indexPath.row].name
+        let study = study[indexPath.row]
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: AddTableViewCell.identifier,
+            for: indexPath
+        ) as? AddTableViewCell else {
+            return UITableViewCell()
+        }
+        cell.configure(with: study)
+        cell.deleteBtn.tag = indexPath.row
+        cell.deleteBtn.addTarget(self, action: #selector(tappedDeleteBtn(sender:)), for: .touchUpInside)
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80
+    }
+    
+    @objc func tappedDeleteBtn(sender: UIButton) {
+        study.remove(at: sender.tag)
     }
 }
 
