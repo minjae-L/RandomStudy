@@ -45,7 +45,7 @@ class SettingViewController: UIViewController {
         return table
     }()
     
-    var models = [Section]()
+    private var models = [Section]()
     
     private func addSubView() {
         view.addSubview(tableView)
@@ -54,17 +54,27 @@ class SettingViewController: UIViewController {
     
     private func settingUI() {
         // View
-//        self.view.backgroundColor = .white
+        self.view.backgroundColor = .white
         
         // NavigationBar
         self.navigationItem.title = "설정"
-        self.navigationController?.navigationBar.backgroundColor = .white
+        self.navigationController?.navigationBar.barTintColor = .white
+        let navBarAppearance = UINavigationBarAppearance()
+        navBarAppearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
+        navBarAppearance.backgroundColor = .white
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.navigationBar.standardAppearance = navBarAppearance
+        self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
         self.navigationItem.largeTitleDisplayMode = .never
         
         // TableView
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.frame = view.bounds
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
+        tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
     }
     
     override func viewDidLoad() {
@@ -75,7 +85,7 @@ class SettingViewController: UIViewController {
     }
     
     // 설정 목록
-    func configure() {
+    private func configure() {
         models.append(Section(title: "일반", options: [
             .switchCell(model: SettingSwitchOption(title: "다크 모드", icon: UIImage(systemName: "moon"), iconBackgroundColor: .systemRed, handler: {
                 

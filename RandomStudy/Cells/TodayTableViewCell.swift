@@ -10,9 +10,10 @@ import UIKit
 class TodayTableViewCell: UITableViewCell {
     static let identifier = "TodayTableViewCell"
     
-    let label: UILabel = {
+    private let label: UILabel = {
         let lbl = UILabel()
         lbl.numberOfLines = 1
+        lbl.translatesAutoresizingMaskIntoConstraints = false
         
         return lbl
     }()
@@ -23,6 +24,7 @@ class TodayTableViewCell: UITableViewCell {
         btn.tintColor = .systemBlue
         btn.contentVerticalAlignment = .fill
         btn.contentHorizontalAlignment = .fill
+        btn.translatesAutoresizingMaskIntoConstraints = false
         
         return btn
     }()
@@ -33,38 +35,41 @@ class TodayTableViewCell: UITableViewCell {
         btn.tintColor = .systemBlue
         btn.contentVerticalAlignment = .fill
         btn.contentHorizontalAlignment = .fill
+        btn.translatesAutoresizingMaskIntoConstraints = false
         
         return btn
     }()
+    
+    private func setLayout() {
+        let size: CGFloat = contentView.frame.size.height
+        
+        checkBtn.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -10).isActive = true
+        checkBtn.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 25).isActive = true
+        checkBtn.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -25).isActive = true
+        checkBtn.widthAnchor.constraint(equalToConstant: size/2).isActive = true
+        
+        deleteBtn.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 25).isActive = true
+        deleteBtn.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -25).isActive = true
+        deleteBtn.rightAnchor.constraint(equalTo: checkBtn.leftAnchor, constant: -10).isActive = true
+        deleteBtn.widthAnchor.constraint(equalToConstant: size/2).isActive = true
+        
+        label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20).isActive = true
+        label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+        label.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+        label.trailingAnchor.constraint(equalTo: deleteBtn.leadingAnchor).isActive = true
+        
+    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(label)
         contentView.addSubview(deleteBtn)
         contentView.addSubview(checkBtn)
-        
+        setLayout()
     }
     
     required init?(coder: NSCoder) {
         fatalError()
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        let size: CGFloat = contentView.frame.size.height
-        label.frame = CGRect(x: 20,
-                             y: 0,
-                             width: contentView.frame.size.width - 20 - checkBtn.frame.width * 2 - 25,
-                             height: contentView.frame.size.height)
-        
-        checkBtn.frame = CGRect(x: contentView.frame.width - 10 - size/3,
-                                y: size/3,
-                                width: size/3,
-                                height: size/3)
-        deleteBtn.frame = CGRect(x: contentView.frame.width - 10 - size/3 - checkBtn.frame.size.width - 15,
-                                 y: size/3,
-                                 width: size/3,
-                                 height: size/3)
     }
     
     override func prepareForReuse() {

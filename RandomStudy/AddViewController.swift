@@ -29,7 +29,7 @@ class AddViewController: UIViewController {
         self.view.backgroundColor = .white
         self.navigationItem.title = "공부 목록"
         self.navigationItem.largeTitleDisplayMode = .never
-        self.navigationController?.navigationBar.backgroundColor = .white
+        self.navigationController?.navigationBar.barTintColor = .white
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(addCategory))
         
         // TableView
@@ -52,7 +52,7 @@ class AddViewController: UIViewController {
     @objc func addCategory() {
         
         let alert = UIAlertController(title: "추가하기", message: "", preferredStyle: .alert)
-        let addAction = UIAlertAction(title: "추가", style: .default) { (yes) in
+        let addAction = UIAlertAction(title: "추가", style: .default) { (addAction) in
             guard let text = alert.textFields?[0].text else { return }
             if !self.isContainsElement(str: text) {
                 self.study.append(Study(name: alert.textFields?[0].text))
@@ -64,6 +64,8 @@ class AddViewController: UIViewController {
         alert.addAction(addAction)
         alert.addAction(cancelAction)
         alert.addTextField() { (textField) in
+            textField.becomeFirstResponder()
+            textField.returnKeyType = .done
             textField.addTarget(alert, action: #selector(alert.checkTextFieldBlank(_:)), for: UIControl.Event.editingChanged)
         }
         self.present(alert, animated: true, completion: nil)

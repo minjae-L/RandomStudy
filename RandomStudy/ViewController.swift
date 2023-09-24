@@ -14,13 +14,6 @@ class ViewController: UIViewController {
             tableView.reloadData()
         }
     }
-    private var cellData = StudyServer.dataArray {
-        didSet {
-            StudyServer.dataArray = cellData
-            print("didSet \(StudyServer.dataArray)")
-            tableView.reloadData()
-        }
-    }
     private var btn = UIButton()
     private var tableView = UITableView()
     
@@ -40,6 +33,8 @@ class ViewController: UIViewController {
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.largeTitleDisplayMode = .always
         self.navigationController?.navigationBar.backgroundColor = .white
+        self.navigationController?.navigationBar.barTintColor = .white
+//        self.
         
         // TableView
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -71,7 +66,7 @@ class ViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        cellData = StudyServer.getData()
+        tableView.reloadData()
     }
     
     @objc private func goSettingVC() {
@@ -90,7 +85,7 @@ class ViewController: UIViewController {
                 var num = Int.random(in: 0..<studyServer.count)
                 var random = studyServer[num]
                 
-                while todayStudy.filter{ $0.name == random.name}.count > 0 {
+                while todayStudy.filter({ $0.name == random.name}).count > 0 {
                     num = Int.random(in: 0..<studyServer.count)
                     random = studyServer[num]
                 }
@@ -123,7 +118,7 @@ class ViewController: UIViewController {
 
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if cellData.count == 0 {
+        if todayStudy.count == 0 {
             tableView.setEmptyView(title: "비어있음",
                                    message: "목록을 추가해주세요.")
         } else {
@@ -153,14 +148,11 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     @objc func deleteBtnTapped(sender: UIButton) {
-//        print("Tapped deleteBtn")
         todayStudy.remove(at: sender.tag)
         
     }
     @objc func checkBtnTapped(sender: UIButton) {
-//        print("Tapped checkBtn")
-//        cellData.remove(at: index)
-//        tableView.reloadData()
+
     }
 }
 
