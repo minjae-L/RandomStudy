@@ -8,7 +8,9 @@
 import UIKit
 
 
-class ViewController: UIViewController {
+class TodayViewController: UIViewController {
+    
+//    private var todayVM = TodayViewModel()
     private var todayStudy = [Study]() {
         didSet {
             tableView.reloadData()
@@ -116,7 +118,7 @@ class ViewController: UIViewController {
 
 }
 
-extension ViewController: UITableViewDataSource, UITableViewDelegate {
+extension TodayViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if todayStudy.count == 0 {
             tableView.setEmptyView(title: "비어있음",

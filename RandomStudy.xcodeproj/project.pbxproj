@@ -13,13 +13,14 @@
 		B5142D102AB5017200C3BB07 /* AddTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5142D0F2AB5017200C3BB07 /* AddTableViewCell.swift */; };
 		B58D28DF2A2D830100947A24 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58D28DE2A2D830100947A24 /* AppDelegate.swift */; };
 		B58D28E12A2D830100947A24 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58D28E02A2D830100947A24 /* SceneDelegate.swift */; };
-		B58D28E32A2D830100947A24 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58D28E22A2D830100947A24 /* ViewController.swift */; };
+		B58D28E32A2D830100947A24 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58D28E22A2D830100947A24 /* TodayViewController.swift */; };
 		B58D28E82A2D830200947A24 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B58D28E72A2D830200947A24 /* Assets.xcassets */; };
 		B58D28EB2A2D830200947A24 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B58D28E92A2D830200947A24 /* LaunchScreen.storyboard */; };
 		B58D28F62A2D830300947A24 /* RandomStudyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58D28F52A2D830300947A24 /* RandomStudyTests.swift */; };
 		B58D29002A2D830300947A24 /* RandomStudyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58D28FF2A2D830300947A24 /* RandomStudyUITests.swift */; };
 		B58D29022A2D830300947A24 /* RandomStudyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58D29012A2D830300947A24 /* RandomStudyUITestsLaunchTests.swift */; };
 		B5B7EB962AA4FCA0006944A8 /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B7EB952AA4FCA0006944A8 /* AddViewController.swift */; };
+		B5BA4B4E2AC1AC9E004D7BF9 /* AddViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BA4B4D2AC1AC9E004D7BF9 /* AddViewModel.swift */; };
 		B5C126852AB3660400DBF902 /* TodayTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C126842AB3660400DBF902 /* TodayTableViewCell.swift */; };
 		B5C126872AB4180800DBF902 /* TableViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C126862AB4180800DBF902 /* TableViewExtensions.swift */; };
 		B5CC3B1D2AB141E700D9FA24 /* StudyServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CC3B1C2AB141E700D9FA24 /* StudyServer.swift */; };
@@ -59,7 +60,7 @@
 		B58D28DB2A2D830100947A24 /* RandomStudy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RandomStudy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B58D28DE2A2D830100947A24 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B58D28E02A2D830100947A24 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		B58D28E22A2D830100947A24 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		B58D28E22A2D830100947A24 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
 		B58D28E72A2D830200947A24 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B58D28EA2A2D830200947A24 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B58D28EC2A2D830200947A24 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -69,6 +70,7 @@
 		B58D28FF2A2D830300947A24 /* RandomStudyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomStudyUITests.swift; sourceTree = "<group>"; };
 		B58D29012A2D830300947A24 /* RandomStudyUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomStudyUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		B5B7EB952AA4FCA0006944A8 /* AddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
+		B5BA4B4D2AC1AC9E004D7BF9 /* AddViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewModel.swift; sourceTree = "<group>"; };
 		B5C126842AB3660400DBF902 /* TodayTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayTableViewCell.swift; sourceTree = "<group>"; };
 		B5C126862AB4180800DBF902 /* TableViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewExtensions.swift; sourceTree = "<group>"; };
 		B5CC3B1C2AB141E700D9FA24 /* StudyServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyServer.swift; sourceTree = "<group>"; };
@@ -153,14 +155,14 @@
 		B58D28DD2A2D830100947A24 /* RandomStudy */ = {
 			isa = PBXGroup;
 			children = (
+				B5D58FB72AC50EB200515CED /* Delegates */,
+				B5CB35C32AC1282C003FB08D /* Controllers */,
+				B5CB35C22AC1281C003FB08D /* Models */,
+				B5CB35C12AC12812003FB08D /* ViewModels */,
 				B5CC3B292AB207C100D9FA24 /* Cells */,
 				B5C126862AB4180800DBF902 /* TableViewExtensions.swift */,
-				B5CC3B272AB2079000D9FA24 /* SettingViewController.swift */,
-				B5CC3B1C2AB141E700D9FA24 /* StudyServer.swift */,
-				B5B7EB952AA4FCA0006944A8 /* AddViewController.swift */,
 				B58D28DE2A2D830100947A24 /* AppDelegate.swift */,
 				B58D28E02A2D830100947A24 /* SceneDelegate.swift */,
-				B58D28E22A2D830100947A24 /* ViewController.swift */,
 				B58D28E72A2D830200947A24 /* Assets.xcassets */,
 				B58D28E92A2D830200947A24 /* LaunchScreen.storyboard */,
 				B58D28EC2A2D830200947A24 /* Info.plist */,
@@ -185,6 +187,32 @@
 			path = RandomStudyUITests;
 			sourceTree = "<group>";
 		};
+		B5CB35C12AC12812003FB08D /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				B5BA4B4D2AC1AC9E004D7BF9 /* AddViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		B5CB35C22AC1281C003FB08D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B5CC3B1C2AB141E700D9FA24 /* StudyServer.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		B5CB35C32AC1282C003FB08D /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				B58D28E22A2D830100947A24 /* TodayViewController.swift */,
+				B5CC3B272AB2079000D9FA24 /* SettingViewController.swift */,
+				B5B7EB952AA4FCA0006944A8 /* AddViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		B5CC3B292AB207C100D9FA24 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -194,6 +222,13 @@
 				B5142D0F2AB5017200C3BB07 /* AddTableViewCell.swift */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		B5D58FB72AC50EB200515CED /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Delegates;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -434,7 +469,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B58D28E32A2D830100947A24 /* ViewController.swift in Sources */,
+				B58D28E32A2D830100947A24 /* TodayViewController.swift in Sources */,
 				B5142D102AB5017200C3BB07 /* AddTableViewCell.swift in Sources */,
 				B5C126872AB4180800DBF902 /* TableViewExtensions.swift in Sources */,
 				B58D28DF2A2D830100947A24 /* AppDelegate.swift in Sources */,
@@ -442,6 +477,7 @@
 				B5CC3B1D2AB141E700D9FA24 /* StudyServer.swift in Sources */,
 				B5C126852AB3660400DBF902 /* TodayTableViewCell.swift in Sources */,
 				B5B7EB962AA4FCA0006944A8 /* AddViewController.swift in Sources */,
+				B5BA4B4E2AC1AC9E004D7BF9 /* AddViewModel.swift in Sources */,
 				B58D28E12A2D830100947A24 /* SceneDelegate.swift in Sources */,
 				B5CC3B2D2AB2080300D9FA24 /* SettingTableViewCell.swift in Sources */,
 				B5CC3B282AB2079000D9FA24 /* SettingViewController.swift in Sources */,

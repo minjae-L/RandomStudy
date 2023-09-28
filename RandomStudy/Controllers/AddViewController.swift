@@ -7,23 +7,32 @@
 
 import UIKit
 
-
+//protocol RemoveBtnDelegate: AnyObject {
+//    func tappedRemoveBtn(_ index: Int)
+//}
+// MARK: - 뷰 컨트롤러
 class AddViewController: UIViewController {
     
-    private var study = StudyServer.dataArray {
-        didSet {
-            StudyServer.dataArray = study
-            print("didset \(StudyServer.getData())")
-            tableView.reloadData()
-        }
-    }
+    // 뷰모델 선언
+    private var obvm = ObservableViewModel()
+    
     private var tableView = UITableView()
+//    private var delegate: RemoveBtnDelegate?
     
     private func addSubView() {
         view.addSubview(tableView)
         settingUI()
     }
     
+    // 데이터 바인딩
+    private func bindings() {
+        obvm.list.bind{ [weak self] _ in
+            guard let self = self else { return }
+            self.tableView.reloadData()
+        }
+    }
+    
+    // UI 설정
     private func settingUI() {
         //NavigationBar
         self.view.backgroundColor = .white
@@ -47,15 +56,21 @@ class AddViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         addSubView()
+        bindings()
     }
     
+    // 새롭게 만들어진 데이터를 따로 저장
+    override func viewDidDisappear(_ animated: Bool) {
+        obvm.setData()
+    }
+    
+    // 추가하기 버튼 이벤트
     @objc func addCategory() {
-        
         let alert = UIAlertController(title: "추가하기", message: "", preferredStyle: .alert)
         let addAction = UIAlertAction(title: "추가", style: .default) { (addAction) in
             guard let text = alert.textFields?[0].text else { return }
-            if !self.isContainsElement(str: text) {
-                self.study.append(Study(name: alert.textFields?[0].text))
+            if !self.obvm.isContainsElement(str: text) {
+                self.obvm.addData(str: text)
             }
         }
         let cancelAction = UIAlertAction(title: "취소", style: .cancel)
@@ -71,33 +86,26 @@ class AddViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
-    private func isContainsElement(str: String) -> Bool {
-        var isContain = false
-        for i in 0..<study.count {
-            if study[i].name == str {
-                isContain = true
-                break
-            }
-        }
-        return isContain
-    }
-    
 }
-
-// 테이블 뷰
+//extension AddViewController: RemoveBtnDelegate {
+//    func tappedRemoveBtn(_ index: Int) {
+//        var arr = obvm.study.remove(at: index)
+//    }
+//}
+// MARK: - 테이블 뷰
 extension AddViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if study.count == 0 {
+        if obvm.count == 0 {
             tableView.setEmptyView(title: "비어있음",
                                    message: "목록을 추가해주세요.")
         } else {
             tableView.restore()
         }
-        return study.count
+        return obvm.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let study = study[indexPath.row]
+        let study = obvm.study[indexPath.row]
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: AddTableViewCell.identifier,
             for: indexPath
@@ -115,7 +123,7 @@ extension AddViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     @objc func tappedDeleteBtn(sender: UIButton) {
-        study.remove(at: sender.tag)
+        obvm.removeData(index: sender.tag)
     }
 }
 
@@ -129,4 +137,5 @@ extension UIAlertController {
         }
     }
 }
+
 
