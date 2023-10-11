@@ -23,32 +23,22 @@ extension Study {
     }
 }
 
-// 따로 배열을 저장해둘곳
+struct TodayStudyList: Equatable {
+    let name: String?
+    var isDone: Bool?
+}
+
+
+// 공부목록이 저장된곳
 class Database {
     static var data = [Study]()
 }
 
-// 곧 지울꺼..
-class StudyServer {
-    static var dataArray = [Study]()
+// 오늘 해야할 공부목록을 저장한곳
 
-    static func getData() -> [Study] {
-        if dataArray.isEmpty {
-            return []
-        } else {
-            return dataArray
-        }
-    }
-    static func addData(str: String?) {
-        guard let data = str else { return }
-        if data == "" { return }
-        dataArray.append(Study(name: data))
-    }
-
-    static func setData(arr: [Study]?) {
-        guard let data = arr else { return }
-        dataArray = data
-    }
+// 공부완료된 목록들을 저장한곳
+class FinishedList {
+    static var data = [TodayStudyList]()
 }
 
 // MARK: - Setting ViewController Cell Struct

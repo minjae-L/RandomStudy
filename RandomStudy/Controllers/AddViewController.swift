@@ -95,13 +95,13 @@ class AddViewController: UIViewController {
 // MARK: - 테이블 뷰
 extension AddViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if obvm.count == 0 {
+        if obvm.study.count == 0 {
             tableView.setEmptyView(title: "비어있음",
                                    message: "목록을 추가해주세요.")
         } else {
             tableView.restore()
         }
-        return obvm.count
+        return obvm.study.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -112,6 +112,7 @@ extension AddViewController: UITableViewDataSource, UITableViewDelegate {
         ) as? AddTableViewCell else {
             return UITableViewCell()
         }
+        cell.selectionStyle = .none
         cell.configure(with: study)
         cell.deleteBtn.tag = indexPath.row
         cell.deleteBtn.addTarget(self, action: #selector(tappedDeleteBtn(sender:)), for: .touchUpInside)

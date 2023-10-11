@@ -76,7 +76,7 @@ class TodayTableViewCell: UITableViewCell {
         label.text = nil
     }
     
-    public func configure(with model: Study) {
+    public func configure(with model: TodayStudyList) {
         label.text = model.name
     }
 

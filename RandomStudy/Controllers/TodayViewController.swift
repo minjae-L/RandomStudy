@@ -10,12 +10,15 @@ import UIKit
 
 class TodayViewController: UIViewController {
     
-//    private var todayVM = TodayViewModel()
-    private var todayStudy = [Study]() {
-        didSet {
-            tableView.reloadData()
+    // 뷰모델 선언 및 데이터 바인딩
+    private var viewModel = ObservableTodayViewModel()
+    private func bindings() {
+        viewModel.todayStudy.bind{ [weak self] _ in
+            guard let self = self else { return }
+            self.tableView.reloadData()
         }
     }
+    
     private var btn = UIButton()
     private var tableView = UITableView()
     
@@ -25,18 +28,30 @@ class TodayViewController: UIViewController {
         settingUI()
     }
     
+    // 네비게이션 바
+    private func configureNavigationbar() {
+        let appearance = UINavigationBarAppearance()
+        appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
+        appearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
+        appearance.configureWithTransparentBackground()
+        appearance.backgroundColor = .white
+        self.navigationItem.title = "Today"
+        self.navigationController?.navigationBar.prefersLargeTitles = true
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.navigationBar.standardAppearance = appearance
+        self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        self.navigationItem.largeTitleDisplayMode = .always
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "gearshape"), style: .plain, target: self, action: #selector(goSettingVC))
+    }
+    
+    // 전체적인 화면 구성
     private func settingUI() {
         // View
         view.backgroundColor = .white
         
         // NavigationItem
-        self.navigationItem.title = "Today"
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "gearshape"), style: .plain, target: self, action: #selector(goSettingVC))
-        self.navigationController?.navigationBar.prefersLargeTitles = true
-        self.navigationItem.largeTitleDisplayMode = .always
-        self.navigationController?.navigationBar.backgroundColor = .white
-        self.navigationController?.navigationBar.barTintColor = .white
-//        self.
+        configureNavigationbar()
         
         // TableView
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -64,11 +79,12 @@ class TodayViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         addView()
-        
+        bindings()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         tableView.reloadData()
+        configureNavigationbar()
     }
     
     @objc private func goSettingVC() {
@@ -76,61 +92,25 @@ class TodayViewController: UIViewController {
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
+    // 불러오기 버튼 이벤트
     @objc private func uploadStudyList() {
-        let studyServer = StudyServer.dataArray
-        if studyServer.isEmpty {
-            print("Empty")
-        } else {
-            if isEqualArray(toadyList: todayStudy, studyData: studyServer) {
-                print("모든 목록 불러오기 완료")
-            } else {
-                var num = Int.random(in: 0..<studyServer.count)
-                var random = studyServer[num]
-                
-                while todayStudy.filter({ $0.name == random.name}).count > 0 {
-                    num = Int.random(in: 0..<studyServer.count)
-                    random = studyServer[num]
-                }
-                todayStudy.append(random)
-                print("불러오기 완료\(random)")
-                print(studyServer)
-                print(todayStudy)
-            }
-        }
+        viewModel.uploadData()
     }
-    
-    private func isEqualArray(toadyList: [Study], studyData: [Study]) -> Bool {
-        var result = 0
-        for i in 0..<toadyList.count {
-            for j in 0..<studyData.count {
-                if toadyList[i].name == studyData[j].name {
-                    result += 1
-                    break
-                }
-            }
-        }
-        if result == studyData.count {
-            return true
-        } else {
-            return false
-        }
-    }
-
 }
 
 extension TodayViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if todayStudy.count == 0 {
+        if viewModel.count == 0 {
             tableView.setEmptyView(title: "비어있음",
                                    message: "목록을 추가해주세요.")
         } else {
             tableView.restore()
         }
-        return todayStudy.count
+        return viewModel.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let study = todayStudy[indexPath.row]
+        let study = viewModel.studyList[indexPath.row]
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: TodayTableViewCell.identifier,
             for: indexPath
@@ -139,9 +119,17 @@ extension TodayViewController: UITableViewDataSource, UITableViewDelegate {
         }
         cell.configure(with: study)
         cell.deleteBtn.tag = indexPath.row
+        cell.checkBtn.tag = indexPath.row
         cell.deleteBtn.addTarget(self, action: #selector(deleteBtnTapped(sender:)), for: .touchUpInside)
         cell.checkBtn.addTarget(self, action: #selector(checkBtnTapped(sender:)), for: .touchUpInside)
         cell.selectionStyle = .none
+        
+        // 완료시 배경색 변경
+        if study.isDone == true {
+            cell.backgroundColor = .lightGray
+        } else {
+            cell.backgroundColor = .white
+        }
         return cell
     }
     
@@ -149,12 +137,13 @@ extension TodayViewController: UITableViewDataSource, UITableViewDelegate {
         return 80
     }
     
+    // 삭제버튼 이벤트
     @objc func deleteBtnTapped(sender: UIButton) {
-        todayStudy.remove(at: sender.tag)
-        
+        viewModel.remove(index: sender.tag)
     }
+    // 완료버튼 이벤트
     @objc func checkBtnTapped(sender: UIButton) {
-
+        viewModel.finish(index: sender.tag)
     }
 }
 
