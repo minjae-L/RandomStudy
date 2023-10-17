@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import Lottie
 
 class TodayViewController: UIViewController {
     
@@ -18,6 +18,15 @@ class TodayViewController: UIViewController {
             self.tableView.reloadData()
         }
     }
+    
+    let animationView: LottieAnimationView = {
+        let view = LottieAnimationView(name: "check")
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        view.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        
+        return view
+    }()
     
     private var btn = UIButton()
     private var tableView = UITableView()
@@ -74,6 +83,12 @@ class TodayViewController: UIViewController {
         btn.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         btn.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         btn.addTarget(self, action: #selector(uploadStudyList), for: .touchUpInside)
+        
+        // Lottie Animation
+//        animationView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+//        animationView.bottomAnchor.constraint(equalTo: btn.topAnchor).isActive = true
+//        animationView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
+//        animationView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
     }
     
     override func viewDidLoad() {
@@ -100,13 +115,13 @@ class TodayViewController: UIViewController {
 
 extension TodayViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if viewModel.count == 0 {
+        if viewModel.studyList.count == 0 {
             tableView.setEmptyView(title: "비어있음",
                                    message: "목록을 추가해주세요.")
         } else {
             tableView.restore()
         }
-        return viewModel.count
+        return viewModel.studyList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -127,6 +142,9 @@ extension TodayViewController: UITableViewDataSource, UITableViewDelegate {
         // 완료시 배경색 변경
         if study.isDone == true {
             cell.backgroundColor = .lightGray
+//            cell.addSubview(animationView)
+//            animationView.centerXAnchor.constraint(equalTo: cell.centerXAnchor).isActive = true
+//            animationView.centerYAnchor.constraint(equalTo: cell.centerYAnchor).isActive = true
         } else {
             cell.backgroundColor = .white
         }
@@ -143,7 +161,29 @@ extension TodayViewController: UITableViewDataSource, UITableViewDelegate {
     }
     // 완료버튼 이벤트
     @objc func checkBtnTapped(sender: UIButton) {
-        viewModel.finish(index: sender.tag)
+        let point = sender.convert(CGPoint.zero, to: tableView)
+        guard let indexPath = tableView.indexPathForRow(at: point) else { return }
+        
+        guard let cell = tableView.cellForRow(at: indexPath) else { return }
+//        print(viewModel.studyList[sender.tag].date)
+        FinishedList.data.append(CompletionList(name: viewModel.studyList[sender.tag].name, date: viewModel.studyList[sender.tag].date))
+        print(FinishedList.data)
+        cell.addSubview(animationView)
+        animationView.centerXAnchor.constraint(equalTo: cell.centerXAnchor).isActive = true
+        animationView.centerYAnchor.constraint(equalTo: cell.centerYAnchor).isActive = true
+        viewModel.complete(index: sender.tag)
+//        view.addSubview(animationView)
+        animationView.play(fromProgress: 0, toProgress: 1, loopMode: .playOnce, completion: {
+            (finished) in
+            if finished {
+                print("finish")
+                self.animationView.removeFromSuperview()
+            } else {
+                print("playing")
+            }
+        })
+        
+        
     }
 }
 
