@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Lottie
 
 class TodayTableViewCell: UITableViewCell {
     static let identifier = "TodayTableViewCell"
@@ -40,6 +41,17 @@ class TodayTableViewCell: UITableViewCell {
         return btn
     }()
     
+    let checkView: LottieAnimationView = {
+        let view = LottieAnimationView(name: "check")
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        view.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        view.currentProgress = 20
+        view.isHidden = true
+        
+        return view
+    }()
+    
     private func setLayout() {
         let size: CGFloat = contentView.frame.size.height
         
@@ -57,7 +69,8 @@ class TodayTableViewCell: UITableViewCell {
         label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
         label.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
         label.trailingAnchor.constraint(equalTo: deleteBtn.leadingAnchor).isActive = true
-        
+        checkView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
+        checkView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -65,6 +78,7 @@ class TodayTableViewCell: UITableViewCell {
         contentView.addSubview(label)
         contentView.addSubview(deleteBtn)
         contentView.addSubview(checkBtn)
+        contentView.addSubview(checkView)
         setLayout()
     }
     

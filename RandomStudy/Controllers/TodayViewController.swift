@@ -10,6 +10,10 @@ import Lottie
 
 class TodayViewController: UIViewController {
     
+    // UI 선언
+    private var btn = UIButton()
+    private var tableView = UITableView()
+    
     // 뷰모델 선언 및 데이터 바인딩
     private var viewModel = ObservableTodayViewModel()
     private var historyViewModel = ObservableHistoryViewModel()
@@ -19,19 +23,7 @@ class TodayViewController: UIViewController {
             self.tableView.reloadData()
         }
     }
-    
-    let animationView: LottieAnimationView = {
-        let view = LottieAnimationView(name: "check")
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        view.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        
-        return view
-    }()
-    
-    private var btn = UIButton()
-    private var tableView = UITableView()
-    
+    // UI 넣기
     private func addView() {
         view.addSubview(tableView)
         view.addSubview(btn)
@@ -84,12 +76,6 @@ class TodayViewController: UIViewController {
         btn.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         btn.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         btn.addTarget(self, action: #selector(uploadStudyList), for: .touchUpInside)
-        
-        // Lottie Animation
-//        animationView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-//        animationView.bottomAnchor.constraint(equalTo: btn.topAnchor).isActive = true
-//        animationView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
-//        animationView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
     }
     
     override func viewDidLoad() {
@@ -110,7 +96,20 @@ class TodayViewController: UIViewController {
     
     // 불러오기 버튼 이벤트
     @objc private func uploadStudyList() {
-        viewModel.uploadData()
+        let alert = UIAlertController(title: "알림", message: "불러올 목록이 없습니다.", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "확인", style: .cancel)
+        alert.addAction(okAction)
+        switch viewModel.checkUploadData() {
+        case 0:
+            alert.message = "불러올 목록이 없습니다."
+        case 1:
+            alert.message = "이미 모든 목록을 불러왔습니다."
+        case 2:
+            alert.message = "불러오기 완료."
+            viewModel.uploadData()
+        default: break
+        }
+        self.present(alert, animated: true, completion: nil)
     }
 }
 
@@ -140,14 +139,10 @@ extension TodayViewController: UITableViewDataSource, UITableViewDelegate {
         cell.checkBtn.addTarget(self, action: #selector(checkBtnTapped(sender:)), for: .touchUpInside)
         cell.selectionStyle = .none
         
-        // 완료시 배경색 변경
+        // 완료시 배경색 변경 및 체크표시
         if study.isDone == true {
             cell.backgroundColor = .lightGray
-//            cell.addSubview(animationView)
-//            animationView.centerXAnchor.constraint(equalTo: cell.centerXAnchor).isActive = true
-//            animationView.centerYAnchor.constraint(equalTo: cell.centerYAnchor).isActive = true
-        } else {
-            cell.backgroundColor = .white
+            cell.checkView.isHidden = false
         }
         return cell
     }
@@ -174,21 +169,23 @@ extension TodayViewController: UITableViewDataSource, UITableViewDelegate {
             historyViewModel.addData(name: name,
                                      date: date)}
         
+        // Lottie 애니메이션 실행
+        let animationView: LottieAnimationView = {
+            let view = LottieAnimationView(name: "check")
+            view.translatesAutoresizingMaskIntoConstraints = false
+            view.widthAnchor.constraint(equalToConstant: 80).isActive = true
+            view.heightAnchor.constraint(equalToConstant: 80).isActive = true
+            
+            return view
+        }()
+        
         cell.addSubview(animationView)
         animationView.centerXAnchor.constraint(equalTo: cell.centerXAnchor).isActive = true
         animationView.centerYAnchor.constraint(equalTo: cell.centerYAnchor).isActive = true
-        viewModel.complete(index: sender.tag)
-//        view.addSubview(animationView)
-        animationView.play(fromProgress: 0, toProgress: 1, loopMode: .playOnce, completion: {
-            (finished) in
-            if finished {
-                print("finish")
-                self.animationView.removeFromSuperview()
-            } else {
-                print("playing")
-            }
-        })
-        
+        animationView.play{(finish) in
+            animationView.removeFromSuperview()
+            self.viewModel.complete(index: sender.tag)
+        }
         
     }
 }

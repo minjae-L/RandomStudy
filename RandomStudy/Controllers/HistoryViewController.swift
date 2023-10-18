@@ -89,7 +89,7 @@ extension HistoryViewController:  UITableViewDelegate, UITableViewDataSource {
     
     // Cell 높이
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
+        return 60
     }
 
 }

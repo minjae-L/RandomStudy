@@ -34,22 +34,45 @@ class ObservableTodayViewModel {
 
 // 비즈니스 로직
 extension ObservableTodayViewModel {
+    // 현재 상태를 확인하는 메소드 0: 공부목록이 없음, 1: 모든 데이터를 불러옴, 2: 불러올 데이터가 남아있음
+    func checkUploadData() -> Int {
+        if Database.data.isEmpty {
+            return 0
+        } else if self.isAllDataUploaded() {
+            return 1
+        } else {
+            return 2
+        }
+    }
+    
+    func isAllDataUploaded() -> Bool {
+        let study = Database.data
+        let uploaded = studyList
+        for data in study {
+            let element1 = TodayStudyList(name: data.name, isDone: false, date: dateFommatter.string(from: Date()))
+            let element2 = TodayStudyList(name: data.name, isDone: true, date: dateFommatter.string(from: Date()))
+            if !todayStudy.value.contains(element1) && !todayStudy.value.contains(element2) {
+                return false
+            }
+        }
+        return true
+    }
     // 추가한 공부목록으로 부터 불러오는 메소드
     func uploadData() {
         let study = Database.data
-        if !study.isEmpty {
-            for data in study {
-                let element1 = TodayStudyList(name: data.name, isDone: false, date: dateFommatter.string(from: Date()))
-                let element2 = TodayStudyList(name: data.name, isDone: true, date: dateFommatter.string(from: Date()))
-                if !todayStudy.value.contains(element1) && !todayStudy.value.contains(element2) {
+        for data in study {
+            let element1 = TodayStudyList(name: data.name, isDone: false, date: dateFommatter.string(from: Date()))
+            let element2 = TodayStudyList(name: data.name, isDone: true, date: dateFommatter.string(from: Date()))
+            if !todayStudy.value.contains(element1) && !todayStudy.value.contains(element2) {
                     todayStudy.value.append(element1)
-                }
             }
         }
     }
     // 완료 버튼 이벤트
     func complete(index: Int) {
-        todayStudy.value[index].isDone = true
+        if !todayStudy.value[index].isDone {
+            todayStudy.value[index].isDone = true
+        }
     }
     // 삭제버튼 이벤트
     func remove(index: Int) {
