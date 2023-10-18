@@ -35,7 +35,9 @@ class ObservableViewModel {
     var list: Observable<[Study]> = Observable([])
      
     init() {
-        self.list.value = Database.data
+        if let data = UserDefaults.standard.value(forKey: "studyList") as? Data {
+            self.list.value = try! PropertyListDecoder().decode(Array<Study>.self, from: data)
+        }
     }
     
     var count: Int {
@@ -50,7 +52,10 @@ class ObservableViewModel {
 
 // 데이터 가공 및 판별 메소드
 extension ObservableViewModel {
-    
+    // Userdefaults 데이터 저장
+    func userdefaultsDataSet() {
+        UserDefaults.standard.setValue(try? PropertyListEncoder().encode(list.value), forKey: "studyList")
+    }
     // 같은 데이터가 있는지 판단
     func isContainsElement(str: String) -> Bool {
         var isContain = false
@@ -69,17 +74,13 @@ extension ObservableViewModel {
         self.list.value.append(Study(name: str))
     }
     
-    // 데이터 저장
-    func setData() {
-        Database.data = self.study
-    }
-    
     func removeData(index: Int) {
         var arr = list.value
         if arr.isEmpty { return }
         arr.remove(at: index)
         list.value = arr
     }
+    
 
 }
 

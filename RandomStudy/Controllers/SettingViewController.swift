@@ -31,7 +31,6 @@ class SettingViewController: UIViewController {
         
         // NavigationBar
         self.navigationItem.title = "설정"
-//        self.navigationController?.navigationBar.barTintColor = .white
         let navBarAppearance = UINavigationBarAppearance()
         navBarAppearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
         navBarAppearance.backgroundColor = .white

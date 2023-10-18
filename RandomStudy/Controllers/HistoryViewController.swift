@@ -23,6 +23,7 @@ class HistoryViewController: UIViewController {
         viewModel.completionStudy.bind{ [weak self] _ in
             guard let self = self else { return }
             self.tableView.reloadData()
+            viewModel.userdefaultsDataSet()
         }
     }
     

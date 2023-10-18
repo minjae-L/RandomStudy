@@ -12,9 +12,7 @@ class AddViewController: UIViewController {
     
     // 뷰모델 선언
     private var obvm = ObservableViewModel()
-    
     private var tableView = UITableView()
-//    private var delegate: RemoveBtnDelegate?
     
     private func addSubView() {
         view.addSubview(tableView)
@@ -26,6 +24,7 @@ class AddViewController: UIViewController {
         obvm.list.bind{ [weak self] _ in
             guard let self = self else { return }
             self.tableView.reloadData()
+            obvm.userdefaultsDataSet()
         }
     }
     
@@ -56,10 +55,6 @@ class AddViewController: UIViewController {
         bindings()
     }
     
-    // 새롭게 만들어진 데이터를 따로 저장
-    override func viewDidDisappear(_ animated: Bool) {
-        obvm.setData()
-    }
     
     // 추가하기 버튼 이벤트
     @objc func addCategory() {
@@ -68,6 +63,11 @@ class AddViewController: UIViewController {
             guard let text = alert.textFields?[0].text else { return }
             if !self.obvm.isContainsElement(str: text) {
                 self.obvm.addData(str: text)
+            } else {
+                let errorAlert = UIAlertController(title: "오류", message: "같은 목록이 이미 있습니다.", preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "확인", style: .cancel)
+                errorAlert.addAction(okAction)
+                self.present(errorAlert, animated: true)
             }
         }
         let cancelAction = UIAlertAction(title: "취소", style: .cancel)

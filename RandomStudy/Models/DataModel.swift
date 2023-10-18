@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 // MARK: - Model
-struct Study: Equatable {
+struct Study: Equatable, Codable {
     let name: String?
     
     static func ==(lhs: Study, rhs: Study) -> Bool {
@@ -23,25 +23,15 @@ extension Study {
     }
 }
 // 오늘의 할일 모델
-struct TodayStudyList: Equatable {
+struct TodayStudyList: Equatable, Codable {
     let name: String?
     var isDone: Bool
     let date: String?
 }
 
-struct CompletionList: Equatable {
+struct CompletionList: Equatable, Codable {
     let name: String?
     let date: String?
-}
-
-// 공부목록이 저장된곳
-class Database {
-    static var data = [Study]()
-}
-
-// 공부완료된 목록들을 저장한곳
-class FinishedList {
-    static var data = [CompletionList]()
 }
 
 // MARK: - Setting ViewController Cell Struct

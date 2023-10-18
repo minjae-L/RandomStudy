@@ -17,12 +17,35 @@ class TodayViewController: UIViewController {
     // 뷰모델 선언 및 데이터 바인딩
     private var viewModel = ObservableTodayViewModel()
     private var historyViewModel = ObservableHistoryViewModel()
+    
     private func bindings() {
         viewModel.todayStudy.bind{ [weak self] _ in
             guard let self = self else { return }
             self.tableView.reloadData()
+            viewModel.userdefaultsDataSet()
         }
     }
+    // 하루가 지났는지 파악하는 메소드
+    private var dateFommatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "YYYY년MM월dd일"
+        
+        return dateFormatter
+    }()
+    
+    private func isDayChanged() -> Bool {
+        let todayDate = dateFommatter.string(from: Date())
+        let userDefaultsDate = UserDefaults.standard.value(forKey: "todayDate")
+        if userDefaultsDate == nil {
+            UserDefaults.standard.set(todayDate, forKey: "todayDate")
+            return false
+        } else if todayDate != userDefaultsDate as! String {
+            UserDefaults.standard.set(todayDate, forKey: "todayDate")
+            return true
+        }
+        return false
+    }
+    
     // UI 넣기
     private func addView() {
         view.addSubview(tableView)
@@ -85,8 +108,15 @@ class TodayViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        tableView.reloadData()
         configureNavigationbar()
+        // 하루가 지났는지 확인
+        if self.isDayChanged() {
+            let alert = UIAlertController(title: "새로운 하루", message: "목록이 초기화 되었습니다.", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "확인", style: .cancel)
+            alert.addAction(okAction)
+            viewModel.removeAll()
+        }
+
     }
     
     @objc private func goSettingVC() {
@@ -107,6 +137,8 @@ class TodayViewController: UIViewController {
         case 2:
             alert.message = "불러오기 완료."
             viewModel.uploadData()
+            print(viewModel.todayStudy.value)
+            print(viewModel.studyList)
         default: break
         }
         self.present(alert, animated: true, completion: nil)
@@ -125,7 +157,7 @@ extension TodayViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let study = viewModel.studyList[indexPath.row]
+        let study = viewModel.todayStudy.value[indexPath.row]
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: TodayTableViewCell.identifier,
             for: indexPath
@@ -140,7 +172,9 @@ extension TodayViewController: UITableViewDataSource, UITableViewDelegate {
         cell.selectionStyle = .none
         
         // 완료시 배경색 변경 및 체크표시
-        if study.isDone == true {
+        print(study)
+        print(cell)
+        if study.isDone {
             cell.backgroundColor = .lightGray
             cell.checkView.isHidden = false
         }
@@ -159,7 +193,6 @@ extension TodayViewController: UITableViewDataSource, UITableViewDelegate {
     @objc func checkBtnTapped(sender: UIButton) {
         let point = sender.convert(CGPoint.zero, to: tableView)
         guard let indexPath = tableView.indexPathForRow(at: point) else { return }
-        
         guard let cell = tableView.cellForRow(at: indexPath) else { return }
         
         // 완료된 데이터 전달
@@ -167,7 +200,9 @@ extension TodayViewController: UITableViewDataSource, UITableViewDelegate {
         let date = viewModel.studyList[sender.tag].date!
         if !historyViewModel.isContainElement(name: name, date: date) {
             historyViewModel.addData(name: name,
-                                     date: date)}
+                                     date: date)
+            historyViewModel.userdefaultsDataSet()
+        }
         
         // Lottie 애니메이션 실행
         let animationView: LottieAnimationView = {

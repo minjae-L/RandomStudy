@@ -13,7 +13,9 @@ class ObservableHistoryViewModel {
     
     // 생성시 데이터베이스에서 불러오기
     init() {
-        self.completionStudy.value = FinishedList.data
+        if let data = UserDefaults.standard.value(forKey: "completionStudy") as? Data {
+            self.completionStudy.value = try! PropertyListDecoder().decode(Array<CompletionList>.self, from: data)
+        }
     }
     
     var count: Int {
@@ -37,6 +39,10 @@ class ObservableHistoryViewModel {
 }
 
 extension ObservableHistoryViewModel {
+    // Userdefaults 데이터 저장
+    func userdefaultsDataSet() {
+        UserDefaults.standard.setValue(try? PropertyListEncoder().encode(completionStudy.value), forKey: "completionStudy")
+    }
     // 중복된 원소가 있는지 판단하는 메소드
     func isContainElement(name: String, date: String) -> Bool {
         let arr = completionStudy.value
@@ -50,10 +56,5 @@ extension ObservableHistoryViewModel {
     func addData(name: String, date: String) {
         if name == "" || date == "" { return }
         self.completionStudy.value.append(CompletionList(name: name, date: date))
-        self.setData()
-    }
-    // 데이터베이스에 저장
-    func setData() {
-        FinishedList.data = completionStudy.value
     }
 }
