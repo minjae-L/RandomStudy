@@ -28,15 +28,12 @@ class HistoryTableViewCell: UITableViewCell {
         label.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
         label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
         label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20).isActive = true
-//        label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
-//        label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
         label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant:  20).isActive = true
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
-        // Configure the view for the selected state
     }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

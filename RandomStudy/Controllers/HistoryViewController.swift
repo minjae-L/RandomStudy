@@ -10,14 +10,24 @@ import UIKit
 class HistoryViewController: UIViewController {
 
     private var tableView = UITableView()
+    private var viewModel = ObservableHistoryViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        bindings()
+    }
+    
+    // 데이터 바인딩
+    private func bindings() {
+        viewModel.completionStudy.bind{ [weak self] _ in
+            guard let self = self else { return }
+            self.tableView.reloadData()
+        }
     }
     
     // UI 그리기
-    func configureUI() {
+    private func configureUI() {
         //addSubView
         view.addSubview(tableView)
         //View
@@ -41,28 +51,31 @@ class HistoryViewController: UIViewController {
 }
 
 extension HistoryViewController:  UITableViewDelegate, UITableViewDataSource {
-    
     // Section 개수
     func numberOfSections(in tableView: UITableView) -> Int {
-        let num = Array(Set(FinishedList.sampleData.map{ $0.date})).count
-        return num
-    }
-    // Section안의 cell의 개수
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        let date = Array(Set(FinishedList.sampleData.map{ $0.date!})).sorted()[section]
-        return FinishedList.sampleData.filter{ $0.date == date}.count
-    }
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let str = String(Array(Set(FinishedList.sampleData.map{$0.date!})).sorted()[section])
-        return str
+        if viewModel.dateCount == 0 {
+            tableView.setEmptyView(title: "비어있음", message: "오늘의 목표를 달성해보세요.")
+        } else {
+            tableView.restore()
+        }
+        return viewModel.dateCount
     }
     
+    // Section안의 cell의 개수
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let date = viewModel.dateArray[section]
+        return viewModel.completionList.filter{ $0.date == date}.count
+    }
+    
+    // Section 타이틀 설정
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return String(viewModel.dateArray[section])
+    }
+    
+    // Cell 구성
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let date = Array(Set(FinishedList.sampleData.map{ $0.date!})).sorted()[indexPath.section]
-        let finished = FinishedList.sampleData.filter{ $0.date == date}[indexPath.row]
-        var arr = [CompletionList]()
+        let date = viewModel.dateArray[indexPath.section]
+        let finished = viewModel.completionList.filter{ $0.date == date}[indexPath.row]
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: HistoryTableViewCell.identifier,
             for: indexPath
@@ -74,6 +87,7 @@ extension HistoryViewController:  UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    // Cell 높이
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
     }

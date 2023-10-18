@@ -12,6 +12,7 @@ class TodayViewController: UIViewController {
     
     // 뷰모델 선언 및 데이터 바인딩
     private var viewModel = ObservableTodayViewModel()
+    private var historyViewModel = ObservableHistoryViewModel()
     private func bindings() {
         viewModel.todayStudy.bind{ [weak self] _ in
             guard let self = self else { return }
@@ -165,9 +166,14 @@ extension TodayViewController: UITableViewDataSource, UITableViewDelegate {
         guard let indexPath = tableView.indexPathForRow(at: point) else { return }
         
         guard let cell = tableView.cellForRow(at: indexPath) else { return }
-//        print(viewModel.studyList[sender.tag].date)
-        FinishedList.data.append(CompletionList(name: viewModel.studyList[sender.tag].name, date: viewModel.studyList[sender.tag].date))
-        print(FinishedList.data)
+        
+        // 완료된 데이터 전달
+        let name = viewModel.studyList[sender.tag].name!
+        let date = viewModel.studyList[sender.tag].date!
+        if !historyViewModel.isContainElement(name: name, date: date) {
+            historyViewModel.addData(name: name,
+                                     date: date)}
+        
         cell.addSubview(animationView)
         animationView.centerXAnchor.constraint(equalTo: cell.centerXAnchor).isActive = true
         animationView.centerYAnchor.constraint(equalTo: cell.centerYAnchor).isActive = true

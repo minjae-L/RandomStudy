@@ -7,9 +7,6 @@
 
 import UIKit
 
-//protocol RemoveBtnDelegate: AnyObject {
-//    func tappedRemoveBtn(_ index: Int)
-//}
 // MARK: - 뷰 컨트롤러
 class AddViewController: UIViewController {
     
@@ -87,11 +84,7 @@ class AddViewController: UIViewController {
     }
     
 }
-//extension AddViewController: RemoveBtnDelegate {
-//    func tappedRemoveBtn(_ index: Int) {
-//        var arr = obvm.study.remove(at: index)
-//    }
-//}
+
 // MARK: - 테이블 뷰
 extension AddViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

@@ -23,6 +23,7 @@
 		B58D29022A2D830300947A24 /* RandomStudyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58D29012A2D830300947A24 /* RandomStudyUITestsLaunchTests.swift */; };
 		B59B658F2ADB3006008A60F1 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B658E2ADB3006008A60F1 /* HistoryViewController.swift */; };
 		B59B65912ADB3483008A60F1 /* HistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B65902ADB3483008A60F1 /* HistoryTableViewCell.swift */; };
+		B5A3705F2ADF8029000F76C1 /* HistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A3705E2ADF8029000F76C1 /* HistoryViewModel.swift */; };
 		B5B7EB962AA4FCA0006944A8 /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B7EB952AA4FCA0006944A8 /* AddViewController.swift */; };
 		B5BA4B4E2AC1AC9E004D7BF9 /* AddViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BA4B4D2AC1AC9E004D7BF9 /* AddViewModel.swift */; };
 		B5C126852AB3660400DBF902 /* TodayTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C126842AB3660400DBF902 /* TodayTableViewCell.swift */; };
@@ -77,6 +78,7 @@
 		B58D29012A2D830300947A24 /* RandomStudyUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomStudyUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		B59B658E2ADB3006008A60F1 /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		B59B65902ADB3483008A60F1 /* HistoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTableViewCell.swift; sourceTree = "<group>"; };
+		B5A3705E2ADF8029000F76C1 /* HistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModel.swift; sourceTree = "<group>"; };
 		B5B7EB952AA4FCA0006944A8 /* AddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
 		B5BA4B4D2AC1AC9E004D7BF9 /* AddViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewModel.swift; sourceTree = "<group>"; };
 		B5C126842AB3660400DBF902 /* TodayTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayTableViewCell.swift; sourceTree = "<group>"; };
@@ -209,6 +211,7 @@
 			children = (
 				B5BA4B4D2AC1AC9E004D7BF9 /* AddViewModel.swift */,
 				B58BE0102AD607970039D232 /* TodayViewModel.swift */,
+				B5A3705E2ADF8029000F76C1 /* HistoryViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -505,6 +508,7 @@
 				B59B65912ADB3483008A60F1 /* HistoryTableViewCell.swift in Sources */,
 				B5CC3B2D2AB2080300D9FA24 /* SettingTableViewCell.swift in Sources */,
 				B5CC3B282AB2079000D9FA24 /* SettingViewController.swift in Sources */,
+				B5A3705F2ADF8029000F76C1 /* HistoryViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
