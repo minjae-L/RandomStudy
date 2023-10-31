@@ -10,11 +10,6 @@ import UIKit
 class HistoryTableViewCell: UITableViewCell {
     static let identifier = "HistoryTableViewCell"
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-    
     private let label: UILabel = {
         let lb = UILabel()
         lb.translatesAutoresizingMaskIntoConstraints = false
@@ -31,11 +26,6 @@ class HistoryTableViewCell: UITableViewCell {
         label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant:  20).isActive = true
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-    }
-
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(label)
@@ -50,7 +40,7 @@ class HistoryTableViewCell: UITableViewCell {
         label.text = nil
     }
     
-    public func configure(with model: CompletionList) {
+    func configure(with model: CompletionList) {
         label.text = model.name
     }
 }

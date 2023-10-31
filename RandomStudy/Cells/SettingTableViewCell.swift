@@ -74,7 +74,7 @@ class SettingTableViewCell: UITableViewCell {
     }
     
     // 셀에 있는 이미지뷰와 라벨을 미리 정했던 구조체와 연결
-    public func configure(with model: SettingsOption) {
+    func configure(with model: SettingsOption) {
         label.text = model.title
         iconImageView.image = model.icon
         iconContainer.backgroundColor = model.iconBackgroundColor

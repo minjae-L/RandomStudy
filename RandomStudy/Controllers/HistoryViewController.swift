@@ -15,17 +15,21 @@ class HistoryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
-        bindings()
+//        bindings()
+        print("///////////////History VC did load //////////")
+        print(viewModel.completionList)
     }
     
     // 데이터 바인딩
-    private func bindings() {
-        viewModel.completionStudy.bind{ [weak self] _ in
-            guard let self = self else { return }
-            self.tableView.reloadData()
-            viewModel.userdefaultsDataSet()
-        }
-    }
+    // 나중에 검색기능을 위
+//    private func bindings() {
+//        viewModel.completionStudy.bind{ [weak self] _ in
+//            guard let self = self else { return }
+//            self.tableView.reloadData()
+////            viewModel.userdefaultsDataSet()
+//            HistoryUserDefaults.shared.set(new: viewModel.completionList)
+//        }
+//    }
     
     // UI 그리기
     private func configureUI() {

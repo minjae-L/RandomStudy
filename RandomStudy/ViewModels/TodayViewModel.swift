@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+
 class ObservableTodayViewModel {
     var todayStudy: Observable<[TodayStudyList]> = Observable([])
     
@@ -19,18 +20,15 @@ class ObservableTodayViewModel {
     }()
     
     init() {
-        if let data = UserDefaults.standard.value(forKey: "todayStudy") as? Data {
-            self.todayStudy.value = try! PropertyListDecoder().decode(Array<TodayStudyList>.self, from: data)
-        }
+        todayStudy.value = TodayStudyUserDefauls.shared.data
     }
     
-    var count: Int {
+    var dataCount: Int {
         return todayStudy.value.count
     }
 
-    var studyList: [TodayStudyList] {
-        let arr = todayStudy.value
-        return arr
+    var todayList: [TodayStudyList] {
+        return todayStudy.value
     }
 }
 
@@ -38,11 +36,7 @@ class ObservableTodayViewModel {
 extension ObservableTodayViewModel {
     // 추가해뒀던 공부목록 불러오기
     func loadStudyList() -> [Study] {
-        var arr = [Study]()
-        if let data = UserDefaults.standard.value(forKey: "studyList") as? Data {
-            arr = try! PropertyListDecoder().decode(Array<Study>.self, from: data)
-        }
-        return arr
+        return StudyListUserDefaults.shared.data
     }
     // 완료된 목록 불러오기
     func loadCompletionList() -> [CompletionList] {
@@ -52,29 +46,25 @@ extension ObservableTodayViewModel {
         }
         return arr
     }
-    // UserDefaults 데이터 저장
-    func userdefaultsDataSet() {
-        UserDefaults.standard.setValue(try? PropertyListEncoder().encode(todayStudy.value), forKey: "todayStudy")
-        
-    }
     
-    // 현재 상태를 확인하는 메소드 0: 공부목록이 없음, 1: 모든 데이터를 불러옴, 2: 불러올 데이터가 남아있음
-    func checkUploadData() -> Int {
+    // 현재 상태를 확인하는 메소드
+    func checkDataState() -> DateState {
         if self.loadStudyList().isEmpty {
-            return 0
+            return DateState.empty
         } else if self.isAllDataUploaded() {
-            return 1
+            return DateState.finish
         } else {
-            return 2
+            return DateState.loading
         }
     }
+    
     //  모든 데이터가 불러와졌는지 확인하는 메소드
     func isAllDataUploaded() -> Bool {
-        let uploaded = studyList
+        let uploaded = todayList
         for data in self.loadStudyList() {
             let element1 = TodayStudyList(name: data.name, isDone: false, date: dateFommatter.string(from: Date()))
             let element2 = TodayStudyList(name: data.name, isDone: true, date: dateFommatter.string(from: Date()))
-            if !todayStudy.value.contains(element1) && !todayStudy.value.contains(element2) {
+            if !uploaded.contains(element1) && !uploaded.contains(element2) {
                 return false
             }
         }
@@ -82,23 +72,34 @@ extension ObservableTodayViewModel {
     }
     
     // 추가한 공부목록으로 부터 불러오는 메소드
-    func uploadData() {
+    func fetchData() {
         let studyList = self.loadStudyList()
         let completionList = self.loadCompletionList()
         let currentDate = dateFommatter.string(from: Date())
+        var arr = [TodayStudyList]()
         // 목록이 중복되거나 이미 완료된 목록인지 확인
-        for data in self.loadStudyList() {
-            let element1 = TodayStudyList(name: data.name, isDone: false, date: currentDate)
-            let element2 = TodayStudyList(name: data.name, isDone: true, date:  currentDate)
-            if !todayStudy.value.contains(element1) && !todayStudy.value.contains(element2) {
-                if !completionList.contains(CompletionList(name: data.name, date: currentDate)) {
-                    todayStudy.value.append(element1)
-                } else {
-                    todayStudy.value.append(element2)
-                }
-                    
-            }
+        for data in studyList {
+            let element = TodayStudyList(name: data.name, isDone: false, date: currentDate)
+            let completeElement = CompletionList(name: data.name, date: currentDate)
+            if completionList.contains(completeElement) || todayList.contains(element) { continue }
+            arr.append(element)
         }
+        print(todayStudy.value)
+        print(arr)
+        todayStudy.value.append(contentsOf: arr)
+        print(todayStudy.value)
+//        for data in self.loadStudyList() {
+//            let element1 = TodayStudyList(name: data.name, isDone: false, date: currentDate)
+//            let element2 = TodayStudyList(name: data.name, isDone: true, date:  currentDate)
+//            if !todayStudy.value.contains(element1) && !todayStudy.value.contains(element2) {
+//                if !completionList.contains(CompletionList(name: data.name, date: currentDate)) {
+//                    todayStudy.value.append(element1)
+//                } else {
+//                    todayStudy.value.append(element2)
+//                }
+//
+//            }
+//        }
     }
     // 완료 버튼 이벤트
     func complete(index: Int) {

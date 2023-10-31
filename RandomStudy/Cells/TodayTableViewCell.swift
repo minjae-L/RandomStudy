@@ -8,10 +8,33 @@
 import UIKit
 import Lottie
 
+protocol TodayViewControllerButtonDelegate: AnyObject {
+    func cellCheckButtonTapped(index: Int)
+    func cellDeleteButtonTapped(index: Int)
+}
+
 class TodayTableViewCell: UITableViewCell {
     static let identifier = "TodayTableViewCell"
+    weak var delegate: TodayViewControllerButtonDelegate?
     
-    private let label: UILabel = {
+    var index: Int = 0
+    
+    // 체크버튼
+    @objc func checkButtonTapped() {
+        delegate?.cellCheckButtonTapped(index: index)
+        checkView.isHidden = false
+        // 애니메이션 실행
+        checkView.play{ (finish) in
+            self.checkView.currentProgress = 20
+            self.contentView.backgroundColor = .lightGray
+        }
+    }
+    // 삭제버튼
+    @objc func deleteButtonTapped() {
+        delegate?.cellDeleteButtonTapped(index: index)
+    }
+    
+    let label: UILabel = {
         let lbl = UILabel()
         lbl.numberOfLines = 1
         lbl.translatesAutoresizingMaskIntoConstraints = false
@@ -46,11 +69,15 @@ class TodayTableViewCell: UITableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.widthAnchor.constraint(equalToConstant: 80).isActive = true
         view.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        view.currentProgress = 20
         view.isHidden = true
         
         return view
     }()
+    
+    private func setupButtonEvent() {
+        checkBtn.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
+        deleteBtn.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+    }
     
     private func setLayout() {
         let size: CGFloat = contentView.frame.size.height
@@ -80,6 +107,7 @@ class TodayTableViewCell: UITableViewCell {
         contentView.addSubview(checkBtn)
         contentView.addSubview(checkView)
         setLayout()
+        setupButtonEvent()
     }
     
     required init?(coder: NSCoder) {
@@ -88,10 +116,19 @@ class TodayTableViewCell: UITableViewCell {
     
     override func prepareForReuse() {
         label.text = nil
+        checkView.isHidden = true
     }
     
-    public func configure(with model: TodayStudyList) {
+    func configure(with model: TodayStudyList) {
         label.text = model.name
+        if model.isDone == false {
+            contentView.backgroundColor = .white
+            checkView.isHidden = true
+        } else {
+            contentView.backgroundColor = .lightGray
+            checkView.isHidden = false
+            checkView.currentProgress = 20
+        }
     }
 
 }

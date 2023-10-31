@@ -35,27 +35,20 @@ class ObservableViewModel {
     var list: Observable<[Study]> = Observable([])
      
     init() {
-        if let data = UserDefaults.standard.value(forKey: "studyList") as? Data {
-            self.list.value = try! PropertyListDecoder().decode(Array<Study>.self, from: data)
-        }
+        list.value = StudyListUserDefaults.shared.data
     }
     
-    var count: Int {
+    var dataCount: Int {
         return list.value.count
     }
     
     var study: [Study] {
-        let arr = list.value
-        return arr
+        return list.value
     }
 }
 
 // 데이터 가공 및 판별 메소드
 extension ObservableViewModel {
-    // Userdefaults 데이터 저장
-    func userdefaultsDataSet() {
-        UserDefaults.standard.setValue(try? PropertyListEncoder().encode(list.value), forKey: "studyList")
-    }
     // 같은 데이터가 있는지 판단
     func isContainsElement(str: String) -> Bool {
         var isContain = false
@@ -75,10 +68,7 @@ extension ObservableViewModel {
     }
     
     func removeData(index: Int) {
-        var arr = list.value
-        if arr.isEmpty { return }
-        arr.remove(at: index)
-        list.value = arr
+        list.value.remove(at: index)
     }
     
 

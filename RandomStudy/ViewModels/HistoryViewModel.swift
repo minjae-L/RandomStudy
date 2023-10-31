@@ -13,9 +13,10 @@ class ObservableHistoryViewModel {
     
     // 생성시 데이터베이스에서 불러오기
     init() {
-        if let data = UserDefaults.standard.value(forKey: "completionStudy") as? Data {
-            self.completionStudy.value = try! PropertyListDecoder().decode(Array<CompletionList>.self, from: data)
-        }
+        completionStudy.value = HistoryUserDefaults.shared.data
+//        if let data = UserDefaults.standard.value(forKey: "completionStudy") as? Data {
+//            self.completionStudy.value = try! PropertyListDecoder().decode(Array<CompletionList>.self, from: data)
+//        }
     }
     
     var count: Int {
@@ -23,8 +24,7 @@ class ObservableHistoryViewModel {
     }
     
     var completionList: [CompletionList] {
-        let arr = completionStudy.value
-        return arr
+        return completionStudy.value
     }
     
     // 중복되지않은 날짜의 개수
@@ -40,21 +40,24 @@ class ObservableHistoryViewModel {
 
 extension ObservableHistoryViewModel {
     // Userdefaults 데이터 저장
-    func userdefaultsDataSet() {
-        UserDefaults.standard.setValue(try? PropertyListEncoder().encode(completionStudy.value), forKey: "completionStudy")
-    }
+//    func userdefaultsDataSet() {
+//        UserDefaults.standard.setValue(try? PropertyListEncoder().encode(completionStudy.value), forKey: "completionStudy")
+//    }
     // 중복된 원소가 있는지 판단하는 메소드
-    func isContainElement(name: String, date: String) -> Bool {
-        let arr = completionStudy.value
-        if arr.contains(CompletionList(name: name, date: date)) {
-            return true
-        } else {
-            return false
+    func isContainElement(_ element: CompletionList) -> Bool {
+        let arr = completionList
+        for data in arr {
+            if data == element {
+                return true
+            }
         }
+        return false
+        
     }
     // 원소 추가
-    func addData(name: String, date: String) {
-        if name == "" || date == "" { return }
-        self.completionStudy.value.append(CompletionList(name: name, date: date))
+    func addData(_ element: CompletionList) {
+//        if name == "" || date == "" { return }
+//        guard let data = element else { return }
+        self.completionStudy.value.append(element)
     }
 }

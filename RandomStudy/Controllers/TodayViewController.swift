@@ -8,6 +8,7 @@
 import UIKit
 import Lottie
 
+
 class TodayViewController: UIViewController {
     
     // UI 선언
@@ -19,10 +20,17 @@ class TodayViewController: UIViewController {
     private var historyViewModel = ObservableHistoryViewModel()
     
     private func bindings() {
+        // TodayVC 뷰모델 데이터 바인딩
         viewModel.todayStudy.bind{ [weak self] _ in
             guard let self = self else { return }
             self.tableView.reloadData()
-            viewModel.userdefaultsDataSet()
+            TodayStudyUserDefauls.shared.set(new: viewModel.todayList)
+        }
+        // HistoryVC 뷰모델 데이터 바인딩
+        // HistoryVC는 열람만 하기때문에 여기서 데이터 변화를 감시 (Observable)
+        historyViewModel.completionStudy.bind{ [weak self] _ in
+            guard let self = self else { return }
+            HistoryUserDefaults.shared.set(new: historyViewModel.completionList)
         }
     }
     // 하루가 지났는지 파악하는 메소드
@@ -84,7 +92,7 @@ class TodayViewController: UIViewController {
         tableView.bottomAnchor.constraint(equalTo: btn.topAnchor).isActive = true
         tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-
+        
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(TodayTableViewCell.self, forCellReuseIdentifier: TodayTableViewCell.identifier)
@@ -98,7 +106,7 @@ class TodayViewController: UIViewController {
         btn.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         btn.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         btn.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        btn.addTarget(self, action: #selector(uploadStudyList), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(fetchStudyList), for: .touchUpInside)
     }
     
     override func viewDidLoad() {
@@ -125,35 +133,53 @@ class TodayViewController: UIViewController {
     }
     
     // 불러오기 버튼 이벤트
-    @objc private func uploadStudyList() {
+    @objc private func fetchStudyList() {
         let alert = UIAlertController(title: "알림", message: "불러올 목록이 없습니다.", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "확인", style: .cancel)
         alert.addAction(okAction)
-        switch viewModel.checkUploadData() {
-        case 0:
+        switch viewModel.checkDataState() {
+        case .empty:
             alert.message = "불러올 목록이 없습니다."
-        case 1:
+        case .finish:
             alert.message = "이미 모든 목록을 불러왔습니다."
-        case 2:
+        case .loading:
             alert.message = "불러오기 완료."
-            viewModel.uploadData()
-            print(viewModel.todayStudy.value)
-            print(viewModel.studyList)
+            viewModel.fetchData()
         default: break
         }
         self.present(alert, animated: true, completion: nil)
     }
 }
+// MARK: - Cell Button Action
+extension TodayViewController: TodayViewControllerButtonDelegate {
+    // 체크버튼 액션
+    func cellCheckButtonTapped(index: Int) {
+        let element = CompletionList(name: viewModel.todayList[index].name!,
+                                     date: viewModel.todayList[index].date!)
+        if !historyViewModel.isContainElement(element) {
+            historyViewModel.addData(element)
+        }
+        let completionElement = TodayStudyList(name: viewModel.todayList[index].name!,
+                                               isDone: true,
+                                               date: viewModel.todayList[index].date!)
+        viewModel.todayStudy.value[index] = completionElement
+    }
+    // 삭제버튼 액션
+    func cellDeleteButtonTapped(index: Int) {
+        viewModel.remove(index: index)
+    }
+}
 
+// MARK: - TableView
 extension TodayViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if viewModel.studyList.count == 0 {
+        if viewModel.dataCount == 0 {
             tableView.setEmptyView(title: "비어있음",
                                    message: "목록을 추가해주세요.")
         } else {
             tableView.restore()
         }
-        return viewModel.studyList.count
+        return viewModel.dataCount
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -164,64 +190,15 @@ extension TodayViewController: UITableViewDataSource, UITableViewDelegate {
         ) as? TodayTableViewCell else {
             return UITableViewCell()
         }
+        cell.delegate = self
+        cell.index = indexPath.row
         cell.configure(with: study)
-        cell.deleteBtn.tag = indexPath.row
-        cell.checkBtn.tag = indexPath.row
-        cell.deleteBtn.addTarget(self, action: #selector(deleteBtnTapped(sender:)), for: .touchUpInside)
-        cell.checkBtn.addTarget(self, action: #selector(checkBtnTapped(sender:)), for: .touchUpInside)
         cell.selectionStyle = .none
-        
-        // 완료시 배경색 변경 및 체크표시
-        print(study)
-        print(cell)
-        if study.isDone {
-            cell.backgroundColor = .lightGray
-            cell.checkView.isHidden = false
-        }
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80
-    }
-    
-    // 삭제버튼 이벤트
-    @objc func deleteBtnTapped(sender: UIButton) {
-        viewModel.remove(index: sender.tag)
-    }
-    // 완료버튼 이벤트
-    @objc func checkBtnTapped(sender: UIButton) {
-        let point = sender.convert(CGPoint.zero, to: tableView)
-        guard let indexPath = tableView.indexPathForRow(at: point) else { return }
-        guard let cell = tableView.cellForRow(at: indexPath) else { return }
-        
-        // 완료된 데이터 전달
-        let name = viewModel.studyList[sender.tag].name!
-        let date = viewModel.studyList[sender.tag].date!
-        if !historyViewModel.isContainElement(name: name, date: date) {
-            historyViewModel.addData(name: name,
-                                     date: date)
-            historyViewModel.userdefaultsDataSet()
-        }
-        
-        // Lottie 애니메이션 실행
-        let animationView: LottieAnimationView = {
-            let view = LottieAnimationView(name: "check")
-            view.translatesAutoresizingMaskIntoConstraints = false
-            view.widthAnchor.constraint(equalToConstant: 80).isActive = true
-            view.heightAnchor.constraint(equalToConstant: 80).isActive = true
-            
-            return view
-        }()
-        
-        cell.addSubview(animationView)
-        animationView.centerXAnchor.constraint(equalTo: cell.centerXAnchor).isActive = true
-        animationView.centerYAnchor.constraint(equalTo: cell.centerYAnchor).isActive = true
-        animationView.play{(finish) in
-            animationView.removeFromSuperview()
-            self.viewModel.complete(index: sender.tag)
-        }
-        
     }
 }
 

@@ -32,6 +32,85 @@ struct TodayStudyList: Equatable, Codable {
 struct CompletionList: Equatable, Codable {
     let name: String?
     let date: String?
+    
+    static func ==(lhs: CompletionList, rhs: CompletionList) -> Bool {
+        return lhs.name == rhs.name && lhs.date == rhs.date
+    }
+}
+
+// TodayVC의 데이터 현황
+enum DateState {
+    case empty
+    case finish
+    case loading
+}
+// MARK: - Singleton UserDefaults
+class StudyListUserDefaults {
+    var data :[Study] = {
+        var arr = [Study]()
+        if let data = UserDefaults.standard.value(forKey: "studyList") as? Data {
+            arr = try! PropertyListDecoder().decode(Array<Study>.self, from: data)
+        }
+        return arr
+    }() {
+        didSet {
+            UserDefaults.standard.setValue(try? PropertyListEncoder().encode(data), forKey: "studyList")
+        }
+    }
+    static let shared = StudyListUserDefaults()
+    private init(){}
+    
+    func add(new: Study) {
+        data.append(new)
+    }
+    
+    func remove(index: Int) {
+        data.remove(at: index)
+    }
+    
+    func set(new: [Study]) {
+        data = new
+    }
+}
+
+class TodayStudyUserDefauls {
+    var data: [TodayStudyList] = {
+        var arr = [TodayStudyList]()
+        if let data = UserDefaults.standard.value(forKey: "todayStudy") as? Data {
+            arr = try! PropertyListDecoder().decode(Array<TodayStudyList>.self, from: data)
+        }
+        return arr
+    }() {
+        didSet {
+            UserDefaults.standard.setValue(try? PropertyListEncoder().encode(data), forKey: "todayStudy")
+        }
+    }
+    static let shared = TodayStudyUserDefauls()
+    private init() {}
+    
+    func set(new: [TodayStudyList]) {
+        data = new
+    }
+}
+
+class HistoryUserDefaults {
+    var data: [CompletionList] = {
+        var arr = [CompletionList]()
+        if let data = UserDefaults.standard.value(forKey: "completionStudy") as? Data {
+            arr = try! PropertyListDecoder().decode(Array<CompletionList>.self, from: data)
+        }
+        return arr
+    }() {
+        didSet {
+            UserDefaults.standard.setValue(try? PropertyListEncoder().encode(data), forKey: "completionStudy")
+        }
+    }
+    static let shared = HistoryUserDefaults()
+    private init() {}
+    
+    func set(new: [CompletionList]) {
+        data = new
+    }
 }
 
 // MARK: - Setting ViewController Cell Struct
@@ -59,3 +138,6 @@ struct SettingsOption {
     let iconBackgroundColor: UIColor
     let handler: (()-> Void)
 }
+
+
+//

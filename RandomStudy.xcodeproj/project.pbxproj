@@ -180,8 +180,6 @@
 				B5CB35C12AC12812003FB08D /* ViewModels */,
 				B5CC3B292AB207C100D9FA24 /* Cells */,
 				B5C126862AB4180800DBF902 /* TableViewExtensions.swift */,
-				B58D28DE2A2D830100947A24 /* AppDelegate.swift */,
-				B58D28E02A2D830100947A24 /* SceneDelegate.swift */,
 				B58D28E72A2D830200947A24 /* Assets.xcassets */,
 				B58D28E92A2D830200947A24 /* LaunchScreen.storyboard */,
 				B58D28EC2A2D830200947A24 /* Info.plist */,
@@ -250,6 +248,8 @@
 		B5D58FB72AC50EB200515CED /* Delegates */ = {
 			isa = PBXGroup;
 			children = (
+				B58D28DE2A2D830100947A24 /* AppDelegate.swift */,
+				B58D28E02A2D830100947A24 /* SceneDelegate.swift */,
 			);
 			path = Delegates;
 			sourceTree = "<group>";
