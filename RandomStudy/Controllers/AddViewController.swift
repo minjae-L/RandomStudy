@@ -7,16 +7,11 @@
 
 import UIKit
 
-
+// MARK: - 뷰 컨트롤러
 class AddViewController: UIViewController {
     
-    private var study = StudyServer.dataArray {
-        didSet {
-            StudyServer.dataArray = study
-            print("didset \(StudyServer.getData())")
-            tableView.reloadData()
-        }
-    }
+    // 뷰모델 선언
+    private var viewModel = ObservableViewModel()
     private var tableView = UITableView()
     
     private func addSubView() {
@@ -24,6 +19,16 @@ class AddViewController: UIViewController {
         settingUI()
     }
     
+    // 데이터 바인딩
+    private func bindings() {
+        viewModel.list.bind{ [weak self] _ in
+            guard let self = self else { return }
+            self.tableView.reloadData()
+            StudyListUserDefaults.shared.set(new: viewModel.study)
+        }
+    }
+    
+    // UI 설정
     private func settingUI() {
         //NavigationBar
         self.view.backgroundColor = .white
@@ -47,15 +52,23 @@ class AddViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         addSubView()
+        bindings()
+        print(StudyListUserDefaults.shared.data)
     }
     
+    
+    // 추가하기 버튼 이벤트
     @objc func addCategory() {
-        
         let alert = UIAlertController(title: "추가하기", message: "", preferredStyle: .alert)
         let addAction = UIAlertAction(title: "추가", style: .default) { (addAction) in
             guard let text = alert.textFields?[0].text else { return }
-            if !self.isContainsElement(str: text) {
-                self.study.append(Study(name: alert.textFields?[0].text))
+            if !self.viewModel.isContainsElement(str: text) {
+                self.viewModel.addData(str: text)
+            } else {
+                let errorAlert = UIAlertController(title: "오류", message: "같은 목록이 이미 있습니다.", preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "확인", style: .default)
+                errorAlert.addAction(okAction)
+                self.present(errorAlert, animated: true)
             }
         }
         let cancelAction = UIAlertAction(title: "취소", style: .cancel)
@@ -71,51 +84,44 @@ class AddViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
-    private func isContainsElement(str: String) -> Bool {
-        var isContain = false
-        for i in 0..<study.count {
-            if study[i].name == str {
-                isContain = true
-                break
-            }
-        }
-        return isContain
+}
+// cell Button Action
+extension AddViewController: AddViewControllerButtonDelegate {
+    func cellDeleteButtonTapped(index: Int) {
+        viewModel.removeData(index: index)
     }
-    
 }
 
-// 테이블 뷰
+// MARK: - 테이블 뷰
 extension AddViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if study.count == 0 {
+        if viewModel.dataCount == 0 {
             tableView.setEmptyView(title: "비어있음",
                                    message: "목록을 추가해주세요.")
         } else {
             tableView.restore()
         }
-        return study.count
+        return viewModel.dataCount
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let study = study[indexPath.row]
+        let study = viewModel.study[indexPath.row]
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: AddTableViewCell.identifier,
             for: indexPath
         ) as? AddTableViewCell else {
             return UITableViewCell()
         }
+        cell.selectionStyle = .none
+        cell.index = indexPath.row
+        cell.delegate = self
         cell.configure(with: study)
-        cell.deleteBtn.tag = indexPath.row
-        cell.deleteBtn.addTarget(self, action: #selector(tappedDeleteBtn(sender:)), for: .touchUpInside)
+
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80
-    }
-    
-    @objc func tappedDeleteBtn(sender: UIButton) {
-        study.remove(at: sender.tag)
     }
 }
 
@@ -129,4 +135,5 @@ extension UIAlertController {
         }
     }
 }
+
 

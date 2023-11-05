@@ -7,8 +7,18 @@
 
 import UIKit
 
+protocol AddViewControllerButtonDelegate: AnyObject {
+    func cellDeleteButtonTapped(index: Int)
+}
+
 class AddTableViewCell: UITableViewCell {
     static let identifier = "AddTableViewCell"
+    weak var delegate: AddViewControllerButtonDelegate?
+    var index: Int = 0
+    
+    @objc func deleteButtonTapped() {
+        delegate?.cellDeleteButtonTapped(index: index)
+    }
     
     private let label: UILabel = {
         let lbl = UILabel()
@@ -42,11 +52,16 @@ class AddTableViewCell: UITableViewCell {
         deleteBtn.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -25).isActive = true
     }
     
+    private func setupButtonEvent() {
+        deleteBtn.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+    }
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(label)
         contentView.addSubview(deleteBtn)
         setLayout()
+        setupButtonEvent()
     }
     
     required init?(coder: NSCoder) {
@@ -57,7 +72,7 @@ class AddTableViewCell: UITableViewCell {
         label.text = nil
     }
     
-    public func configure(with model: Study) {
+    func configure(with model: Study) {
         label.text = model.name
     }
 }
