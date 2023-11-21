@@ -108,7 +108,9 @@ extension ObservableTodayViewModel {
         }
     }
     // 삭제버튼 이벤트
-    func remove(index: Int) {
+    func remove(item: TodayStudyList?) {
+        guard let item = item,
+              let index = todayStudy.value.firstIndex(where: { $0 == item }) else { return }
         todayStudy.value.remove(at: index)
     }
     // 목록 초기화

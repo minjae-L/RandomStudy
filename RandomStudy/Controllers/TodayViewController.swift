@@ -95,6 +95,7 @@ class TodayViewController: UIViewController {
         
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.allowsSelection = false
         tableView.register(TodayTableViewCell.self, forCellReuseIdentifier: TodayTableViewCell.identifier)
         
         // Button
@@ -153,20 +154,21 @@ class TodayViewController: UIViewController {
 // MARK: - Cell Button Action
 extension TodayViewController: TodayTableViewCellDelegate {
     // 체크버튼 액션
-    func cellCheckButtonTapped(index: Int) {
-        let element = CompletionList(name: viewModel.todayList[index].name!,
-                                     date: viewModel.todayList[index].date!)
+    func checkButtonTapped(value: TodayStudyList?) {
+        let element = CompletionList(name: value?.name, date: value?.date)
         if !historyViewModel.isContainElement(element) {
             historyViewModel.addData(element)
         }
-        let completionElement = TodayStudyList(name: viewModel.todayList[index].name!,
+        let completionElement = TodayStudyList(name: value?.name,
                                                isDone: true,
-                                               date: viewModel.todayList[index].date!)
-        viewModel.todayStudy.value[index] = completionElement
+                                               date: value?.date)
+        guard let firstIndex = viewModel.todayStudy.value.firstIndex(where: { $0.name == completionElement.name }) else { return }
+        viewModel.todayStudy.value[firstIndex] = completionElement
     }
+    
     // 삭제버튼 액션
-    func cellDeleteButtonTapped(index: Int) {
-        viewModel.remove(index: index)
+    func deleteButtonTapped(value: TodayStudyList?) {
+        viewModel.remove(item: value)
     }
 }
 
@@ -193,7 +195,6 @@ extension TodayViewController: UITableViewDataSource, UITableViewDelegate {
         let study = viewModel.todayStudy.value[indexPath.row]
         
         cell.delegate = self
-        cell.index = indexPath.row
         cell.configure(with: study)
         return cell
     }
