@@ -8,14 +8,14 @@
 import UIKit
 import Lottie
 
-protocol TodayViewControllerButtonDelegate: AnyObject {
+protocol TodayTableViewCellDelegate: AnyObject {
     func cellCheckButtonTapped(index: Int)
     func cellDeleteButtonTapped(index: Int)
 }
 
 class TodayTableViewCell: UITableViewCell {
     static let identifier = "TodayTableViewCell"
-    weak var delegate: TodayViewControllerButtonDelegate?
+    weak var delegate: TodayTableViewCellDelegate?
     
     var index: Int = 0
     

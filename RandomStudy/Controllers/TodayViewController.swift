@@ -151,7 +151,7 @@ class TodayViewController: UIViewController {
     }
 }
 // MARK: - Cell Button Action
-extension TodayViewController: TodayViewControllerButtonDelegate {
+extension TodayViewController: TodayTableViewCellDelegate {
     // 체크버튼 액션
     func cellCheckButtonTapped(index: Int) {
         let element = CompletionList(name: viewModel.todayList[index].name!,
