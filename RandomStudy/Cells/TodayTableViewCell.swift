@@ -8,20 +8,20 @@
 import UIKit
 import Lottie
 
-protocol TodayViewControllerButtonDelegate: AnyObject {
-    func cellCheckButtonTapped(index: Int)
-    func cellDeleteButtonTapped(index: Int)
+protocol TodayTableViewCellDelegate: AnyObject {
+    func checkButtonTapped(value: TodayStudyList?)
+    func deleteButtonTapped(value: TodayStudyList?)
 }
 
 class TodayTableViewCell: UITableViewCell {
     static let identifier = "TodayTableViewCell"
-    weak var delegate: TodayViewControllerButtonDelegate?
+    weak var delegate: TodayTableViewCellDelegate?
     
-    var index: Int = 0
+    private var item: TodayStudyList?
     
     // 체크버튼
     @objc func checkButtonTapped() {
-        delegate?.cellCheckButtonTapped(index: index)
+        delegate?.checkButtonTapped(value: item)
         checkView.isHidden = false
         // 애니메이션 실행
         checkView.play{ (finish) in
@@ -31,7 +31,7 @@ class TodayTableViewCell: UITableViewCell {
     }
     // 삭제버튼
     @objc func deleteButtonTapped() {
-        delegate?.cellDeleteButtonTapped(index: index)
+        delegate?.deleteButtonTapped(value: item)
     }
     
     let label: UILabel = {
@@ -102,6 +102,7 @@ class TodayTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        selectionStyle = .none
         contentView.addSubview(label)
         contentView.addSubview(deleteBtn)
         contentView.addSubview(checkBtn)
@@ -120,6 +121,7 @@ class TodayTableViewCell: UITableViewCell {
     }
     
     func configure(with model: TodayStudyList) {
+        item = model
         label.text = model.name
         if model.isDone == false {
             contentView.backgroundColor = .white

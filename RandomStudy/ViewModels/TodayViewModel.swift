@@ -6,11 +6,21 @@
 //
 
 import Foundation
-import UIKit
 
+protocol TodayViewModelDelegate: AnyObject {
+    func didUpdate(with value: [TodayStudyList])
+}
 
-class ObservableTodayViewModel {
-    var todayStudy: Observable<[TodayStudyList]> = Observable([])
+class TodayViewModel {
+    
+    // MARK: Property
+    weak var delegate: TodayViewModelDelegate?
+    
+    var todayStudy: [TodayStudyList] = TodayStudyUserDefauls.shared.data {
+        didSet {
+            delegate?.didUpdate(with: todayStudy)
+        }
+    }
     
     private var dateFommatter: DateFormatter = {
         let dateFormatter = DateFormatter()
@@ -19,27 +29,23 @@ class ObservableTodayViewModel {
         return dateFormatter
     }()
     
-    init() {
-        todayStudy.value = TodayStudyUserDefauls.shared.data
-    }
-    
     var dataCount: Int {
-        return todayStudy.value.count
+        return todayStudy.count
     }
 
     var todayList: [TodayStudyList] {
-        return todayStudy.value
+        return todayStudy
     }
-}
-
-// 비즈니스 로직
-extension ObservableTodayViewModel {
+    
+    // MARK: Method
+    
     // 추가해뒀던 공부목록 불러오기
-    func loadStudyList() -> [Study] {
+    private func loadStudyList() -> [Study] {
         return StudyListUserDefaults.shared.data
     }
+    
     // 완료된 목록 불러오기
-    func loadCompletionList() -> [CompletionList] {
+    private func loadCompletionList() -> [CompletionList] {
         var arr = [CompletionList]()
         if let data = UserDefaults.standard.value(forKey: "completionStudy") as? Data {
             arr = try! PropertyListDecoder().decode(Array<CompletionList>.self, from: data)
@@ -59,7 +65,7 @@ extension ObservableTodayViewModel {
     }
     
     //  모든 데이터가 불러와졌는지 확인하는 메소드
-    func isAllDataUploaded() -> Bool {
+    private func isAllDataUploaded() -> Bool {
         let uploaded = todayList
         for data in self.loadStudyList() {
             let element1 = TodayStudyList(name: data.name, isDone: false, date: dateFommatter.string(from: Date()))
@@ -84,35 +90,25 @@ extension ObservableTodayViewModel {
             if completionList.contains(completeElement) || todayList.contains(element) { continue }
             arr.append(element)
         }
-        print(todayStudy.value)
-        print(arr)
-        todayStudy.value.append(contentsOf: arr)
-        print(todayStudy.value)
-//        for data in self.loadStudyList() {
-//            let element1 = TodayStudyList(name: data.name, isDone: false, date: currentDate)
-//            let element2 = TodayStudyList(name: data.name, isDone: true, date:  currentDate)
-//            if !todayStudy.value.contains(element1) && !todayStudy.value.contains(element2) {
-//                if !completionList.contains(CompletionList(name: data.name, date: currentDate)) {
-//                    todayStudy.value.append(element1)
-//                } else {
-//                    todayStudy.value.append(element2)
-//                }
-//
-//            }
-//        }
+        todayStudy.append(contentsOf: arr)
     }
+    
     // 완료 버튼 이벤트
     func complete(index: Int) {
-        if !todayStudy.value[index].isDone {
-            todayStudy.value[index].isDone = true
+        if !todayStudy[index].isDone {
+            todayStudy[index].isDone = true
         }
     }
+    
     // 삭제버튼 이벤트
-    func remove(index: Int) {
-        todayStudy.value.remove(at: index)
+    func remove(item: TodayStudyList?) {
+        guard let item = item,
+              let index = todayStudy.firstIndex(where: { $0 == item }) else { return }
+        todayStudy.remove(at: index)
     }
+    
     // 목록 초기화
     func removeAll() {
-        todayStudy.value.removeAll()
+        todayStudy.removeAll()
     }
 }

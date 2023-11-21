@@ -8,7 +8,6 @@
 import UIKit
 import Lottie
 
-
 class TodayViewController: UIViewController {
     
     // UI 선언
@@ -16,16 +15,12 @@ class TodayViewController: UIViewController {
     private var tableView = UITableView()
     
     // 뷰모델 선언 및 데이터 바인딩
-    private var viewModel = ObservableTodayViewModel()
+    private var viewModel = TodayViewModel()
     private var historyViewModel = ObservableHistoryViewModel()
     
     private func bindings() {
-        // TodayVC 뷰모델 데이터 바인딩
-        viewModel.todayStudy.bind{ [weak self] _ in
-            guard let self = self else { return }
-            self.tableView.reloadData()
-            TodayStudyUserDefauls.shared.set(new: viewModel.todayList)
-        }
+        viewModel.delegate = self
+        
         // HistoryVC 뷰모델 데이터 바인딩
         // HistoryVC는 열람만 하기때문에 여기서 데이터 변화를 감시 (Observable)
         historyViewModel.completionStudy.bind{ [weak self] _ in
@@ -95,6 +90,7 @@ class TodayViewController: UIViewController {
         
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.allowsSelection = false
         tableView.register(TodayTableViewCell.self, forCellReuseIdentifier: TodayTableViewCell.identifier)
         
         // Button
@@ -151,22 +147,23 @@ class TodayViewController: UIViewController {
     }
 }
 // MARK: - Cell Button Action
-extension TodayViewController: TodayViewControllerButtonDelegate {
+extension TodayViewController: TodayTableViewCellDelegate {
     // 체크버튼 액션
-    func cellCheckButtonTapped(index: Int) {
-        let element = CompletionList(name: viewModel.todayList[index].name!,
-                                     date: viewModel.todayList[index].date!)
+    func checkButtonTapped(value: TodayStudyList?) {
+        let element = CompletionList(name: value?.name, date: value?.date)
         if !historyViewModel.isContainElement(element) {
             historyViewModel.addData(element)
         }
-        let completionElement = TodayStudyList(name: viewModel.todayList[index].name!,
+        let completionElement = TodayStudyList(name: value?.name,
                                                isDone: true,
-                                               date: viewModel.todayList[index].date!)
-        viewModel.todayStudy.value[index] = completionElement
+                                               date: value?.date)
+        guard let firstIndex = viewModel.todayStudy.firstIndex(where: { $0.name == completionElement.name }) else { return }
+        viewModel.todayStudy[firstIndex] = completionElement
     }
+    
     // 삭제버튼 액션
-    func cellDeleteButtonTapped(index: Int) {
-        viewModel.remove(index: index)
+    func deleteButtonTapped(value: TodayStudyList?) {
+        viewModel.remove(item: value)
     }
 }
 
@@ -183,17 +180,17 @@ extension TodayViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let study = viewModel.todayStudy.value[indexPath.row]
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: TodayTableViewCell.identifier,
             for: indexPath
         ) as? TodayTableViewCell else {
             return UITableViewCell()
         }
+        
+        let study = viewModel.todayStudy[indexPath.row]
+        
         cell.delegate = self
-        cell.index = indexPath.row
         cell.configure(with: study)
-        cell.selectionStyle = .none
         return cell
     }
     
@@ -202,3 +199,11 @@ extension TodayViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
+extension TodayViewController: TodayViewModelDelegate {
+    func didUpdate(with value: [TodayStudyList]) {
+        TodayStudyUserDefauls.shared.set(new: value)
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
+        }
+    }
+}
