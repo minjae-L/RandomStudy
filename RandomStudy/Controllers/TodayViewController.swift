@@ -8,7 +8,6 @@
 import UIKit
 import Lottie
 
-
 class TodayViewController: UIViewController {
     
     // UI 선언
@@ -16,16 +15,12 @@ class TodayViewController: UIViewController {
     private var tableView = UITableView()
     
     // 뷰모델 선언 및 데이터 바인딩
-    private var viewModel = ObservableTodayViewModel()
+    private var viewModel = TodayViewModel()
     private var historyViewModel = ObservableHistoryViewModel()
     
     private func bindings() {
-        // TodayVC 뷰모델 데이터 바인딩
-        viewModel.todayStudy.bind{ [weak self] _ in
-            guard let self = self else { return }
-            self.tableView.reloadData()
-            TodayStudyUserDefauls.shared.set(new: viewModel.todayList)
-        }
+        viewModel.delegate = self
+        
         // HistoryVC 뷰모델 데이터 바인딩
         // HistoryVC는 열람만 하기때문에 여기서 데이터 변화를 감시 (Observable)
         historyViewModel.completionStudy.bind{ [weak self] _ in
@@ -162,8 +157,8 @@ extension TodayViewController: TodayTableViewCellDelegate {
         let completionElement = TodayStudyList(name: value?.name,
                                                isDone: true,
                                                date: value?.date)
-        guard let firstIndex = viewModel.todayStudy.value.firstIndex(where: { $0.name == completionElement.name }) else { return }
-        viewModel.todayStudy.value[firstIndex] = completionElement
+        guard let firstIndex = viewModel.todayStudy.firstIndex(where: { $0.name == completionElement.name }) else { return }
+        viewModel.todayStudy[firstIndex] = completionElement
     }
     
     // 삭제버튼 액션
@@ -192,7 +187,7 @@ extension TodayViewController: UITableViewDataSource, UITableViewDelegate {
             return UITableViewCell()
         }
         
-        let study = viewModel.todayStudy.value[indexPath.row]
+        let study = viewModel.todayStudy[indexPath.row]
         
         cell.delegate = self
         cell.configure(with: study)
@@ -204,3 +199,11 @@ extension TodayViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
+extension TodayViewController: TodayViewModelDelegate {
+    func didUpdate(with value: [TodayStudyList]) {
+        TodayStudyUserDefauls.shared.set(new: value)
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
+        }
+    }
+}
