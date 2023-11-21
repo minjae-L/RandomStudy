@@ -183,17 +183,18 @@ extension TodayViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let study = viewModel.todayStudy.value[indexPath.row]
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: TodayTableViewCell.identifier,
             for: indexPath
         ) as? TodayTableViewCell else {
             return UITableViewCell()
         }
+        
+        let study = viewModel.todayStudy.value[indexPath.row]
+        
         cell.delegate = self
         cell.index = indexPath.row
         cell.configure(with: study)
-        cell.selectionStyle = .none
         return cell
     }
     
