@@ -11,8 +11,8 @@ import UIKit
 class AddViewController: UIViewController {
     
     // 뷰모델 선언
-    private var viewModel = ObservableViewModel()
     private var tableView = UITableView()
+    private var viewModel = AddViewModel()
     
     private func addSubView() {
         view.addSubview(tableView)
@@ -21,11 +21,7 @@ class AddViewController: UIViewController {
     
     // 데이터 바인딩
     private func bindings() {
-        viewModel.list.bind{ [weak self] _ in
-            guard let self = self else { return }
-            self.tableView.reloadData()
-            StudyListUserDefaults.shared.set(new: viewModel.study)
-        }
+        viewModel.delegate = self
     }
     
     // UI 설정
@@ -53,7 +49,6 @@ class AddViewController: UIViewController {
         super.viewDidLoad()
         addSubView()
         bindings()
-        print(StudyListUserDefaults.shared.data)
     }
     
     
@@ -91,7 +86,14 @@ extension AddViewController: AddViewControllerButtonDelegate {
         viewModel.removeData(index: index)
     }
 }
-
+extension AddViewController: AddViewModelDelegate {
+    func didUpdate(with value: [Study]) {
+        StudyListUserDefaults.shared.set(new: value)
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
+        }
+    }
+}
 // MARK: - 테이블 뷰
 extension AddViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -135,5 +137,4 @@ extension UIAlertController {
         }
     }
 }
-
 

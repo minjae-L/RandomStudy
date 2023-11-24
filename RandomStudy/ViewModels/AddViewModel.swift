@@ -31,29 +31,32 @@ class Observable<T> {
     }
 }
 
-class ObservableViewModel {
-    var list: Observable<[Study]> = Observable([])
-     
-    init() {
-        list.value = StudyListUserDefaults.shared.data
+protocol AddViewModelDelegate: AnyObject {
+    func didUpdate(with value: [Study])
+}
+
+class AddViewModel {
+    
+    weak var delegate: AddViewModelDelegate?
+    
+    private(set) var elements: [Study] = StudyListUserDefaults.shared.data {
+        didSet {
+            delegate?.didUpdate(with: elements)
+        }
     }
     
     var dataCount: Int {
-        return list.value.count
+        return elements.count
     }
     
     var study: [Study] {
-        return list.value
+        return elements
     }
-}
-
-// 데이터 가공 및 판별 메소드
-extension ObservableViewModel {
-    // 같은 데이터가 있는지 판단
+    
     func isContainsElement(str: String) -> Bool {
         var isContain = false
-        for i in 0..<study.count {
-            if study[i].name == str {
+        for i in 0..<elements.count {
+            if elements[i].name == str {
                 isContain = true
                 break
             }
@@ -64,14 +67,12 @@ extension ObservableViewModel {
     // 배열에 값 추가
     func addData(str: String) {
         if str == "" { return }
-        self.list.value.append(Study(name: str))
+        self.elements.append(Study(name: str))
     }
     
     func removeData(index: Int) {
-        list.value.remove(at: index)
+        elements.remove(at: index)
     }
-    
-
 }
 
 
