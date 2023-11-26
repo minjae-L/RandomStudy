@@ -7,18 +7,21 @@
 
 import Foundation
 
-protocol TodayViewModelDelegate: AnyObject {
-    func didUpdate(with value: [TodayStudyList])
+protocol HistoryViewModelDelegate: AnyObject {
+    func didUpdateHistory(with value: [CompletionList])
+}
+protocol TodayViewModelDelegate: HistoryViewModelDelegate {
+    func didUpdateToday(with value: [TodayStudyList])
 }
 
-class TodayViewModel {
+class TodayViewModel: HistoryViewModel {
     
     // MARK: Property
-    weak var delegate: TodayViewModelDelegate?
+    weak var todayDelegate: TodayViewModelDelegate?
     
     var todayStudy: [TodayStudyList] = TodayStudyUserDefauls.shared.data {
         didSet {
-            delegate?.didUpdate(with: todayStudy)
+            todayDelegate?.didUpdateToday(with: todayStudy)
         }
     }
     
@@ -92,7 +95,6 @@ class TodayViewModel {
         }
         todayStudy.append(contentsOf: arr)
     }
-    
     // 완료 버튼 이벤트
     func complete(index: Int) {
         if !todayStudy[index].isDone {

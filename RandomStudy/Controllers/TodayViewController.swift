@@ -16,17 +16,10 @@ class TodayViewController: UIViewController {
     
     // 뷰모델 선언 및 데이터 바인딩
     private var viewModel = TodayViewModel()
-    private var historyViewModel = ObservableHistoryViewModel()
     
     private func bindings() {
-        viewModel.delegate = self
-        
-        // HistoryVC 뷰모델 데이터 바인딩
-        // HistoryVC는 열람만 하기때문에 여기서 데이터 변화를 감시 (Observable)
-        historyViewModel.completionStudy.bind{ [weak self] _ in
-            guard let self = self else { return }
-            HistoryUserDefaults.shared.set(new: historyViewModel.completionList)
-        }
+        viewModel.todayDelegate = self
+        viewModel.historyDelegate = self
     }
     // 하루가 지났는지 파악하는 메소드
     private var dateFommatter: DateFormatter = {
@@ -151,8 +144,8 @@ extension TodayViewController: TodayTableViewCellDelegate {
     // 체크버튼 액션
     func checkButtonTapped(value: TodayStudyList?) {
         let element = CompletionList(name: value?.name, date: value?.date)
-        if !historyViewModel.isContainElement(element) {
-            historyViewModel.addData(element)
+        if !viewModel.isContainElement(element) {
+            viewModel.completions.append(element)
         }
         let completionElement = TodayStudyList(name: value?.name,
                                                isDone: true,
@@ -199,11 +192,17 @@ extension TodayViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
+// MARK: - ViewModel Delegate
 extension TodayViewController: TodayViewModelDelegate {
-    func didUpdate(with value: [TodayStudyList]) {
+    func didUpdateToday(with value: [TodayStudyList]) {
         TodayStudyUserDefauls.shared.set(new: value)
         DispatchQueue.main.async { [weak self] in
             self?.tableView.reloadData()
         }
     }
+    
+    func didUpdateHistory(with value: [CompletionList]) {
+        HistoryUserDefaults.shared.set(new: value)
+    }
+    
 }
