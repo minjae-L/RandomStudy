@@ -13,19 +13,6 @@ class TodayViewController: UIViewController {
     // UI 선언
     private var btn = UIButton()
     private var tableView = UITableView()
-    private var navigationRightButtons: [UIBarButtonItem] = {
-        var buttons: [UIBarButtonItem] = []
-        let settingBtn = UIBarButtonItem(image: UIImage(systemName: "gearshape"),
-                                         style: .plain,
-                                         target: self,
-                                         action: #selector(goSettingVC))
-        let addBtn = UIBarButtonItem(image: UIImage(systemName: "plus"),
-                                     style: .plain,
-                                     target: self,
-                                     action: #selector(goAddVC))
-        buttons = [addBtn, settingBtn]
-        return buttons
-    }()
     
     // 뷰모델 선언 및 데이터 바인딩
     private var viewModel = TodayViewModel()
@@ -83,7 +70,15 @@ class TodayViewController: UIViewController {
         self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
         self.navigationItem.largeTitleDisplayMode = .always
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "gearshape"), style: .plain, target: self, action: #selector(goSettingVC))
+        self.navigationItem.rightBarButtonItems = [UIBarButtonItem(image: UIImage(systemName: "gearshape"),
+                                                                   style: .plain,
+                                                                   target: self,
+                                                                   action: #selector(goSettingVC)),
+                                                   UIBarButtonItem(image: UIImage(systemName: "plus"),
+                                                                   style: .plain,
+                                                                   target: self,
+                                                                   action: #selector(goAddVC))
+        ]
     }
     
     // 전체적인 화면 구성
@@ -141,7 +136,8 @@ class TodayViewController: UIViewController {
         self.navigationController?.pushViewController(vc, animated: true)
     }
     @objc private func goAddVC() {
-        
+        let vc = AddViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     // 불러오기 버튼 이벤트
