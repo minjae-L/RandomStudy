@@ -35,7 +35,7 @@ protocol AddViewModelDelegate: AnyObject {
     func didUpdate(with value: [Study])
 }
 
-class AddViewModel {
+final class AddViewModel {
     
     weak var delegate: AddViewModelDelegate?
     
