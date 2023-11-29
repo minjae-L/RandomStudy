@@ -8,7 +8,7 @@
 import UIKit
 import Lottie
 
-class TodayViewController: UIViewController {
+final class TodayViewController: UIViewController {
     
     // UI 선언
     private var btn = UIButton()
@@ -18,9 +18,9 @@ class TodayViewController: UIViewController {
     private var viewModel = TodayViewModel()
     
     private func bindings() {
-        viewModel.todayDelegate = self
-        viewModel.historyDelegate = self
+        viewModel.delegate = self
     }
+    
     // 하루가 지났는지 파악하는 메소드
     private var dateFommatter: DateFormatter = {
         let dateFormatter = DateFormatter()
@@ -200,9 +200,4 @@ extension TodayViewController: TodayViewModelDelegate {
             self?.tableView.reloadData()
         }
     }
-    
-    func didUpdateHistory(with value: [CompletionList]) {
-        HistoryUserDefaults.shared.set(new: value)
-    }
-    
 }

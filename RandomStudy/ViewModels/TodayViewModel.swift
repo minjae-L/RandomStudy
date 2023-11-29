@@ -7,21 +7,24 @@
 
 import Foundation
 
-protocol HistoryViewModelDelegate: AnyObject {
-    func didUpdateHistory(with value: [CompletionList])
-}
-protocol TodayViewModelDelegate: HistoryViewModelDelegate {
+protocol TodayViewModelDelegate: AnyObject {
     func didUpdateToday(with value: [TodayStudyList])
 }
 
-class TodayViewModel: HistoryViewModel {
+final class TodayViewModel {
     
     // MARK: Property
-    weak var todayDelegate: TodayViewModelDelegate?
+    weak var delegate: TodayViewModelDelegate?
     
     var todayStudy: [TodayStudyList] = TodayStudyUserDefauls.shared.data {
         didSet {
-            todayDelegate?.didUpdateToday(with: todayStudy)
+            delegate?.didUpdateToday(with: todayStudy)
+        }
+    }
+    
+    var completions: [CompletionList] = HistoryUserDefaults.shared.data {
+        didSet {
+            HistoryUserDefaults.shared.set(new: completions)
         }
     }
     
@@ -112,5 +115,14 @@ class TodayViewModel: HistoryViewModel {
     // 목록 초기화
     func removeAll() {
         todayStudy.removeAll()
+    }
+    
+    func isContainElement(_ element: CompletionList) -> Bool {
+        for data in completions {
+            if data == element {
+                return true
+            }
+        }
+        return false
     }
 }

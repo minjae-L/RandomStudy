@@ -7,15 +7,9 @@
 
 import Foundation
 
-class HistoryViewModel {
+final class HistoryViewModel {
     
-    weak var historyDelegate: HistoryViewModelDelegate?
-    
-    var completions: [CompletionList] = HistoryUserDefaults.shared.data {
-        didSet {
-            historyDelegate?.didUpdateHistory(with: completions)
-        }
-    }
+    var completions: [CompletionList] = HistoryUserDefaults.shared.data
     
     var count: Int {
         return completions.count
@@ -28,18 +22,4 @@ class HistoryViewModel {
     var dateArray: [String] {
         return Array(Set(completions.compactMap { $0.date })).sorted()
     }
-    
-    func isContainElement(_ element: CompletionList) -> Bool {
-        for data in completions {
-            if data == element {
-                return true
-            }
-        }
-        return false
-    }
-    
-    func addData(_ element: CompletionList) {
-        self.completions.append(element)
-    }
-    
 }
