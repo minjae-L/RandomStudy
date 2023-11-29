@@ -63,7 +63,15 @@ final class TodayViewController: UIViewController {
         self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
         self.navigationItem.largeTitleDisplayMode = .always
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "gearshape"), style: .plain, target: self, action: #selector(goSettingVC))
+        self.navigationItem.rightBarButtonItems = [UIBarButtonItem(image: UIImage(systemName: "gearshape"),
+                                                                   style: .plain,
+                                                                   target: self,
+                                                                   action: #selector(goSettingVC)),
+                                                   UIBarButtonItem(image: UIImage(systemName: "plus"),
+                                                                   style: .plain,
+                                                                   target: self,
+                                                                   action: #selector(goAddVC))
+        ]
     }
     
     // 전체적인 화면 구성
@@ -118,6 +126,10 @@ final class TodayViewController: UIViewController {
     
     @objc private func goSettingVC() {
         let vc = SettingViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    @objc private func goAddVC() {
+        let vc = AddViewController()
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
