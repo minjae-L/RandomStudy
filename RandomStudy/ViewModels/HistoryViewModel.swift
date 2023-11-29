@@ -16,14 +16,17 @@ class HistoryViewModel {
             historyDelegate?.didUpdateHistory(with: completions)
         }
     }
+    
     var count: Int {
         return completions.count
     }
+    
     var dateCount: Int {
-        return Array(Set(completions.map{ $0.date! })).count
+        return Array(Set(completions.compactMap { $0.date })).count
     }
+    
     var dateArray: [String] {
-        return Array(Set(completions.map{ $0.date! })).sorted()
+        return Array(Set(completions.compactMap { $0.date })).sorted()
     }
     
     func isContainElement(_ element: CompletionList) -> Bool {
