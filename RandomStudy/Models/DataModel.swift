@@ -71,6 +71,9 @@ class StudyListUserDefaults {
     func set(new: [Study]) {
         data = new
     }
+    func removeAll() {
+        UserDefaults.standard.removeObject(forKey: "studyList")
+    }
 }
 
 class TodayStudyUserDefauls {
@@ -91,6 +94,9 @@ class TodayStudyUserDefauls {
     func set(new: [TodayStudyList]) {
         data = new
     }
+    func removeAll() {
+        UserDefaults.standard.removeObject(forKey: "todayStudy")
+    }
 }
 
 class HistoryUserDefaults {
@@ -110,6 +116,9 @@ class HistoryUserDefaults {
     
     func set(new: [CompletionList]) {
         data = new
+    }
+    func removeAll() {
+        UserDefaults.standard.removeObject(forKey: "completionStudy")
     }
 }
 

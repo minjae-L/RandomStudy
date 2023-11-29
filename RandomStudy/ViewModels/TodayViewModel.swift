@@ -8,17 +8,23 @@
 import Foundation
 
 protocol TodayViewModelDelegate: AnyObject {
-    func didUpdate(with value: [TodayStudyList])
+    func didUpdateToday(with value: [TodayStudyList])
 }
 
-class TodayViewModel {
+final class TodayViewModel {
     
     // MARK: Property
     weak var delegate: TodayViewModelDelegate?
     
     var todayStudy: [TodayStudyList] = TodayStudyUserDefauls.shared.data {
         didSet {
-            delegate?.didUpdate(with: todayStudy)
+            delegate?.didUpdateToday(with: todayStudy)
+        }
+    }
+    
+    var completions: [CompletionList] = HistoryUserDefaults.shared.data {
+        didSet {
+            HistoryUserDefaults.shared.set(new: completions)
         }
     }
     
@@ -92,7 +98,6 @@ class TodayViewModel {
         }
         todayStudy.append(contentsOf: arr)
     }
-    
     // 완료 버튼 이벤트
     func complete(index: Int) {
         if !todayStudy[index].isDone {
@@ -110,5 +115,14 @@ class TodayViewModel {
     // 목록 초기화
     func removeAll() {
         todayStudy.removeAll()
+    }
+    
+    func isContainElement(_ element: CompletionList) -> Bool {
+        for data in completions {
+            if data == element {
+                return true
+            }
+        }
+        return false
     }
 }

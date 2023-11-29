@@ -10,7 +10,7 @@ import UIKit
 class HistoryViewController: UIViewController {
 
     private var tableView = UITableView()
-    private var viewModel = ObservableHistoryViewModel()
+    private var viewModel = HistoryViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,7 +55,7 @@ extension HistoryViewController:  UITableViewDelegate, UITableViewDataSource {
     // Section안의 cell의 개수
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let date = viewModel.dateArray[section]
-        return viewModel.completionList.filter{ $0.date == date}.count
+        return viewModel.completions.filter{ $0.date == date}.count
     }
     
     // Section 타이틀 설정
@@ -66,7 +66,7 @@ extension HistoryViewController:  UITableViewDelegate, UITableViewDataSource {
     // Cell 구성
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let date = viewModel.dateArray[indexPath.section]
-        let finished = viewModel.completionList.filter{ $0.date == date}[indexPath.row]
+        let finished = viewModel.completions.filter{ $0.date == date}[indexPath.row]
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: HistoryTableViewCell.identifier,
             for: indexPath
