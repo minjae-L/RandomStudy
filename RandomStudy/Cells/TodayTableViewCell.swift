@@ -22,11 +22,13 @@ class TodayTableViewCell: UITableViewCell {
     // 체크버튼
     @objc func checkButtonTapped() {
         delegate?.checkButtonTapped(value: item)
-        checkView.isHidden = false
-        // 애니메이션 실행
-        checkView.play{ (finish) in
-            self.checkView.currentProgress = 20
-            self.contentView.backgroundColor = .lightGray
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+            if self?.item?.isDone == true {
+                self?.checkView.isHidden = false
+                self?.contentView.backgroundColor = .lightGray
+                // 애니메이션 실행
+                self?.checkView.play()
+            }
         }
     }
     // 삭제버튼
