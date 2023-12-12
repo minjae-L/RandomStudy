@@ -82,15 +82,15 @@ class TodayTableViewCell: UITableViewCell {
     private func setLayout() {
         let size: CGFloat = contentView.frame.size.height
         
-        checkBtn.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -10).isActive = true
-        checkBtn.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 25).isActive = true
-        checkBtn.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -25).isActive = true
-        checkBtn.widthAnchor.constraint(equalToConstant: size/2).isActive = true
+        checkBtn.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        checkBtn.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16).isActive = true
+        checkBtn.widthAnchor.constraint(equalToConstant: size / 3 * 2).isActive = true
+        checkBtn.heightAnchor.constraint(equalToConstant: size / 3 * 2).isActive = true
         
-        deleteBtn.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 25).isActive = true
-        deleteBtn.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -25).isActive = true
-        deleteBtn.rightAnchor.constraint(equalTo: checkBtn.leftAnchor, constant: -10).isActive = true
-        deleteBtn.widthAnchor.constraint(equalToConstant: size/2).isActive = true
+        deleteBtn.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        deleteBtn.rightAnchor.constraint(equalTo: checkBtn.leftAnchor, constant: -16).isActive = true
+        deleteBtn.widthAnchor.constraint(equalToConstant: size / 3 * 2).isActive = true
+        deleteBtn.heightAnchor.constraint(equalToConstant: size / 3 * 2).isActive = true
         
         label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20).isActive = true
         label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
@@ -103,6 +103,7 @@ class TodayTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
+        contentView.backgroundColor = .white
         contentView.addSubview(label)
         contentView.addSubview(deleteBtn)
         contentView.addSubview(checkBtn)
