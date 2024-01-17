@@ -64,8 +64,8 @@ class SettingViewController: UIViewController {
             .staticCell(model: SettingsOption(title: "내 기록", icon: UIImage(systemName: "checklist.checked"), iconBackgroundColor: .systemGreen, handler: {
                 let vc = HistoryViewController()
                 self.navigationController?.pushViewController(vc, animated: true)
-            })),
-            .staticCell(model: SettingsOption(title: "기록 초기화", icon: UIImage(systemName: "trash"), iconBackgroundColor: .systemRed, handler: {}))
+            }, accessoryType: .disclosureIndicator)),
+            .staticCell(model: SettingsOption(title: "기록 초기화", icon: UIImage(systemName: "trash"), iconBackgroundColor: .systemRed, handler: {}, accessoryType: .none))
         ]))
         
     }

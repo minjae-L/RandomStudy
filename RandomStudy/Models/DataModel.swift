@@ -146,6 +146,7 @@ struct SettingsOption {
     let icon: UIImage?
     let iconBackgroundColor: UIColor
     let handler: (()-> Void)
+    let accessoryType: UITableViewCell.AccessoryType
 }
 
 
