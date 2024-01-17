@@ -121,7 +121,6 @@ final class TodayViewController: UIViewController {
             alert.addAction(okAction)
             viewModel.removeAll()
         }
-
     }
     
     @objc private func goSettingVC() {

@@ -72,7 +72,7 @@ class StudyListUserDefaults {
         data = new
     }
     func removeAll() {
-        UserDefaults.standard.removeObject(forKey: "studyList")
+        data.removeAll()
     }
 }
 
@@ -95,7 +95,7 @@ class TodayStudyUserDefauls {
         data = new
     }
     func removeAll() {
-        UserDefaults.standard.removeObject(forKey: "todayStudy")
+        data.removeAll()
     }
 }
 
@@ -118,7 +118,7 @@ class HistoryUserDefaults {
         data = new
     }
     func removeAll() {
-        UserDefaults.standard.removeObject(forKey: "completionStudy")
+        data.removeAll()
     }
 }
 
@@ -146,6 +146,7 @@ struct SettingsOption {
     let icon: UIImage?
     let iconBackgroundColor: UIColor
     let handler: (()-> Void)
+    let accessoryType: UITableViewCell.AccessoryType
 }
 
 
