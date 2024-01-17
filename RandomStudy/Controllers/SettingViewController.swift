@@ -59,12 +59,13 @@ class SettingViewController: UIViewController {
     // 설정 목록
     private func configure() {
         models.append(Section(title: "일반", options: [
-            .switchCell(model: SettingSwitchOption(title: "다크 모드", icon: UIImage(systemName: "moon"), iconBackgroundColor: .systemRed, handler: {
+            .switchCell(model: SettingSwitchOption(title: "다크 모드", icon: UIImage(systemName: "moon"), iconBackgroundColor: .systemPurple, handler: {
             }, isOn: false)),
             .staticCell(model: SettingsOption(title: "내 기록", icon: UIImage(systemName: "checklist.checked"), iconBackgroundColor: .systemGreen, handler: {
                 let vc = HistoryViewController()
                 self.navigationController?.pushViewController(vc, animated: true)
-            }))
+            })),
+            .staticCell(model: SettingsOption(title: "기록 초기화", icon: UIImage(systemName: "trash"), iconBackgroundColor: .systemRed, handler: {}))
         ]))
         
     }
