@@ -79,7 +79,9 @@ class SettingViewController: UIViewController {
             .staticCell(model: SettingsOption(title: "Git search",
                                               icon: UIImage(systemName: "magnifyingglass"),
                                               iconBackgroundColor: .black,
-                                              handler: {}
+                                              handler: {
+                                                  self.navigationController?.pushViewController(GitSearchViewController(), animated: true)
+                                              }
             ))]
         ))
     }

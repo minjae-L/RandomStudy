@@ -32,6 +32,7 @@
 		B5CC3B282AB2079000D9FA24 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CC3B272AB2079000D9FA24 /* SettingViewController.swift */; };
 		B5CC3B2B2AB207E500D9FA24 /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CC3B2A2AB207E500D9FA24 /* SwitchTableViewCell.swift */; };
 		B5CC3B2D2AB2080300D9FA24 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CC3B2C2AB2080300D9FA24 /* SettingTableViewCell.swift */; };
+		B5FE6C112B596C7B00542731 /* GitSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FE6C102B596C7B00542731 /* GitSearchViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +88,7 @@
 		B5CC3B272AB2079000D9FA24 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		B5CC3B2A2AB207E500D9FA24 /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
 		B5CC3B2C2AB2080300D9FA24 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
+		B5FE6C102B596C7B00542731 /* GitSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitSearchViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -229,6 +231,7 @@
 				B5CC3B272AB2079000D9FA24 /* SettingViewController.swift */,
 				B5B7EB952AA4FCA0006944A8 /* AddViewController.swift */,
 				B59B658E2ADB3006008A60F1 /* HistoryViewController.swift */,
+				B5FE6C102B596C7B00542731 /* GitSearchViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -503,6 +506,7 @@
 				B5CC3B1D2AB141E700D9FA24 /* DataModel.swift in Sources */,
 				B5C126852AB3660400DBF902 /* TodayTableViewCell.swift in Sources */,
 				B5B7EB962AA4FCA0006944A8 /* AddViewController.swift in Sources */,
+				B5FE6C112B596C7B00542731 /* GitSearchViewController.swift in Sources */,
 				B5BA4B4E2AC1AC9E004D7BF9 /* AddViewModel.swift in Sources */,
 				B58D28E12A2D830100947A24 /* SceneDelegate.swift in Sources */,
 				B59B65912ADB3483008A60F1 /* HistoryTableViewCell.swift in Sources */,
