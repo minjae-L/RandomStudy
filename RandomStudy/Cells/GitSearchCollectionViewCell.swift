@@ -33,6 +33,8 @@ class GitSearchCollectionViewCell: UICollectionViewCell {
         let imgView = UIImageView()
         imgView.contentMode = .scaleAspectFit
         imgView.translatesAutoresizingMaskIntoConstraints = false
+        imgView.layer.cornerRadius = 10
+        imgView.layer.masksToBounds = true
 
         return imgView
     }()

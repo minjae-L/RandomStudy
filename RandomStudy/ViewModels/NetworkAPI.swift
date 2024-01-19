@@ -32,6 +32,7 @@ struct Repository: Codable {
 struct Items: Codable {
     let full_name: String?
     let description: String?
+    let html_url: String?
     let owner: Owner
 }
 struct Owner: Codable {

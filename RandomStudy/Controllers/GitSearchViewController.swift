@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SafariServices
 
 class GitSearchViewController: UIViewController {
 
@@ -76,6 +77,11 @@ extension GitSearchViewController: UICollectionViewDataSource {
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let url = NSURL(string: GitData.data[indexPath.row].html_url!)
+        let safariView: SFSafariViewController = SFSafariViewController(url: url as! URL)
+        self.present(safariView, animated: true, completion: nil)
+    }
     
 }
 
