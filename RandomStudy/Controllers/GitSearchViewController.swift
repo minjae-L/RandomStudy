@@ -40,8 +40,8 @@ class GitSearchViewController: UIViewController {
         self.resultCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         self.resultCollectionView.dataSource = self
         self.resultCollectionView.delegate = self
-        self.resultCollectionView.register(UICollectionViewCell.self
-                                           , forCellWithReuseIdentifier: "CollectionCell")
+        self.resultCollectionView.register(GitSearchCollectionViewCell.self
+                                           , forCellWithReuseIdentifier: GitSearchCollectionViewCell.idendifier)
         
     }
     
@@ -54,18 +54,21 @@ class GitSearchViewController: UIViewController {
 }
 extension GitSearchViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.size.width, height: view.frame.size.height/10)
+        return CGSize(width: view.frame.size.width, height: view.frame.size.height/5)
     }
 }
 
 extension GitSearchViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 9
+        return GitData.data.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = resultCollectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell", for: indexPath)
-        cell.backgroundColor = .black
+        guard let cell = resultCollectionView.dequeueReusableCell(withReuseIdentifier: GitSearchCollectionViewCell.idendifier, for: indexPath) as? GitSearchCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+        let result = GitData.data[indexPath.row]
+        cell.configure(with: result)
         
         return cell
     }
@@ -77,6 +80,10 @@ extension GitSearchViewController: UICollectionViewDataSource {
 extension GitSearchViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         print("DEBUG PRINT:", searchController.searchBar.text)
+        DispatchQueue.main.async { [weak self] in
+            NetworkManager.shared.getRepositoriesData(str: searchController.searchBar.text ?? "")
+            self?.resultCollectionView.reloadData()
+        }
     }
     
 }

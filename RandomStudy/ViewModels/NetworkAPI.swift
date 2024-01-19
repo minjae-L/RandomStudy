@@ -12,7 +12,7 @@ struct NetworkAPI {
     static let host = "api.github.com"
     static let path = "/search/repositories"
     
-    func getRepositoriesAPI(str: String) -> URLComponents {
+    func getRepositoriesAPI(str: String?) -> URLComponents {
         var components = URLComponents()
         components.scheme = NetworkAPI.schema
         components.host = NetworkAPI.host
@@ -30,8 +30,12 @@ struct Repository: Codable {
 }
 
 struct Items: Codable {
-    let full_name: String
+    let full_name: String?
     let description: String?
+    let owner: Owner
+}
+struct Owner: Codable {
+    let avatar_url: String?
 }
 
 class GitData {
@@ -47,6 +51,7 @@ class NetworkManager {
     
     func getRepositoriesData(str: String) {
         guard let url = api.getRepositoriesAPI(str: str).url else { return }
+        print("URL: \(url)")
         session.dataTask(with: url) { (data, response, error) in
             if let data = data {
                 do {

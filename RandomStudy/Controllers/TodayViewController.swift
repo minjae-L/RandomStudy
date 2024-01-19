@@ -111,12 +111,6 @@ final class TodayViewController: UIViewController {
         addView()
         bindings()
         
-        getrepsitories()
-    }
-    
-    func getrepsitories() {
-        NetworkManager.shared.getRepositoriesData(str: "Cat")
-        print("git data: \(GitData.data)")
     }
     
     override func viewWillAppear(_ animated: Bool) {
