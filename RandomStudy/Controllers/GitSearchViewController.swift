@@ -9,20 +9,67 @@ import UIKit
 
 class GitSearchViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
+    private let searchController = UISearchController(searchResultsController: nil)
+    
+    private let resultCollectionView: UICollectionView = {
+        let flowLayout = UICollectionViewFlowLayout()
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundColor = .white
+        
+        return collectionView
+    }()
+    
+    func setupUI() {
+        view.backgroundColor = .white
+        self.navigationItem.title = "Git search"
+        
+        // SearchController
+        self.searchController.searchResultsUpdater = self
+        self.searchController.obscuresBackgroundDuringPresentation = false
+        self.searchController.hidesNavigationBarDuringPresentation = false
+        self.searchController.searchBar.placeholder = "repository"
+        self.navigationItem.searchController = searchController
+        self.definesPresentationContext = false
+        self.navigationItem.hidesSearchBarWhenScrolling = false
+        
+        // CollectionView
+        self.resultCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        self.resultCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        self.resultCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        self.resultCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        self.resultCollectionView.dataSource = self
+        self.resultCollectionView.register(UICollectionViewCell.self
+                                           , forCellWithReuseIdentifier: "CollectionCell")
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.addSubview(resultCollectionView)
+        setupUI()
     }
-    */
 
+}
+
+extension GitSearchViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 9
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = resultCollectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell", for: indexPath)
+        cell.backgroundColor = .black
+        
+        return cell
+    }
+    
+    
+}
+
+
+extension GitSearchViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        print("DEBUG PRINT:", searchController.searchBar.text)
+    }
+    
 }
