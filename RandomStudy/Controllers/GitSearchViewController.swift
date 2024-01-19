@@ -14,13 +14,13 @@ class GitSearchViewController: UIViewController {
         let flowLayout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = UIColor(red: 57/255, green: 63/255, blue: 92/255, alpha: 1)
 
         return collectionView
     }()
 
     func setupUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(red: 57/255, green: 63/255, blue: 92/255, alpha: 1)
         self.navigationItem.title = "Git search"
         
         // SearchController
@@ -54,7 +54,10 @@ class GitSearchViewController: UIViewController {
 }
 extension GitSearchViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.size.width, height: view.frame.size.height/5)
+        return CGSize(width: view.frame.size.width-20, height: view.frame.size.height/5)
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     }
 }
 

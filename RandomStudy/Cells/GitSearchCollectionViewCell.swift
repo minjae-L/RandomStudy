@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class GitSearchCollectionViewCell: UICollectionViewCell {
     static let idendifier = "GitSearchCollectionViewCell"
@@ -14,7 +15,8 @@ class GitSearchCollectionViewCell: UICollectionViewCell {
         let lbl = UILabel()
         lbl.numberOfLines = 1
         lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.backgroundColor = .systemBlue
+        lbl.textColor = .systemBlue
+        
         return lbl
     }()
     
@@ -22,8 +24,8 @@ class GitSearchCollectionViewCell: UICollectionViewCell {
         let lbl = UILabel()
         lbl.numberOfLines = 0
         lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.backgroundColor = .gray
-        
+        lbl.font = UIFont.boldSystemFont(ofSize: 15)
+        lbl.textColor = .white
         return lbl
     }()
     
@@ -31,7 +33,7 @@ class GitSearchCollectionViewCell: UICollectionViewCell {
         let imgView = UIImageView()
         imgView.contentMode = .scaleAspectFit
         imgView.translatesAutoresizingMaskIntoConstraints = false
-        imgView.backgroundColor = .green
+
         return imgView
     }()
     
@@ -52,6 +54,11 @@ class GitSearchCollectionViewCell: UICollectionViewCell {
         descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10).isActive = true
         descriptionLabel.bottomAnchor.constraint(greaterThanOrEqualTo: contentView.bottomAnchor, constant: -10).isActive = true
         
+        contentView.layer.cornerRadius = 10
+        contentView.layer.borderColor = UIColor.white.cgColor
+        contentView.layer.borderWidth = 1.0
+        contentView.backgroundColor = UIColor(red: 57/255, green: 63/255, blue: 92/255, alpha: 1)
+        
     }
     
     required init?(coder: NSCoder) {
@@ -69,7 +76,9 @@ class GitSearchCollectionViewCell: UICollectionViewCell {
     func configure(with model: Items) {
         nameLabel.text = model.full_name
         descriptionLabel.text = model.description
-//        imageView.image = UIImageView.load(url: )
+        if let url = URL(string: model.owner.avatar_url!) {
+            imageView.kf.setImage(with: url)
+        }
     }
 }
 
