@@ -29,6 +29,9 @@ class GitSearchViewController: UIViewController {
         self.searchController.obscuresBackgroundDuringPresentation = false
         self.searchController.hidesNavigationBarDuringPresentation = false
         self.searchController.searchBar.placeholder = "repository"
+        self.searchController.searchBar.showsCancelButton = false
+        self.searchController.searchBar.showsScopeBar = true
+        self.searchController.searchBar.delegate = self
         self.navigationItem.searchController = searchController
         self.definesPresentationContext = false
         self.navigationItem.hidesSearchBarWhenScrolling = false
@@ -85,14 +88,18 @@ extension GitSearchViewController: UICollectionViewDataSource {
     
 }
 
-
+extension GitSearchViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        NetworkManager.shared.getRepositoriesData(str: searchBar.text ?? "") { items in
+            GitData.data = items
+            self.resultCollectionView.reloadData()
+        }
+    }
+}
 extension GitSearchViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         print("DEBUG PRINT:", searchController.searchBar.text)
-        DispatchQueue.main.async { [weak self] in
-            NetworkManager.shared.getRepositoriesData(str: searchController.searchBar.text ?? "")
-            self?.resultCollectionView.reloadData()
-        }
     }
     
 }
+

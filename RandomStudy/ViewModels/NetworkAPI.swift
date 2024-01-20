@@ -50,17 +50,18 @@ class NetworkManager {
     private let api = NetworkAPI()
     private let session = URLSession(configuration: .default)
     
-    func getRepositoriesData(str: String) {
+    func getRepositoriesData(str: String, completion: @escaping ([Items]) -> ()) {
         guard let url = api.getRepositoriesAPI(str: str).url else { return }
-        print("URL: \(url)")
         session.dataTask(with: url) { (data, response, error) in
-            if let data = data {
-                do {
-                    let repo: Repository = try
-                    JSONDecoder().decode(Repository.self, from: data)
-                    GitData.data = repo.items
-                } catch let error {
-                    print(error)
+            DispatchQueue.main.async {
+                if let data = data {
+                    do {
+                        let repo: Repository = try
+                        JSONDecoder().decode(Repository.self, from: data)
+                        completion(repo.items)
+                    } catch let error {
+                        print(error)
+                    }
                 }
             }
         }.resume()
