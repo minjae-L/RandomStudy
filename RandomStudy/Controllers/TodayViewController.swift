@@ -9,7 +9,7 @@ import UIKit
 import Lottie
 
 final class TodayViewController: UIViewController {
-    
+    private var apidata = [Items]()
     // UI 선언
     private var btn = UIButton()
     private var tableView = UITableView()
@@ -110,6 +110,7 @@ final class TodayViewController: UIViewController {
         super.viewDidLoad()
         addView()
         bindings()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
