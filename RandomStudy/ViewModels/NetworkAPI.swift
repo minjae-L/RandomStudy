@@ -25,22 +25,8 @@ struct NetworkAPI {
     }
 }
 
-struct Repository: Codable {
-    let items: [Items]
-}
-
-struct Items: Codable {
-    let full_name: String?
-    let description: String?
-    let html_url: String?
-    let owner: Owner
-}
-struct Owner: Codable {
-    let avatar_url: String?
-}
-
 class GitData {
-    static var data = [Items]()
+    static var data = [GitSearchItems]()
 }
 
 class NetworkManager {
@@ -50,15 +36,15 @@ class NetworkManager {
     private let api = NetworkAPI()
     private let session = URLSession(configuration: .default)
     
-    func getRepositoriesData(str: String, completion: @escaping ([Items]) -> ()) {
+    func getRepositoriesData(str: String, completion: @escaping ([GitSearchItems]) -> ()) {
         guard let url = api.getRepositoriesAPI(str: str).url else { return }
         session.dataTask(with: url) { (data, response, error) in
             DispatchQueue.main.async {
                 if let data = data {
                     do {
-                        let repo: Repository = try
-                        JSONDecoder().decode(Repository.self, from: data)
-                        completion(repo.items)
+                        let repo: GitSearchRepository = try
+                        JSONDecoder().decode(GitSearchRepository.self, from: data)
+                        completion(repo.repositoryItems)
                     } catch let error {
                         print(error)
                     }

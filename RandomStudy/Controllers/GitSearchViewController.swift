@@ -37,15 +37,14 @@ class GitSearchViewController: UIViewController {
         self.navigationItem.hidesSearchBarWhenScrolling = false
         
         // CollectionView
-        self.resultCollectionView.translatesAutoresizingMaskIntoConstraints = false
         self.resultCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         self.resultCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         self.resultCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         self.resultCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         self.resultCollectionView.dataSource = self
         self.resultCollectionView.delegate = self
-        self.resultCollectionView.register(GitSearchCollectionViewCell.self
-                                           , forCellWithReuseIdentifier: GitSearchCollectionViewCell.idendifier)
+        self.resultCollectionView.register(GitSearchCollectionViewCell.self,
+                                           forCellWithReuseIdentifier: GitSearchCollectionViewCell.idendifier)
         
     }
     
@@ -81,7 +80,7 @@ extension GitSearchViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let url = NSURL(string: GitData.data[indexPath.row].html_url!)
+        let url = NSURL(string: GitData.data[indexPath.row].htmlUrl!)
         let safariView: SFSafariViewController = SFSafariViewController(url: url as! URL)
         self.present(safariView, animated: true, completion: nil)
     }

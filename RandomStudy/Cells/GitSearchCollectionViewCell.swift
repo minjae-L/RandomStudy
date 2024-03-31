@@ -75,10 +75,10 @@ class GitSearchCollectionViewCell: UICollectionViewCell {
         setLayout()
     }
     
-    func configure(with model: Items) {
-        nameLabel.text = model.full_name
+    func configure(with model: GitSearchItems) {
+        nameLabel.text = model.fullName
         descriptionLabel.text = model.description
-        if let url = URL(string: model.owner.avatar_url!) {
+        if let url = URL(string: model.gitUser.avatarUrl!) {
             imageView.kf.setImage(with: url)
         }
     }
