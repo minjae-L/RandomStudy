@@ -9,7 +9,6 @@ import UIKit
 import Lottie
 
 final class TodayViewController: UIViewController {
-    private var apidata = [GitSearchItems]()
     // UI 선언
     private var btn = UIButton()
     private var tableView = UITableView()

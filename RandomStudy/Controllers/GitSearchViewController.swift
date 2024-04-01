@@ -90,9 +90,24 @@ extension GitSearchViewController: UICollectionViewDataSource {
 extension GitSearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         let text = searchBar.text ?? ""
-        viewModel.getGitRepositories(str: text, completion: {
-            self.didUpdatedGitSearch()
-        })
+        viewModel.getGitRepositories(str: text) { result in
+            switch result {
+            case .success(let data):
+                self.didUpdatedGitSearch()
+                print("Success")
+            case .failure(.invalidURL):
+                print("invalidURL Error")
+            case .failure(.transportError):
+                print("transport Error")
+            case .failure(.serverError(code: let code)):
+                print("server Error \(code)")
+            case .failure(.decodingError):
+                print("decoding Error")
+            case .failure(.missingData):
+                print("missingData Error")
+            }
+        }
+        
     }
 }
 extension GitSearchViewController: UISearchResultsUpdating {

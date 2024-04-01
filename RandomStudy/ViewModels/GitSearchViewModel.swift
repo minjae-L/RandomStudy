@@ -6,9 +6,19 @@
 //
 
 import Foundation
+
+enum NetworkError: Error {
+    case invalidURL
+    case transportError
+    case serverError(code: Int)
+    case missingData
+    case decodingError
+}
+
 protocol GitSearchViewModelDelegate: AnyObject {
     func didUpdatedGitSearch()
 }
+
 final class GitSearchViewModel {
     weak var delegate: GitSearchViewModelDelegate?
     
@@ -39,29 +49,42 @@ final class GitSearchViewModel {
     // URLSession 구성
     private let session = URLSession(configuration: URLSessionConfiguration.default)
     
-    func getGitRepositories(str: String, completion: @escaping () -> ()) {
-        guard let url = getGitUrl(str: str).url else { return }
+    typealias NetworkResult = (Result<Data, NetworkError>) -> ()
+    
+    func getGitRepositories(str: String, completion: @escaping NetworkResult) {
+        // URL 에러 확인
+        guard let url = getGitUrl(str: str).url else {
+            completion(.failure(.invalidURL))
+            return
+        }
         var request: URLRequest = URLRequest(url: url)
         request.httpMethod = "GET"
         let dataTask = session.dataTask(with: request) { (data, response, error) in
-            // 에러 발생하면 종료
-            guard error == nil else { return }
-            // 정상적인 네트워크 범주 판단
+            // 통신 확인
+            guard error == nil else {
+                completion(.failure(.transportError))
+                return
+            }
+            // 서버 확인
             let successRange = 200..<300
-            guard let statusCode = (response as? HTTPURLResponse)?.statusCode,
-                  successRange.contains(statusCode) else { return }
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode else { return }
+            if !successRange.contains(statusCode) {
+                completion(.failure(.serverError(code: statusCode)))
+                return
+            }
+            // 데이터 불러오기 성공
+            guard let loadedData = data else {
+                completion(.failure(.missingData))
+                return
+            }
             
-            // 정상 데이터 받기
-            guard let loadedData = data else { return }
-            
-            // JSON data Decode
+            // 디코딩 확인
             do {
-                let repo: GitSearchRepository = try JSONDecoder().decode(GitSearchRepository.self,
-                                     from: loadedData)
+                let repo: GitSearchRepository = try JSONDecoder().decode(GitSearchRepository.self, from: loadedData)
                 self.gitSearchDatas = repo.repositoryItems
-                completion()
-            } catch let error {
-                print(error)
+                completion(.success(loadedData))
+            } catch {
+                completion(.failure(.decodingError))
             }
             
         }.resume()
