@@ -19,6 +19,7 @@ class GitSearchViewController: UIViewController {
 
         return collectionView
     }()
+    private var viewModel = GitSearchViewModel()
 
     func setupUI() {
         view.backgroundColor = UIColor(red: 57/255, green: 63/255, blue: 92/255, alpha: 1)
@@ -55,6 +56,7 @@ class GitSearchViewController: UIViewController {
     }
 
 }
+// MARK: - CollectionView UI configure extension
 extension GitSearchViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.size.width-20, height: view.frame.size.height/5)
@@ -66,21 +68,19 @@ extension GitSearchViewController: UICollectionViewDelegateFlowLayout {
 
 extension GitSearchViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return GitData.data.count
+        return viewModel.dataCount
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = resultCollectionView.dequeueReusableCell(withReuseIdentifier: GitSearchCollectionViewCell.idendifier, for: indexPath) as? GitSearchCollectionViewCell else {
             return UICollectionViewCell()
         }
-        let result = GitData.data[indexPath.row]
-        cell.configure(with: result)
-        
+        cell.configure(with: viewModel.gitSearchDatas[indexPath.row])
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let url = NSURL(string: GitData.data[indexPath.row].htmlUrl!)
+        let url = NSURL(string: viewModel.gitSearchDatas[indexPath.row].htmlUrl!)
         let safariView: SFSafariViewController = SFSafariViewController(url: url as! URL)
         self.present(safariView, animated: true, completion: nil)
     }
@@ -89,10 +89,10 @@ extension GitSearchViewController: UICollectionViewDataSource {
 
 extension GitSearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        NetworkManager.shared.getRepositoriesData(str: searchBar.text ?? "") { items in
-            GitData.data = items
-            self.resultCollectionView.reloadData()
-        }
+        let text = searchBar.text ?? ""
+        viewModel.getGitRepositories(str: text, completion: {
+            self.didUpdatedGitSearch()
+        })
     }
 }
 extension GitSearchViewController: UISearchResultsUpdating {
@@ -101,4 +101,12 @@ extension GitSearchViewController: UISearchResultsUpdating {
     }
     
 }
-
+// MARK: - ViewModel Delegate
+extension GitSearchViewController: GitSearchViewModelDelegate {
+    func didUpdatedGitSearch() {
+        DispatchQueue.main.async {
+            [weak self] in
+            self?.resultCollectionView.reloadData()
+        }
+    }
+}

@@ -6,10 +6,17 @@
 //
 
 import Foundation
-
+protocol GitSearchViewModelDelegate: AnyObject {
+    func didUpdatedGitSearch()
+}
 final class GitSearchViewModel {
-    var gitSearchDatas = [GitSearchItems]()
+    weak var delegate: GitSearchViewModelDelegate?
     
+    private(set) var gitSearchDatas = [GitSearchItems]() {
+        didSet {
+            delegate?.didUpdatedGitSearch()
+        }
+    }
     var dataCount: Int {
         return gitSearchDatas.count
     }
@@ -30,12 +37,10 @@ final class GitSearchViewModel {
         return components
     }
     // URLSession 구성
-    let session = URLSession(configuration: URLSessionConfiguration.default)
+    private let session = URLSession(configuration: URLSessionConfiguration.default)
     
-    func getGitRepositories(str: String) {
-        print("getGitRepositories")
+    func getGitRepositories(str: String, completion: @escaping () -> ()) {
         guard let url = getGitUrl(str: str).url else { return }
-        print("url: \(url)")
         let dataTask = session.dataTask(with: url) { (data, response, error) in
             // 에러 발생하면 종료
             guard error == nil else { return }
@@ -51,7 +56,8 @@ final class GitSearchViewModel {
             do {
                 let repo: GitSearchRepository = try JSONDecoder().decode(GitSearchRepository.self,
                                      from: loadedData)
-                print(repo.repositoryItems)
+                self.gitSearchDatas = repo.repositoryItems
+                completion()
             } catch let error {
                 print(error)
             }
