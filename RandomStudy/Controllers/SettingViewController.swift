@@ -66,16 +66,21 @@ class SettingViewController: UIViewController {
                 self.navigationController?.pushViewController(vc, animated: true)
             }, accessoryType: .disclosureIndicator)),
             .staticCell(model: SettingsOption(title: "기록 초기화", icon: UIImage(systemName: "trash"), iconBackgroundColor: .systemRed, handler: {
-                StudyListUserDefaults.shared.removeAll()
-                TodayStudyUserDefauls.shared.removeAll()
-                HistoryUserDefaults.shared.removeAll()
-                let alert = UIAlertController(title: "초기화", message: "초기화하였습니다.", preferredStyle: .alert)
-                let okAction = UIAlertAction(title: "확인", style: .default)
-                alert.addAction(okAction)
-                self.present(alert, animated: true)
+                self.removeAllButtonEvent()
             }, accessoryType: .none))
         ]))
         
+    }
+    
+    private func removeAllButtonEvent() {
+        StudyListUserDefaults.shared.removeAll()
+        TodayStudyUserDefauls.shared.removeAll()
+        HistoryUserDefaults.shared.removeAll()
+        
+        let alert = UIAlertController(title: "초기화", message: "초기화하였습니다.", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "확인", style: .default)
+        alert.addAction(okAction)
+        self.present(alert, animated: true)
     }
 
 }
