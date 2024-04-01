@@ -41,7 +41,9 @@ final class GitSearchViewModel {
     
     func getGitRepositories(str: String, completion: @escaping () -> ()) {
         guard let url = getGitUrl(str: str).url else { return }
-        let dataTask = session.dataTask(with: url) { (data, response, error) in
+        var request: URLRequest = URLRequest(url: url)
+        request.httpMethod = "GET"
+        let dataTask = session.dataTask(with: request) { (data, response, error) in
             // 에러 발생하면 종료
             guard error == nil else { return }
             // 정상적인 네트워크 범주 판단
