@@ -23,7 +23,19 @@ class GitSearchViewController: UIViewController {
 
     func setupUI() {
         view.backgroundColor = UIColor(red: 57/255, green: 63/255, blue: 92/255, alpha: 1)
+        
+        // NavigationController
         self.navigationItem.title = "Git search"
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = UIColor(red: 57/255, green: 63/255, blue: 92/255, alpha: 1)
+        appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        self.navigationController?.navigationBar.prefersLargeTitles = false
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationItem.largeTitleDisplayMode = .never
+        self.navigationController?.navigationBar.standardAppearance = appearance
+        self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        self.navigationItem.searchController = searchController
+        self.navigationItem.hidesSearchBarWhenScrolling = false
         
         // SearchController
         self.searchController.searchResultsUpdater = self
@@ -33,9 +45,10 @@ class GitSearchViewController: UIViewController {
         self.searchController.searchBar.showsCancelButton = false
         self.searchController.searchBar.showsScopeBar = true
         self.searchController.searchBar.delegate = self
-        self.navigationItem.searchController = searchController
-        self.definesPresentationContext = false
-        self.navigationItem.hidesSearchBarWhenScrolling = false
+        self.searchController.searchBar.searchTextField.backgroundColor = UIColor(red: 57/255, green: 63/255, blue: 92/255, alpha: 1)
+        self.searchController.searchBar.searchTextField.textColor = .white
+        self.searchController.searchBar.backgroundColor = UIColor(red: 57/255, green: 63/255, blue: 92/255, alpha: 1)
+        self.searchController.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "repository", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
         
         // CollectionView
         self.resultCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true

@@ -53,7 +53,10 @@ class SettingViewController: UIViewController {
         super.viewDidLoad()
         addSubView()
         configure()
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        settingUI()
     }
     
     // 설정 목록
