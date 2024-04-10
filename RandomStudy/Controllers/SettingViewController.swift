@@ -53,11 +53,15 @@ class SettingViewController: UIViewController {
         super.viewDidLoad()
         addSubView()
         configure()
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        settingUI()
     }
     
     // 설정 목록
     private func configure() {
+        // 일반
         models.append(Section(title: "일반", options: [
             .switchCell(model: SettingSwitchOption(title: "다크 모드", icon: UIImage(systemName: "moon"), iconBackgroundColor: .systemPurple, handler: {
             }, isOn: false)),
@@ -70,6 +74,16 @@ class SettingViewController: UIViewController {
             }, accessoryType: .none))
         ]))
         
+        // Git
+        models.append(Section(title: "Git", options: [
+            .staticCell(model: SettingsOption(title: "Git search",
+                                              icon: UIImage(systemName: "magnifyingglass"),
+                                              iconBackgroundColor: .black,
+                                              handler: {
+                                                  self.navigationController?.pushViewController(GitSearchViewController(), animated: true)
+                                              }
+            ))]
+        ))
     }
     
     private func removeAllButtonEvent() {

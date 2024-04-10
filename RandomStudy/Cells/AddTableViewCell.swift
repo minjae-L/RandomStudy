@@ -76,3 +76,4 @@ class AddTableViewCell: UITableViewCell {
         label.text = model.name
     }
 }
+
