@@ -54,7 +54,7 @@ class GitSearchCollectionViewCell: UICollectionViewCell {
         descriptionLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 15).isActive = true
         descriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10).isActive = true
         descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10).isActive = true
-        descriptionLabel.bottomAnchor.constraint(greaterThanOrEqualTo: contentView.bottomAnchor, constant: -10).isActive = true
+        descriptionLabel.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -10).isActive = true
         
         contentView.layer.cornerRadius = 10
         contentView.layer.borderColor = UIColor.white.cgColor
@@ -78,7 +78,7 @@ class GitSearchCollectionViewCell: UICollectionViewCell {
     func configure(with model: GitSearchItems) {
         nameLabel.text = model.fullName
         descriptionLabel.text = model.description
-        if let url = URL(string: model.gitUser.avatarUrl!) {
+        if let urlString = model.gitUser.avatarUrl, let url = URL(string: urlString) {
             imageView.kf.setImage(with: url)
         }
     }

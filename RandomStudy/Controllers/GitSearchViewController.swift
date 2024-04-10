@@ -93,8 +93,8 @@ extension GitSearchViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let url = NSURL(string: viewModel.gitSearchDatas[indexPath.row].htmlUrl!)
-        let safariView: SFSafariViewController = SFSafariViewController(url: url as! URL)
+        guard let urlString = viewModel.gitSearchDatas[indexPath.row].htmlUrl, let url = URL(string: urlString) else { return }
+        let safariView: SFSafariViewController = SFSafariViewController(url: url)
         self.present(safariView, animated: true, completion: nil)
     }
     
