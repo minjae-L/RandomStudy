@@ -53,20 +53,40 @@ class SettingViewController: UIViewController {
         super.viewDidLoad()
         addSubView()
         configure()
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        settingUI()
     }
     
     // 설정 목록
     private func configure() {
+        // 일반
         models.append(Section(title: "일반", options: [
-            .switchCell(model: SettingSwitchOption(title: "다크 모드", icon: UIImage(systemName: "moon"), iconBackgroundColor: .systemRed, handler: {
-            }, isOn: false)),
-            .staticCell(model: SettingsOption(title: "내 기록", icon: UIImage(systemName: "checklist.checked"), iconBackgroundColor: .systemGreen, handler: {
-                let vc = HistoryViewController()
-                self.navigationController?.pushViewController(vc, animated: true)
-            }))
-        ]))
+            .switchCell(model: SettingSwitchOption(title: "다크 모드",
+                                                   icon: UIImage(systemName: "moon"),
+                                                   iconBackgroundColor: .systemRed,
+                                                   handler: {},
+                                                   isOn: false)),
+            .staticCell(model: SettingsOption(title: "내 기록",
+                                              icon: UIImage(systemName: "checklist.checked"),
+                                              iconBackgroundColor: .systemGreen,
+                                              handler: {
+                                                  let vc = HistoryViewController()
+                                                  self.navigationController?.pushViewController(vc, animated: true)
+            }))]
+        ))
         
+        // Git
+        models.append(Section(title: "Git", options: [
+            .staticCell(model: SettingsOption(title: "Git search",
+                                              icon: UIImage(systemName: "magnifyingglass"),
+                                              iconBackgroundColor: .black,
+                                              handler: {
+                                                  self.navigationController?.pushViewController(GitSearchViewController(), animated: true)
+                                              }
+            ))]
+        ))
     }
 
 }
