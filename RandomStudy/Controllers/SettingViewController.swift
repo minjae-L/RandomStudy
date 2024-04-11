@@ -81,7 +81,7 @@ class SettingViewController: UIViewController {
                                               iconBackgroundColor: .black,
                                               handler: {
                                                   self.navigationController?.pushViewController(GitSearchViewController(), animated: true)
-                                              }
+                                              }, accessoryType: .none
             ))]
         ))
     }
