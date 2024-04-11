@@ -11,7 +11,7 @@
 ## 개발 환경
 * 개발도구: Xcode 14.3.1
 * 사용언어: Swift
-* DB: UserDefaults
+* DB: SQLite, UserDefaults
 
   
   
