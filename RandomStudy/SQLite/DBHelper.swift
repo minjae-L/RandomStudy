@@ -111,26 +111,52 @@ class DBHelper {
         
     }
     
-    func readData(tableName: String, column: [String]) -> [Dictionary<String, String>] {
+    func readData(tableName: String, column: [String]) -> [StudyModel] {
         let query: String = "select * from \(tableName);"
         var statement: OpaquePointer? = nil
         
-        var result: [Dictionary<String, String>] = []
+        var result: [StudyModel] = []
         
         if sqlite3_prepare_v2(self.db, query, -1, &statement, nil) != SQLITE_OK {
             let error = String(cString: sqlite3_errmsg(db)!)
             print("error while prepare: \(error)")
+            return []
         }
         while sqlite3_step(statement) == SQLITE_ROW {
             let id = sqlite3_column_int(statement, 0)
             var data = Dictionary<String, String>()
+            var d = StudyModel(id: Int(id), name: nil, done: nil, date: nil)
             for  i in 0..<column.count {
                 data[column[i]] = String(cString: sqlite3_column_text(statement, Int32(i+1)))
+                let load = String(cString: sqlite3_column_text(statement, Int32(i+1)))
+                switch column[i] {
+                case "name": d.name = load
+                case "done": d.done = load
+                case "date": d.date = load
+                default: continue
+                }
             }
-            result.append(data)
+            result.append(d)
         }
         sqlite3_finalize(statement)
         return result
+    }
+    
+    func deleteData(tableName: String, id: Int) {
+        let query = "delete from \(tableName) where id == \(id)"
+        print(query)
+        var statement: OpaquePointer? = nil
+        
+        if sqlite3_prepare_v2(self.db, query, -1, &statement, nil) == SQLITE_OK {
+            if sqlite3_step(statement) == SQLITE_DONE {
+                print("delete success")
+            } else {
+                print("delete fail")
+            }
+        } else {
+            print("delete prepare fail")
+        }
+        sqlite3_finalize(statement)
     }
     
 }

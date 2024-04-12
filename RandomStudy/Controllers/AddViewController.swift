@@ -49,6 +49,7 @@ class AddViewController: UIViewController {
         super.viewDidLoad()
         addSubView()
         bindings()
+        viewModel.createDBTable()
     }
     
     
@@ -82,13 +83,14 @@ class AddViewController: UIViewController {
 }
 // cell Button Action
 extension AddViewController: AddViewControllerButtonDelegate {
-    func cellDeleteButtonTapped(index: Int) {
-        viewModel.removeData(index: index)
+    func cellDeleteButtonTapped(name: String) {
+        viewModel.removeData(name: name)
     }
 }
 extension AddViewController: AddViewModelDelegate {
-    func didUpdate(with value: [Study]) {
-        StudyListUserDefaults.shared.set(new: value)
+    func didUpdate(with value: [StudyModel]) {
+        print("add delegate didupdate")
+//        StudyListUserDefaults.shared.set(new: value)
         DispatchQueue.main.async { [weak self] in
             self?.tableView.reloadData()
         }
@@ -115,7 +117,10 @@ extension AddViewController: UITableViewDataSource, UITableViewDelegate {
             return UITableViewCell()
         }
         cell.selectionStyle = .none
-        cell.index = indexPath.row
+        if let str = study.name {
+            cell.name = str
+        }
+//        cell.name = study.name
         cell.delegate = self
         cell.configure(with: study)
 

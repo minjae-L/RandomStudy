@@ -8,16 +8,16 @@
 import UIKit
 
 protocol AddViewControllerButtonDelegate: AnyObject {
-    func cellDeleteButtonTapped(index: Int)
+    func cellDeleteButtonTapped(name: String)
 }
 
 class AddTableViewCell: UITableViewCell {
     static let identifier = "AddTableViewCell"
     weak var delegate: AddViewControllerButtonDelegate?
-    var index: Int = 0
+    var name: String = ""
     
     @objc func deleteButtonTapped() {
-        delegate?.cellDeleteButtonTapped(index: index)
+        delegate?.cellDeleteButtonTapped(name: name)
     }
     
     private let label: UILabel = {
@@ -72,7 +72,7 @@ class AddTableViewCell: UITableViewCell {
         label.text = nil
     }
     
-    func configure(with model: Study) {
+    func configure(with model: StudyModel) {
         label.text = model.name
     }
 }
