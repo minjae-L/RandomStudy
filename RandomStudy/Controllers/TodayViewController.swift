@@ -15,8 +15,6 @@ final class TodayViewController: UIViewController {
     
     // 뷰모델 선언 및 데이터 바인딩
     private var viewModel = TodayViewModel()
-    let dbhelper = DBHelper.shared
-    var dbArray = [dbGrade]()
     private func bindings() {
         viewModel.delegate = self
     }
@@ -135,9 +133,6 @@ final class TodayViewController: UIViewController {
     
     // 불러오기 버튼 이벤트
     @objc private func fetchStudyList() {
-        
-        dbhelper.insertData(name: "hi", isDone: 0, date: "오늘")
-        dbArray = dbhelper.readData()
         let alert = UIAlertController(title: "알림", message: "불러올 목록이 없습니다.", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "확인", style: .cancel)
         alert.addAction(okAction)

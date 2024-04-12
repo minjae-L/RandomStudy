@@ -8,14 +8,6 @@
 import Foundation
 import SQLite3
 
-struct dbGrade: Codable {
-    var id: Int
-    var name: String
-    var done: Int
-    var date: String
-    
-}
-
 class DBHelper {
     var db: OpaquePointer?
     var databaseName: String = "mydb.sqlite"
@@ -45,8 +37,15 @@ class DBHelper {
         }
     }
     
-    func createTable() {
-        let query = "CREATE TABLE IF NOT EXISTS study(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, done BOOL, date TEXT);"
+    func createTable(tableName: String, stringColumn: [String]) {
+        var column: String = {
+            var str = "id INTEGER PRIMARY KEY AUTOINCREMENT"
+            for col in stringColumn {
+                str += ", \(col) TEXT"
+            }
+            return str
+        }()
+        let query = "CREATE TABLE IF NOT EXISTS" + " \(tableName)" + "(\(column));"
         var createTable: OpaquePointer? = nil
         
         if sqlite3_prepare_v2(self.db, query, -1, &createTable, nil) == SQLITE_OK {
@@ -61,8 +60,8 @@ class DBHelper {
         sqlite3_finalize(createTable)
     }
     
-    func deleteTable() {
-        let query = "DROP TABLE study"
+    func deleteTable(tableName: String) {
+        let query = "DROP TABLE \(tableName)"
         var statement: OpaquePointer? = nil
         
         if sqlite3_prepare_v2(self.db, query, -1, &statement, nil) == SQLITE_OK {
@@ -76,48 +75,61 @@ class DBHelper {
         }
     }
     
-    func insertData(name: String, isDone: Int, date: String) {
-        let insertQuery = "insert into study (id, name, done, date) values (?, ?, ?, ?);"
+    func insertData(tableName: String, columns: [String], insertData: [String]) {
+        let column: String = {
+            var column = "id"
+            for col in columns {
+                column += ", \(col)"
+            }
+            return column
+        }()
+        
+        var value: String = {
+            var value = "?"
+            for val in 0..<insertData.count {
+                value += ", ?"
+            }
+            return value
+        }()
+        
+        let insertQuery = "insert into \(tableName) (\(column)) values (\(value));"
         var statement: OpaquePointer? = nil
 
         if sqlite3_prepare_v2(self.db, insertQuery, -1, &statement, nil) == SQLITE_OK {
-            sqlite3_bind_text(statement, 2, NSString(string: name).utf8String, -1, nil)
-            sqlite3_bind_int(statement, 3, Int32(isDone))
-            sqlite3_bind_text(statement, 4, NSString(string: date).utf8String, -1, nil)
+            for i in 0..<insertData.count {
+                sqlite3_bind_text(statement, Int32(i)+2, NSString(string: insertData[i]).utf8String, -1, nil)
+            }
+            if sqlite3_step(statement) == SQLITE_DONE {
+                print("insert success")
+            } else {
+                print("step fail")
+            }
         } else {
             print("bind fail")
         }
         
-        if sqlite3_step(statement) == SQLITE_DONE {
-            print("insert success")
-        } else {
-            print("step fail")
-        }
+        
     }
     
-    func readData() -> [dbGrade] {
-        let query: String = "select * from study;"
+    func readData(tableName: String, column: [String]) -> [Dictionary<String, String>] {
+        let query: String = "select * from \(tableName);"
         var statement: OpaquePointer? = nil
         
-        var result: [dbGrade] = []
+        var result: [Dictionary<String, String>] = []
         
         if sqlite3_prepare_v2(self.db, query, -1, &statement, nil) != SQLITE_OK {
             let error = String(cString: sqlite3_errmsg(db)!)
             print("error while prepare: \(error)")
-            return result
         }
         while sqlite3_step(statement) == SQLITE_ROW {
-            
             let id = sqlite3_column_int(statement, 0)
-            let name = String(cString: sqlite3_column_text(statement, 1))
-            let done = sqlite3_column_int(statement, 2)
-            let date = String(cString: sqlite3_column_text(statement, 3))
-            print("id: \(id), name: \(name), done: \(done), date: \(date)")
-
-            result.append(dbGrade(id: Int(id), name: String(name), done: Int(done), date: String(date)))
+            var data = Dictionary<String, String>()
+            for  i in 0..<column.count {
+                data[column[i]] = String(cString: sqlite3_column_text(statement, Int32(i+1)))
+            }
+            result.append(data)
         }
         sqlite3_finalize(statement)
-        print("result = \(result)")
         return result
     }
     
