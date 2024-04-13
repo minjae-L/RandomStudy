@@ -87,11 +87,11 @@ class SettingViewController: UIViewController {
     }
     
     private func removeAllButtonEvent() {
-        
         let alert = UIAlertController(title: "초기화", message: "초기화하였습니다.", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "확인", style: .default)
         alert.addAction(okAction)
         self.present(alert, animated: true)
+        DBHelper.shared.resetAllTable()
     }
 
 }

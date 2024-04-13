@@ -16,7 +16,7 @@ final class AddViewModel {
     weak var delegate: AddViewModelDelegate?
     private let tableName = "study"
     private let column = ["name", "done", "date"]
-
+    
     private var elements: [StudyModel] = DBHelper.shared.readData(tableName: "study", column: ["name", "done", "date"]) {
         didSet {
             delegate?.didUpdate(with: elements)

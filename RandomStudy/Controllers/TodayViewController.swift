@@ -56,9 +56,6 @@ final class TodayViewController: UIViewController {
         // View
         view.backgroundColor = .white
         
-        // NavigationItem
-//        configureNavigationbar()
-        
         // TableView
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true

@@ -17,7 +17,7 @@ final class TodayViewModel {
     weak var delegate: TodayViewModelDelegate?
     var tableName = "todo"
     var column = ["name", "done", "date"]
-    
+    var db = DBHelper()
     var todo: [StudyModel] = DBHelper.shared.readData(tableName: "todo", column:  ["name", "done", "date"]) {
         didSet {
             delegate?.didUpdateToday(with: todo)
@@ -25,6 +25,7 @@ final class TodayViewModel {
     }
     
     init() {
+        db.delegate = self
         print("today viewmodel init")
     }
     
@@ -100,4 +101,11 @@ final class TodayViewModel {
         DBHelper.shared.deleteData(tableName: tableName, id: id)
     }
     
+}
+
+extension TodayViewModel: DBHelperDelegate {
+    func removeAllDatas() {
+        print("DBDelegate - todo")
+        todo.removeAll()
+    }
 }

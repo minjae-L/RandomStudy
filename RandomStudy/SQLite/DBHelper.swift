@@ -8,16 +8,19 @@
 import Foundation
 import SQLite3
 
+protocol DBHelperDelegate: AnyObject {
+    func removeAllDatas()
+}
 class DBHelper {
     var db: OpaquePointer?
     var databaseName: String = "mydb.sqlite"
     static let shared = DBHelper()
-    
+    let tableNames = ["study", "todo", "history"]
+    let column = ["name", "done", "date"]
+    weak var delegate: DBHelperDelegate?
     init() {
         print("DB helper init")
         self.db = createDB()
-        let tableNames = ["study", "todo", "history"]
-        let column = ["name", "done", "date"]
         
         for i in tableNames {
             self.createTable(tableName: i, stringColumn: column)
@@ -31,7 +34,7 @@ class DBHelper {
         sqlite3_close(db)
     }
 
-    //    MARK: - Create DB
+    //    MARK: Create DB
     
     func createDB() -> OpaquePointer? {
         let filePath = try! FileManager.default.url(for: .documentDirectory,
@@ -50,7 +53,7 @@ class DBHelper {
         }
     }
     
-    //    MARK: - Create Table
+    //    MARK: Create Table
     func createTable(tableName: String, stringColumn: [String]) {
         var column: String = {
             var str = "id INTEGER PRIMARY KEY AUTOINCREMENT"
@@ -74,7 +77,7 @@ class DBHelper {
         sqlite3_finalize(createTable)
     }
     
-    //    MARK: - Delete Table
+    //    MARK: Delete Table
     func deleteTable(tableName: String) {
         let query = "DROP TABLE \(tableName)"
         var statement: OpaquePointer? = nil
@@ -90,7 +93,7 @@ class DBHelper {
         }
     }
     
-    //    MARK: - Insert Data
+    //    MARK: Insert Data
     func insertData(tableName: String, columns: [String], insertData: [String]) {
         let column: String = {
             var column = "id"
@@ -128,7 +131,7 @@ class DBHelper {
         
     }
     
-    //    MARK: - Read data
+    //    MARK: Read data
     func readData(tableName: String, column: [String]) -> [StudyModel] {
         let query: String = "select * from \(tableName);"
         var statement: OpaquePointer? = nil
@@ -160,7 +163,7 @@ class DBHelper {
         return result
     }
     
-    //    MARK: - Delete data
+    //    MARK: Delete data
     func deleteData(tableName: String, id: Int) {
         let query = "delete from \(tableName) where id == \(id)"
         print(query)
@@ -178,7 +181,7 @@ class DBHelper {
         sqlite3_finalize(statement)
     }
     
-    //    MARK: - Update data
+    //    MARK: Update data
     private func onSQLErrorPrintErrorMessage(_ db: OpaquePointer?) {
         let errorMessage = String(cString: sqlite3_errmsg(db))
         print("Error preparing Update \(errorMessage)")
@@ -202,4 +205,14 @@ class DBHelper {
         print("Update has been successfully done")
     }
     
+//    MARK: Reset All Tables
+    func resetAllTable() {
+        for i in tableNames {
+            self.deleteTable(tableName: i)
+            self.createTable(tableName: i, stringColumn: column)
+            print("\(i) reset, \(i): \(readData(tableName: i, column: column))")
+        }
+        self.delegate?.removeAllDatas()
+//        self.dele
+    }
 }
