@@ -49,7 +49,6 @@ class AddViewController: UIViewController {
         super.viewDidLoad()
         addSubView()
         bindings()
-        viewModel.createDBTable()
     }
     
     
@@ -90,7 +89,6 @@ extension AddViewController: AddViewControllerButtonDelegate {
 extension AddViewController: AddViewModelDelegate {
     func didUpdate(with value: [StudyModel]) {
         print("add delegate didupdate")
-//        StudyListUserDefaults.shared.set(new: value)
         DispatchQueue.main.async { [weak self] in
             self?.tableView.reloadData()
         }
@@ -117,10 +115,9 @@ extension AddViewController: UITableViewDataSource, UITableViewDelegate {
             return UITableViewCell()
         }
         cell.selectionStyle = .none
-        if let str = study.name {
-            cell.name = str
+        if let name = study.name {
+            cell.name = name
         }
-//        cell.name = study.name
         cell.delegate = self
         cell.configure(with: study)
 

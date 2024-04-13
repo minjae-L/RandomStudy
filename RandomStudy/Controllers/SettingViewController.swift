@@ -87,9 +87,6 @@ class SettingViewController: UIViewController {
     }
     
     private func removeAllButtonEvent() {
-        StudyListUserDefaults.shared.removeAll()
-        TodayStudyUserDefauls.shared.removeAll()
-        HistoryUserDefaults.shared.removeAll()
         
         let alert = UIAlertController(title: "초기화", message: "초기화하였습니다.", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "확인", style: .default)

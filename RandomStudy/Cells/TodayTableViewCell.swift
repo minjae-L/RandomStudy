@@ -9,32 +9,33 @@ import UIKit
 import Lottie
 
 protocol TodayTableViewCellDelegate: AnyObject {
-    func checkButtonTapped(value: TodayStudyList?)
-    func deleteButtonTapped(value: TodayStudyList?)
+    func checkButtonTapped(name: String)
+//    func deleteButtonTapped(value: StudyModel?)
 }
 
 class TodayTableViewCell: UITableViewCell {
     static let identifier = "TodayTableViewCell"
     weak var delegate: TodayTableViewCellDelegate?
     
-    private var item: TodayStudyList?
+    private var item: StudyModel?
+    var name: String = ""
     
     // 체크버튼
     @objc func checkButtonTapped() {
-        delegate?.checkButtonTapped(value: item)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
-            if self?.item?.isDone == true {
-                self?.checkView.isHidden = false
-                self?.contentView.backgroundColor = .lightGray
-                // 애니메이션 실행
-                self?.checkView.play()
-            }
-        }
+        delegate?.checkButtonTapped(name: name)
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+//            if self?.item?.isDone == true {
+//                self?.checkView.isHidden = false
+//                self?.contentView.backgroundColor = .lightGray
+//                // 애니메이션 실행
+//                self?.checkView.play()
+//            }
+//        }
     }
     // 삭제버튼
-    @objc func deleteButtonTapped() {
-        delegate?.deleteButtonTapped(value: item)
-    }
+//    @objc func deleteButtonTapped() {
+//        delegate?.deleteButtonTapped(value: item)
+//    }
     
     let label: UILabel = {
         let lbl = UILabel()
@@ -78,7 +79,7 @@ class TodayTableViewCell: UITableViewCell {
     
     private func setupButtonEvent() {
         checkBtn.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
-        deleteBtn.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+//        deleteBtn.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
     }
     
     private func setLayout() {
@@ -123,10 +124,10 @@ class TodayTableViewCell: UITableViewCell {
         checkView.isHidden = true
     }
     
-    func configure(with model: TodayStudyList) {
+    func configure(with model: StudyModel) {
         item = model
         label.text = model.name
-        if model.isDone == false {
+        if model.done == "0" {
             contentView.backgroundColor = .white
             checkView.isHidden = true
         } else {

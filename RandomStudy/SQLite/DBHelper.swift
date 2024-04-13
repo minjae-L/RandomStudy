@@ -13,12 +13,24 @@ class DBHelper {
     var databaseName: String = "mydb.sqlite"
     static let shared = DBHelper()
     init() {
+        print("DB helper init")
         self.db = createDB()
+        let tableNames = ["study", "todo", "history"]
+        let column = ["name", "done", "date"]
+        
+        for i in tableNames {
+            self.createTable(tableName: i, stringColumn: column)
+            print("create table \(i)")
+            print("table \(i): \(self.readData(tableName: i, column: column))")
+        }
+        
     }
     
     deinit {
         sqlite3_close(db)
     }
+
+    //    MARK: - Create DB
     
     func createDB() -> OpaquePointer? {
         let filePath = try! FileManager.default.url(for: .documentDirectory,
@@ -37,6 +49,7 @@ class DBHelper {
         }
     }
     
+    //    MARK: - Create Table
     func createTable(tableName: String, stringColumn: [String]) {
         var column: String = {
             var str = "id INTEGER PRIMARY KEY AUTOINCREMENT"
@@ -60,6 +73,7 @@ class DBHelper {
         sqlite3_finalize(createTable)
     }
     
+    //    MARK: - Delete Table
     func deleteTable(tableName: String) {
         let query = "DROP TABLE \(tableName)"
         var statement: OpaquePointer? = nil
@@ -75,6 +89,7 @@ class DBHelper {
         }
     }
     
+    //    MARK: - Insert Data
     func insertData(tableName: String, columns: [String], insertData: [String]) {
         let column: String = {
             var column = "id"
@@ -93,6 +108,8 @@ class DBHelper {
         }()
         
         let insertQuery = "insert into \(tableName) (\(column)) values (\(value));"
+        print("insert query: \(insertQuery)")
+        print("insert Data: \(insertData)")
         var statement: OpaquePointer? = nil
 
         if sqlite3_prepare_v2(self.db, insertQuery, -1, &statement, nil) == SQLITE_OK {
@@ -108,9 +125,9 @@ class DBHelper {
             print("bind fail")
         }
         
-        
     }
     
+    //    MARK: - Read data
     func readData(tableName: String, column: [String]) -> [StudyModel] {
         let query: String = "select * from \(tableName);"
         var statement: OpaquePointer? = nil
@@ -142,6 +159,7 @@ class DBHelper {
         return result
     }
     
+    //    MARK: - Delete data
     func deleteData(tableName: String, id: Int) {
         let query = "delete from \(tableName) where id == \(id)"
         print(query)
@@ -157,6 +175,30 @@ class DBHelper {
             print("delete prepare fail")
         }
         sqlite3_finalize(statement)
+    }
+    
+    //    MARK: - Update data
+    private func onSQLErrorPrintErrorMessage(_ db: OpaquePointer?) {
+        let errorMessage = String(cString: sqlite3_errmsg(db))
+        print("Error preparing Update \(errorMessage)")
+        return
+    }
+    
+    func updateData(tableName: String, id: Int, done: String, date: String) {
+        var statement: OpaquePointer? = nil
+        let query = "UPDATE \(tableName) SET done='\(done)',date='\(date)' WHERE id==\(id)"
+        
+        if sqlite3_prepare(db, query, -1, &statement, nil) != SQLITE_OK {
+            onSQLErrorPrintErrorMessage(db)
+            return
+        }
+        
+        if sqlite3_step(statement) != SQLITE_DONE {
+            onSQLErrorPrintErrorMessage(db)
+            return
+        }
+        
+        print("Update has been successfully done")
     }
     
 }

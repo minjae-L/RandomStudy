@@ -14,25 +14,23 @@ protocol AddViewModelDelegate: AnyObject {
 final class AddViewModel {
     
     weak var delegate: AddViewModelDelegate?
-    private let db = DBHelper()
     private let tableName = "study"
-    private let column = ["name"]
+    private let column = ["name", "done", "date"]
 
-    private var elements: [StudyModel] = DBHelper.shared.readData(tableName: "study", column: ["name"]) {
+    private var elements: [StudyModel] = DBHelper.shared.readData(tableName: "study", column: ["name", "done", "date"]) {
         didSet {
             delegate?.didUpdate(with: elements)
         }
     }
-    
+    init() {
+        print("add viewmodel init")
+    }
     var dataCount: Int {
         return elements.count
     }
     
     var study: [StudyModel] {
         return elements
-    }
-    func createDBTable() {
-        db.createTable(tableName: tableName, stringColumn: column)
     }
     func isContainsElement(str: String) -> Bool {
         var isContain = false
@@ -48,8 +46,13 @@ final class AddViewModel {
     // 배열에 값 추가
     func addData(str: String) {
         if str == "" { return }
-        db.insertData(tableName: tableName, columns: column, insertData: [str])
-        elements = db.readData(tableName: tableName, column: column)
+        var data = [str]
+        for i in 0..<column.count-1 {
+            data.append("0")
+        }
+        print(data)
+        DBHelper.shared.insertData(tableName: tableName, columns: column, insertData: data)
+        elements = DBHelper.shared.readData(tableName: tableName, column: column)
         print(elements)
     }
     
@@ -60,8 +63,8 @@ final class AddViewModel {
                 index = num
             }
         }
-        db.deleteData(tableName: tableName, id: index)
-        elements = db.readData(tableName: tableName, column: column)
+        DBHelper.shared.deleteData(tableName: tableName, id: index)
+        elements = DBHelper.shared.readData(tableName: tableName, column: column)
         print(elements)
         
     }

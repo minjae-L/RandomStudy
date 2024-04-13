@@ -20,23 +20,6 @@ struct StudyModel: Equatable, Codable {
     }
 }
 
-// 오늘의 할일 모델
-struct TodayStudyList: Equatable, Codable {
-    let name: String?
-    var isDone: Bool
-    let date: String?
-}
-
-struct CompletionList: Equatable, Codable {
-    let name: String?
-    let date: String?
-    
-    static func ==(lhs: CompletionList, rhs: CompletionList) -> Bool {
-        return lhs.name == rhs.name && lhs.date == rhs.date
-    }
-}
-
-
 // TodayVC의 데이터 현황
 enum DateState {
     case empty
@@ -70,53 +53,6 @@ struct GitUser: Codable {
     
     enum CodingKeys: String, CodingKey {
         case avatarUrl = "avatar_url"
-    }
-}
-// MARK: - Singleton UserDefaults
-
-class TodayStudyUserDefauls {
-    var data: [TodayStudyList] = {
-        var arr = [TodayStudyList]()
-        if let data = UserDefaults.standard.value(forKey: "todayStudy") as? Data {
-            arr = try! PropertyListDecoder().decode(Array<TodayStudyList>.self, from: data)
-        }
-        return arr
-    }() {
-        didSet {
-            UserDefaults.standard.setValue(try? PropertyListEncoder().encode(data), forKey: "todayStudy")
-        }
-    }
-    static let shared = TodayStudyUserDefauls()
-    private init() {}
-    
-    func set(new: [TodayStudyList]) {
-        data = new
-    }
-    func removeAll() {
-        data.removeAll()
-    }
-}
-
-class HistoryUserDefaults {
-    var data: [CompletionList] = {
-        var arr = [CompletionList]()
-        if let data = UserDefaults.standard.value(forKey: "completionStudy") as? Data {
-            arr = try! PropertyListDecoder().decode(Array<CompletionList>.self, from: data)
-        }
-        return arr
-    }() {
-        didSet {
-            UserDefaults.standard.setValue(try? PropertyListEncoder().encode(data), forKey: "completionStudy")
-        }
-    }
-    static let shared = HistoryUserDefaults()
-    private init() {}
-    
-    func set(new: [CompletionList]) {
-        data = new
-    }
-    func removeAll() {
-        data.removeAll()
     }
 }
 
