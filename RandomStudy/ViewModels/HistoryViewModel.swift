@@ -16,9 +16,6 @@ final class HistoryViewModel {
     var count: Int {
         return completions.count
     }
-    init() {
-        print("history: \(DBHelper.shared.readData(tableName: tableName, column: column))")
-    }
     var dateCount: Int {
         return Array(Set(completions.compactMap { $0.date })).count
     }

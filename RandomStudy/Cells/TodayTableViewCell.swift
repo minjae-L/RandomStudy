@@ -10,7 +10,7 @@ import Lottie
 
 protocol TodayTableViewCellDelegate: AnyObject {
     func checkButtonTapped(name: String)
-//    func deleteButtonTapped(value: StudyModel?)
+    func deleteButtonTapped(name: String)
 }
 
 class TodayTableViewCell: UITableViewCell {
@@ -23,19 +23,11 @@ class TodayTableViewCell: UITableViewCell {
     // 체크버튼
     @objc func checkButtonTapped() {
         delegate?.checkButtonTapped(name: name)
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
-//            if self?.item?.isDone == true {
-//                self?.checkView.isHidden = false
-//                self?.contentView.backgroundColor = .lightGray
-//                // 애니메이션 실행
-//                self?.checkView.play()
-//            }
-//        }
     }
     // 삭제버튼
-//    @objc func deleteButtonTapped() {
-//        delegate?.deleteButtonTapped(value: item)
-//    }
+    @objc func deleteButtonTapped() {
+        delegate?.deleteButtonTapped(name: name)
+    }
     
     let label: UILabel = {
         let lbl = UILabel()
@@ -79,7 +71,7 @@ class TodayTableViewCell: UITableViewCell {
     
     private func setupButtonEvent() {
         checkBtn.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
-//        deleteBtn.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+        deleteBtn.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
     }
     
     private func setLayout() {
@@ -129,9 +121,11 @@ class TodayTableViewCell: UITableViewCell {
         label.text = model.name
         if model.done == "0" {
             contentView.backgroundColor = .white
+            checkBtn.isEnabled = true
             checkView.isHidden = true
         } else {
             contentView.backgroundColor = .lightGray
+            checkBtn.isEnabled = false
             checkView.isHidden = false
             checkView.currentProgress = 20
         }

@@ -24,6 +24,7 @@ final class TodayViewController: UIViewController {
         view.addSubview(btn)
         settingUI()
     }
+    
 //    MARK: - UI Configure
     // 네비게이션 바
     private func configureNavigationbar() {
@@ -56,7 +57,7 @@ final class TodayViewController: UIViewController {
         view.backgroundColor = .white
         
         // NavigationItem
-        configureNavigationbar()
+//        configureNavigationbar()
         
         // TableView
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -82,6 +83,9 @@ final class TodayViewController: UIViewController {
         btn.addTarget(self, action: #selector(fetchStudyList), for: .touchUpInside)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        configureNavigationbar()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         addView()
@@ -99,67 +103,18 @@ final class TodayViewController: UIViewController {
     
     // 불러오기 버튼 이벤트
     @objc private func fetchStudyList() {
-//        db.deleteTable(tableName: "study")
-//        db.createTable(tableName: "study", stringColumn: ["name"])
-//        db.insertData(tableName: "study", columns: ["name"], insertData: ["hello"])
-//        print(db.readData(tableName: "study", column: ["name"]))
-//        var a: [Study] = {
-//            var readData = db.readData(tableName: "study", column: ["name"])
-//            var result = [Study]()
-//            for i in 0..<readData.count {
-//                let ab = Study(dict: readData[i])
-//                result.append(ab)
-//            }
-//            return result
-//        }()
-//        print(a)
-//        let alert = UIAlertController(title: "알림", message: "불러올 목록이 없습니다.", preferredStyle: .alert)
-//        let okAction = UIAlertAction(title: "확인", style: .cancel)
-//        alert.addAction(okAction)
         viewModel.fetchData()
-//        switch viewModel.checkDataState() {
-//        case .empty:
-//            alert.message = "불러올 목록이 없습니다."
-//        case .finish:
-//            alert.message = "이미 모든 목록을 불러왔습니다."
-//        case .loading:
-//            alert.message = "불러오기 완료."
-//            viewModel.fetchData()
-//        default: break
-//        }
-//        self.present(alert, animated: true, completion: nil)
     }
 }
 // MARK: - Cell Button Action
 extension TodayViewController: TodayTableViewCellDelegate {
-//    func deleteButtonTapped(value: StudyModel?) {
-//        <#code#>
-//    }
+    func deleteButtonTapped(name: String) {
+        viewModel.remove(name: name)
+    }
     
     func checkButtonTapped(name: String) {
         viewModel.complete(name: name)
     }
-    
-
-    
-    // 체크버튼 액션
-//    func checkButtonTapped(value: StudyModel?) {
-//        viewModel.complete(name: <#T##String#>)
-//        let element = CompletionList(name: value?.name, date: value?.date)
-//        if !viewModel.isContainElement(element) {
-//            viewModel.completions.append(element)
-//        }
-//        let completionElement = TodayStudyList(name: value?.name,
-//                                               isDone: true,
-//                                               date: value?.date)
-//        guard let firstIndex = viewModel.todayStudy.firstIndex(where: { $0.name == completionElement.name }) else { return }
-//        viewModel.todayStudy[firstIndex] = completionElement
-//    }
-//
-//    // 삭제버튼 액션
-//    func deleteButtonTapped(value: TodayStudyList?) {
-//        viewModel.remove(item: value)
-//    }
 }
 
 // MARK: - TableView
@@ -203,9 +158,4 @@ extension TodayViewController: TodayViewModelDelegate {
             self?.tableView.reloadData()
         }
     }
-    
-//    func didUpdateToday(with value: [TodayStudyList]) {
-//        TodayStudyUserDefauls.shared.set(new: value)
-//
-//    }
 }

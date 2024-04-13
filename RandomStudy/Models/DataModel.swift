@@ -20,12 +20,6 @@ struct StudyModel: Equatable, Codable {
     }
 }
 
-// TodayVC의 데이터 현황
-enum DateState {
-    case empty
-    case finish
-    case loading
-}
 // GitSearch 데이터 모델
 struct GitSearchRepository: Codable {
     let repositoryItems: [GitSearchItems]

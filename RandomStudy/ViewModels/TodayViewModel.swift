@@ -39,16 +39,11 @@ final class TodayViewModel {
         return todo.count
     }
 
-    var todayList: [StudyModel] {
-        return todo
-    }
-    
     // MARK: Method
     
     // 추가한 공부목록으로 부터 불러오는 메소드
     func fetchData() {
         let study = DBHelper.shared.readData(tableName: "study", column: column)
-        print(study)
         for i in study {
             var check = true
             for j in todo {
@@ -65,10 +60,7 @@ final class TodayViewModel {
                 
             }
         }
-        print("study: \(study)")
-        print("todo: \(todo)")
     }
-    
     
     // 완료 버튼 이벤트
     func complete(name: String) {
@@ -80,10 +72,10 @@ final class TodayViewModel {
         }
         DBHelper.shared.updateData(tableName: tableName, id: id, done: "1", date: dateFommatter.string(from: Date()))
         todo = DBHelper.shared.readData(tableName: tableName, column: column)
-        print("todo: \(todo)")
         insertDataToHistory(id: id)
         
     }
+    // 체크 버튼 이벤트
     func insertDataToHistory(id: Int) {
         for i in 0..<todo.count {
             if todo[i].id == id {
@@ -96,10 +88,16 @@ final class TodayViewModel {
     }
     
     // 삭제버튼 이벤트
-//    func remove(item: TodayStudyList?) {
-//        guard let item = item,
-//              let index = todayStudy.firstIndex(where: { $0 == item }) else { return }
-//        todayStudy.remove(at: index)
-//    }
+    func remove(name: String) {
+        var id = -1
+        for i in 0..<todo.count {
+            if todo[i].name == name, let index = todo[i].id {
+                id = index
+                todo.remove(at: i)
+                break
+            }
+        }
+        DBHelper.shared.deleteData(tableName: tableName, id: id)
+    }
     
 }

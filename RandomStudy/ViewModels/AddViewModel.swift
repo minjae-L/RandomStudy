@@ -22,9 +22,7 @@ final class AddViewModel {
             delegate?.didUpdate(with: elements)
         }
     }
-    init() {
-        print("add viewmodel init")
-    }
+
     var dataCount: Int {
         return elements.count
     }
@@ -50,10 +48,8 @@ final class AddViewModel {
         for i in 0..<column.count-1 {
             data.append("0")
         }
-        print(data)
         DBHelper.shared.insertData(tableName: tableName, columns: column, insertData: data)
         elements = DBHelper.shared.readData(tableName: tableName, column: column)
-        print(elements)
     }
     
     func removeData(name: String) {
@@ -65,7 +61,6 @@ final class AddViewModel {
         }
         DBHelper.shared.deleteData(tableName: tableName, id: index)
         elements = DBHelper.shared.readData(tableName: tableName, column: column)
-        print(elements)
         
     }
 }

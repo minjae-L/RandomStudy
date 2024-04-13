@@ -12,6 +12,7 @@ class DBHelper {
     var db: OpaquePointer?
     var databaseName: String = "mydb.sqlite"
     static let shared = DBHelper()
+    
     init() {
         print("DB helper init")
         self.db = createDB()
