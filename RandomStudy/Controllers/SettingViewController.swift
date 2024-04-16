@@ -63,15 +63,19 @@ class SettingViewController: UIViewController {
     private func configure() {
         // 일반
         models.append(Section(title: "일반", options: [
-            .switchCell(model: SettingSwitchOption(title: "다크 모드", icon: UIImage(systemName: "moon"), iconBackgroundColor: .systemPurple, handler: {
-            }, isOn: false)),
-            .staticCell(model: SettingsOption(title: "내 기록", icon: UIImage(systemName: "checklist.checked"), iconBackgroundColor: .systemGreen, handler: {
-                let vc = HistoryViewController()
-                self.navigationController?.pushViewController(vc, animated: true)
-            }, accessoryType: .disclosureIndicator)),
-            .staticCell(model: SettingsOption(title: "기록 초기화", icon: UIImage(systemName: "trash"), iconBackgroundColor: .systemRed, handler: {
-                self.removeAllButtonEvent()
-            }, accessoryType: .none))
+            .switchCell(model: SettingSwitchOption(title: "다크 모드",
+                                                   icon: UIImage(systemName: "moon"),
+                                                   iconBackgroundColor: .systemPurple,
+                                                   handler: { },
+                                                   isOn: false)),
+            .staticCell(model: SettingsOption(title: "내 기록",
+                                              icon: UIImage(systemName: "checklist.checked"),
+                                              iconBackgroundColor: .systemGreen,
+                                              handler: {
+                                                    let vc = HistoryViewController()
+                                                    self.navigationController?.pushViewController(vc, animated: true)
+                                                    },
+                                              accessoryType: .disclosureIndicator))
         ]))
         
         // Git
@@ -81,9 +85,18 @@ class SettingViewController: UIViewController {
                                               iconBackgroundColor: .black,
                                               handler: {
                                                   self.navigationController?.pushViewController(GitSearchViewController(), animated: true)
-                                              }, accessoryType: .none
+                                              },
+                                              accessoryType: .none
             ))]
         ))
+        models.append(Section(title: "초기화", options: [
+            .staticCell(model: SettingsOption(title: "기록 초기화",
+                                              icon: UIImage(systemName: "trash"),
+                                              iconBackgroundColor: .systemRed,
+                                              handler: {
+                                                  self.removeAllButtonEvent()
+                                                },
+                                              accessoryType: .none))]))
     }
     
     private func removeAllButtonEvent() {

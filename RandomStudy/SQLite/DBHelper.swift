@@ -41,6 +41,10 @@ class DBHelper {
                                                 in: .userDomainMask,
                                                 appropriateFor: nil,
                                                 create: true).appendingPathComponent(databaseName).path
+        let filePath = try! FileManager.default.url(for: .documentDirectory,
+                                                    in: .userDomainMask,
+                                                    appropriateFor: nil,
+                                                    create: false).appendingPathExtension(databaseName).path
         
         var db: OpaquePointer? = nil
         

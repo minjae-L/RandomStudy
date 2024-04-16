@@ -115,9 +115,6 @@ extension AddViewController: UITableViewDataSource, UITableViewDelegate {
             return UITableViewCell()
         }
         cell.selectionStyle = .none
-        if let name = study.name {
-            cell.name = name
-        }
         cell.delegate = self
         cell.configure(with: study)
 

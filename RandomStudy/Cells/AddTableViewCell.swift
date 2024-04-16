@@ -14,10 +14,10 @@ protocol AddViewControllerButtonDelegate: AnyObject {
 class AddTableViewCell: UITableViewCell {
     static let identifier = "AddTableViewCell"
     weak var delegate: AddViewControllerButtonDelegate?
-    var name: String = ""
+    var indexPathStudyName: String = ""
     
     @objc func deleteButtonTapped() {
-        delegate?.cellDeleteButtonTapped(name: name)
+        delegate?.cellDeleteButtonTapped(name: indexPathStudyName)
     }
     
     private let label: UILabel = {
@@ -74,6 +74,9 @@ class AddTableViewCell: UITableViewCell {
     
     func configure(with model: StudyModel) {
         label.text = model.name
+        if let name = model.name {
+            indexPathStudyName = name
+        }
     }
 }
 

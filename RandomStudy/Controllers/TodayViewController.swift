@@ -55,6 +55,7 @@ final class TodayViewController: UIViewController {
     private func settingUI() {
         // View
         view.backgroundColor = .white
+        configureNavigationbar()
         
         // TableView
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -80,9 +81,6 @@ final class TodayViewController: UIViewController {
         btn.addTarget(self, action: #selector(fetchStudyList), for: .touchUpInside)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        configureNavigationbar()
-    }
     override func viewDidLoad() {
         super.viewDidLoad()
         addView()
