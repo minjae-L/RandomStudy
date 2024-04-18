@@ -40,7 +40,7 @@ class HistoryTableViewCell: UITableViewCell {
         label.text = nil
     }
     
-    func configure(with model: CompletionList) {
+    func configure(with model: StudyModel) {
         label.text = model.name
     }
 }

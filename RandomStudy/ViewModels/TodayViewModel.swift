@@ -8,24 +8,25 @@
 import Foundation
 
 protocol TodayViewModelDelegate: AnyObject {
-    func didUpdateToday(with value: [TodayStudyList])
+    func didUpdateToday(with value: [StudyModel])
 }
 
 final class TodayViewModel {
     
     // MARK: Property
     weak var delegate: TodayViewModelDelegate?
-    
-    var todayStudy: [TodayStudyList] = TodayStudyUserDefauls.shared.data {
+    var tableName = "todo"
+    var column = ["name", "done", "date"]
+    var db = DBHelper()
+    var todo: [StudyModel] = DBHelper.shared.readData(tableName: "todo", column:  ["name", "done", "date"]) {
         didSet {
-            delegate?.didUpdateToday(with: todayStudy)
+            delegate?.didUpdateToday(with: todo)
         }
     }
     
-    var completions: [CompletionList] = HistoryUserDefaults.shared.data {
-        didSet {
-            HistoryUserDefaults.shared.set(new: completions)
-        }
+    init() {
+        db.delegate = self
+        print("today viewmodel init")
     }
     
     private var dateFommatter: DateFormatter = {
@@ -36,93 +37,74 @@ final class TodayViewModel {
     }()
     
     var dataCount: Int {
-        return todayStudy.count
+        return todo.count
     }
 
-    var todayList: [TodayStudyList] {
-        return todayStudy
-    }
-    
     // MARK: Method
     
-    // 추가해뒀던 공부목록 불러오기
-    private func loadStudyList() -> [Study] {
-        return StudyListUserDefaults.shared.data
-    }
-    
-    // 완료된 목록 불러오기
-    private func loadCompletionList() -> [CompletionList] {
-        var arr = [CompletionList]()
-        if let data = UserDefaults.standard.value(forKey: "completionStudy") as? Data {
-            arr = try! PropertyListDecoder().decode(Array<CompletionList>.self, from: data)
-        }
-        return arr
-    }
-    
-    // 현재 상태를 확인하는 메소드
-    func checkDataState() -> DateState {
-        if self.loadStudyList().isEmpty {
-            return DateState.empty
-        } else if self.isAllDataUploaded() {
-            return DateState.finish
-        } else {
-            return DateState.loading
-        }
-    }
-    
-    //  모든 데이터가 불러와졌는지 확인하는 메소드
-    private func isAllDataUploaded() -> Bool {
-        let uploaded = todayList
-        for data in self.loadStudyList() {
-            let element1 = TodayStudyList(name: data.name, isDone: false, date: dateFommatter.string(from: Date()))
-            let element2 = TodayStudyList(name: data.name, isDone: true, date: dateFommatter.string(from: Date()))
-            if !uploaded.contains(element1) && !uploaded.contains(element2) {
-                return false
+    // 추가한 공부목록으로 부터 불러오는 메소드 (불러오기)
+    func fetchData() {
+        let study = DBHelper.shared.readData(tableName: "study", column: column)
+        for i in study {
+            var check = true
+            for j in todo {
+                if i.name == j.name {
+                    check = false
+                    break
+                }
+            }
+            if check {
+                guard let name = i.name, let done = i.done, let date = i.date else { return }
+                let data = [name, done, date]
+                DBHelper.shared.insertData(tableName: tableName, columns: column, insertData: data)
+                todo.append(i)
+                
             }
         }
-        return true
     }
     
-    // 추가한 공부목록으로 부터 불러오는 메소드
-    func fetchData() {
-        let studyList = self.loadStudyList()
-        let completionList = self.loadCompletionList()
-        let currentDate = dateFommatter.string(from: Date())
-        var arr = [TodayStudyList]()
-        // 목록이 중복되거나 이미 완료된 목록인지 확인
-        for data in studyList {
-            let element = TodayStudyList(name: data.name, isDone: false, date: currentDate)
-            let completeElement = CompletionList(name: data.name, date: currentDate)
-            if completionList.contains(completeElement) || todayList.contains(element) { continue }
-            arr.append(element)
-        }
-        todayStudy.append(contentsOf: arr)
-    }
     // 완료 버튼 이벤트
-    func complete(index: Int) {
-        if !todayStudy[index].isDone {
-            todayStudy[index].isDone = true
+    func complete(name: String) {
+        guard let id = todo.filter{$0.name == name}[0].id else { return }
+        DBHelper.shared.updateData(tableName: tableName, id: id, done: "1", date: dateFommatter.string(from: Date()))
+        todo = DBHelper.shared.readData(tableName: tableName, column: column)
+        insertDataToHistory(id: id)
+        
+    }
+    // 체크 버튼 이벤트
+    func insertDataToHistory(id: Int) {
+        for i in 0..<todo.count {
+            if todo[i].id == id {
+                guard let name = todo[i].name, let done = todo[i].done, let date = todo[i].date else { return }
+                let data = [name, done, date]
+                DBHelper.shared.insertData(tableName: "history", columns: column, insertData: data)
+                break
+            }
         }
     }
     
     // 삭제버튼 이벤트
-    func remove(item: TodayStudyList?) {
-        guard let item = item,
-              let index = todayStudy.firstIndex(where: { $0 == item }) else { return }
-        todayStudy.remove(at: index)
-    }
-    
-    // 목록 초기화
-    func removeAll() {
-        todayStudy.removeAll()
-    }
-    
-    func isContainElement(_ element: CompletionList) -> Bool {
-        for data in completions {
-            if data == element {
-                return true
+    func remove(name: String) {
+        var id = -1
+        for i in 0..<todo.count {
+            if todo[i].name == name, let index = todo[i].id {
+                id = index
+                todo.remove(at: i)
+                break
             }
         }
-        return false
+        DBHelper.shared.deleteData(tableName: tableName, id: id)
+    }
+    // 데이터 최신화
+    func fetchTodoList() {
+        self.todo = DBHelper.shared.readData(tableName: tableName, column: column)
+    }
+    
+}
+
+extension TodayViewModel: DBHelperDelegate {
+    func removeAllDatas() {
+        print("DBDelegate - todo")
+        todo.removeAll()
     }
 }

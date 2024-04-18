@@ -9,12 +9,13 @@ import Foundation
 
 final class HistoryViewModel {
     
-    var completions: [CompletionList] = HistoryUserDefaults.shared.data
+    var completions: [StudyModel] = DBHelper.shared.readData(tableName: "history", column: ["name", "done", "date"])
+    private let tableName = "history"
+    private let column = ["name", "done", "date"]
     
     var count: Int {
         return completions.count
     }
-    
     var dateCount: Int {
         return Array(Set(completions.compactMap { $0.date })).count
     }

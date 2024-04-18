@@ -8,27 +8,28 @@
 import Foundation
 
 protocol AddViewModelDelegate: AnyObject {
-    func didUpdate(with value: [Study])
+    func didUpdate(with value: [StudyModel])
 }
 
 final class AddViewModel {
     
     weak var delegate: AddViewModelDelegate?
+    private let tableName = "study"
+    private let column = ["name", "done", "date"]
     
-    private(set) var elements: [Study] = StudyListUserDefaults.shared.data {
+    private var elements: [StudyModel] = DBHelper.shared.readData(tableName: "study", column: ["name", "done", "date"]) {
         didSet {
             delegate?.didUpdate(with: elements)
         }
     }
-    
+
     var dataCount: Int {
         return elements.count
     }
     
-    var study: [Study] {
+    var study: [StudyModel] {
         return elements
     }
-    
     func isContainsElement(str: String) -> Bool {
         var isContain = false
         for i in 0..<elements.count {
@@ -43,11 +44,24 @@ final class AddViewModel {
     // 배열에 값 추가
     func addData(str: String) {
         if str == "" { return }
-        self.elements.append(Study(name: str))
+        var data = [str]
+        for i in 0..<column.count-1 {
+            data.append("0")
+        }
+        DBHelper.shared.insertData(tableName: tableName, columns: column, insertData: data)
+        elements = DBHelper.shared.readData(tableName: tableName, column: column)
     }
     
-    func removeData(index: Int) {
-        elements.remove(at: index)
+    func removeData(name: String) {
+        var index = -1
+        for i in 0..<elements.count {
+            if elements[i].name == name, let num = elements[i].id {
+                index = num
+            }
+        }
+        DBHelper.shared.deleteData(tableName: tableName, id: index)
+        elements = DBHelper.shared.readData(tableName: tableName, column: column)
+        
     }
 }
 
