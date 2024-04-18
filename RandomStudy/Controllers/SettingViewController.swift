@@ -126,7 +126,6 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let model = models[indexPath.section].options[indexPath.row]
-        print("indexPath.section: \(indexPath.section), indexPath.row: \(indexPath.row)")
         switch model.self {
         case .staticCell(let model):
             guard let cell = tableView.dequeueReusableCell(

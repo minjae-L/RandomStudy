@@ -55,7 +55,6 @@ final class TodayViewController: UIViewController {
     private func settingUI() {
         // View
         view.backgroundColor = .white
-        configureNavigationbar()
         
         // TableView
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -85,6 +84,10 @@ final class TodayViewController: UIViewController {
         super.viewDidLoad()
         addView()
         bindings()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        viewModel.fetchTodoList()
+        configureNavigationbar()
     }
     
     @objc private func goSettingVC() {

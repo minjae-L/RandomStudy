@@ -42,7 +42,7 @@ final class TodayViewModel {
 
     // MARK: Method
     
-    // 추가한 공부목록으로 부터 불러오는 메소드
+    // 추가한 공부목록으로 부터 불러오는 메소드 (불러오기)
     func fetchData() {
         let study = DBHelper.shared.readData(tableName: "study", column: column)
         for i in study {
@@ -94,6 +94,10 @@ final class TodayViewModel {
             }
         }
         DBHelper.shared.deleteData(tableName: tableName, id: id)
+    }
+    // 데이터 최신화
+    func fetchTodoList() {
+        self.todo = DBHelper.shared.readData(tableName: tableName, column: column)
     }
     
 }
