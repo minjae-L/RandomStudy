@@ -65,12 +65,7 @@ final class TodayViewModel {
     
     // 완료 버튼 이벤트
     func complete(name: String) {
-        var id = -1
-        for i in 0..<todo.count {
-            if todo[i].name == name, let num = todo[i].id {
-                id = num
-            }
-        }
+        guard let id = todo.filter{$0.name == name}[0].id else { return }
         DBHelper.shared.updateData(tableName: tableName, id: id, done: "1", date: dateFommatter.string(from: Date()))
         todo = DBHelper.shared.readData(tableName: tableName, column: column)
         insertDataToHistory(id: id)
