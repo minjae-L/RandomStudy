@@ -54,29 +54,32 @@ class AddViewController: UIViewController {
     
     // 추가하기 버튼 이벤트
     @objc func addCategory() {
-        let alert = UIAlertController(title: "추가하기", message: "", preferredStyle: .alert)
-        let addAction = UIAlertAction(title: "추가", style: .default) { (addAction) in
-            guard let text = alert.textFields?[0].text else { return }
-            if !self.viewModel.isContainsElement(str: text) {
-                self.viewModel.addData(str: text)
-            } else {
-                let errorAlert = UIAlertController(title: "오류", message: "같은 목록이 이미 있습니다.", preferredStyle: .alert)
-                let okAction = UIAlertAction(title: "확인", style: .default)
-                errorAlert.addAction(okAction)
-                self.present(errorAlert, animated: true)
-            }
-        }
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
-        
-        addAction.isEnabled = false
-        alert.addAction(addAction)
-        alert.addAction(cancelAction)
-        alert.addTextField() { (textField) in
-            textField.becomeFirstResponder()
-            textField.returnKeyType = .done
-            textField.addTarget(alert, action: #selector(alert.checkTextFieldBlank(_:)), for: UIControl.Event.editingChanged)
-        }
-        self.present(alert, animated: true, completion: nil)
+//        let alert = UIAlertController(title: "추가하기", message: "", preferredStyle: .alert)
+//        let addAction = UIAlertAction(title: "추가", style: .default) { (addAction) in
+//            guard let text = alert.textFields?[0].text else { return }
+//            if !self.viewModel.isContainsElement(str: text) {
+//                self.viewModel.addData(str: text)
+//            } else {
+//                let errorAlert = UIAlertController(title: "오류", message: "같은 목록이 이미 있습니다.", preferredStyle: .alert)
+//                let okAction = UIAlertAction(title: "확인", style: .default)
+//                errorAlert.addAction(okAction)
+//                self.present(errorAlert, animated: true)
+//            }
+//        }
+//        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+//        
+//        addAction.isEnabled = false
+//        alert.addAction(addAction)
+//        alert.addAction(cancelAction)
+//        alert.addTextField() { (textField) in
+//            textField.becomeFirstResponder()
+//            textField.returnKeyType = .done
+//            textField.addTarget(alert, action: #selector(alert.checkTextFieldBlank(_:)), for: UIControl.Event.editingChanged)
+//        }
+        let addPopUpView = AddPopUpViewController()
+        addPopUpView.modalPresentationStyle = .overFullScreen
+        addPopUpView.modalTransitionStyle = .crossDissolve
+        self.present(addPopUpView, animated: true, completion: nil)
     }
     
 }
