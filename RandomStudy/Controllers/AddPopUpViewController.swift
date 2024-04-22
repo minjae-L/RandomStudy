@@ -6,11 +6,14 @@
 //
 
 import UIKit
-
+protocol AddPopUpViewControllerDelegate: AnyObject {
+    func sendedDataFromPopUp()
+}
 class AddPopUpViewController: UIViewController {
     
 //    MARK: UI Property
-    private var contentView: UIView?
+    private var viewModel = AddViewModel()
+    weak var delegate: AddPopUpViewControllerDelegate?
     private var containerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -24,6 +27,7 @@ class AddPopUpViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    
     private var lowerStackView: UIStackView = {
         let stv = UIStackView()
         stv.axis = .horizontal
@@ -42,13 +46,26 @@ class AddPopUpViewController: UIViewController {
         lb.translatesAutoresizingMaskIntoConstraints = false
         return lb
     }()
+    private var errorLabel: UILabel = {
+        let lb = UILabel()
+        lb.font = .systemFont(ofSize: 15)
+        lb.textColor = .systemRed
+        lb.numberOfLines = 0
+        lb.textAlignment = .center
+        lb.text = "빈칸은 추가할 수 없습니다."
+        lb.isHidden = true
+        lb.translatesAutoresizingMaskIntoConstraints = false
+        return lb
+    }()
     private lazy var addButton: UIButton = {
         let btn = UIButton()
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.backgroundColor = .systemBlue
         btn.setTitle("추가", for: .normal)
         btn.tintColor = .white
-        btn.backgroundColor = .systemBlue
+        btn.backgroundColor = .gray
+        btn.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+        btn.isEnabled = false
         return btn
     }()
     private lazy var cancelButton: UIButton = {
@@ -57,6 +74,7 @@ class AddPopUpViewController: UIViewController {
         btn.backgroundColor = .systemCyan
         btn.setTitle("취소", for: .normal)
         btn.tintColor = .black
+        btn.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return btn
     }()
     private lazy var textField: UITextField = {
@@ -64,6 +82,8 @@ class AddPopUpViewController: UIViewController {
         tf.translatesAutoresizingMaskIntoConstraints = false
         tf.backgroundColor = .white
         tf.borderStyle = .roundedRect
+        tf.addTarget(self, action: #selector(checkBlankTextField(_:)), for: UIControl.Event.editingChanged)
+        tf.placeholder = "목록을 입력해주세요."
         return tf
     }()
     
@@ -71,6 +91,7 @@ class AddPopUpViewController: UIViewController {
         view.addSubview(containerView)
         containerView.addSubview(messageView)
         messageView.addSubview(titleLabel)
+        messageView.addSubview(errorLabel)
         messageView.addSubview(textField)
         containerView.addSubview(lowerStackView)
         lowerStackView.addArrangedSubview(cancelButton)
@@ -92,6 +113,8 @@ class AddPopUpViewController: UIViewController {
             titleLabel.centerXAnchor.constraint(equalTo: messageView.centerXAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: messageView.leadingAnchor),
             titleLabel.trailingAnchor.constraint(equalTo: messageView.trailingAnchor),
+            errorLabel.bottomAnchor.constraint(equalTo: textField.topAnchor, constant: -10),
+            errorLabel.centerXAnchor.constraint(equalTo: messageView.centerXAnchor),
             textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 60),
             textField.leadingAnchor.constraint(equalTo: messageView.leadingAnchor, constant: 20),
             textField.trailingAnchor.constraint(equalTo: messageView.trailingAnchor, constant: -20),
@@ -100,13 +123,46 @@ class AddPopUpViewController: UIViewController {
             lowerStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
             lowerStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
             lowerStackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -20)
-            
-            
         ])
+    }
+//    MARK: Method
+    @objc func cancelButtonTapped() {
+        self.dismiss(animated: true)
+    }
+    @objc func addButtonTapped() {
+        guard let text = self.textField.text else { return }
+        if text == "" {
+            errorLabel.text = "공백은 추가할 수 없습니다."
+            errorLabel.isHidden = false
+        } else {
+            if viewModel.isContainsElement(str: text) {
+                errorLabel.text = "같은 목록이 존재합니다."
+                errorLabel.isHidden = false
+            } else {
+                errorLabel.isHidden = true
+                viewModel.addData(str: text)
+                delegate?.sendedDataFromPopUp()
+                self.dismiss(animated: true)
+            }
+        }
+    }
+    @objc func checkBlankTextField(_ sender: UITextField) {
+        if sender.text?.count == 0 {
+            self.addButton.isEnabled = false
+        } else {
+            self.addButton.isEnabled = true
+        }
+        stateAddButton()
+    }
+    private func stateAddButton() {
+        if self.addButton.isEnabled {
+            addButton.backgroundColor = .systemBlue
+        } else {
+            addButton.backgroundColor = .gray
+        }
     }
     convenience init(contentView: UIView? = nil) {
         self.init()
-        self.contentView = contentView
         modalPresentationStyle = .overFullScreen
     }
 
@@ -115,6 +171,7 @@ class AddPopUpViewController: UIViewController {
         view.backgroundColor = .black.withAlphaComponent(0.3)
         addView()
         configureConstraints()
+        
     }
 
 }
