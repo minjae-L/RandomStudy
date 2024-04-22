@@ -9,6 +9,7 @@ import UIKit
 protocol AddPopUpViewControllerDelegate: AnyObject {
     func sendedDataFromPopUp()
 }
+
 class AddPopUpViewController: UIViewController {
     
 //    MARK: UI Property
@@ -145,6 +146,7 @@ class AddPopUpViewController: UIViewController {
                 self.dismiss(animated: true)
             }
         }
+        print("delegate: \(delegate)")
     }
     @objc func checkBlankTextField(_ sender: UITextField) {
         if sender.text?.count == 0 {
@@ -161,11 +163,7 @@ class AddPopUpViewController: UIViewController {
             addButton.backgroundColor = .gray
         }
     }
-    convenience init(contentView: UIView? = nil) {
-        self.init()
-        modalPresentationStyle = .overFullScreen
-    }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black.withAlphaComponent(0.3)
