@@ -10,7 +10,7 @@ protocol AddPopUpViewControllerDelegate: AnyObject {
     func sendedDataFromPopUp()
 }
 
-final class AddPopUpViewController: UIViewController {
+class AddPopUpViewController: UIViewController {
     
 //    MARK: UI Property
     private var viewModel = AddViewModel()
@@ -38,7 +38,7 @@ final class AddPopUpViewController: UIViewController {
         stv.translatesAutoresizingMaskIntoConstraints = false
         return stv
     }()
-    private var titleLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
         let lb = UILabel()
         lb.font = .boldSystemFont(ofSize: 20)
         lb.text = "추가하기"
@@ -131,20 +131,22 @@ final class AddPopUpViewController: UIViewController {
         self.dismiss(animated: true)
     }
     @objc func addButtonTapped() {
-        guard let text = self.textField.text else {
+        guard let text = self.textField.text else { return }
+        if text == "" {
             errorLabel.text = "공백은 추가할 수 없습니다."
             errorLabel.isHidden = false
-            return
-        }
-        if viewModel.isContainsElement(str: text) {
-            errorLabel.text = "같은 목록이 존재합니다."
-            errorLabel.isHidden = false
         } else {
-            errorLabel.isHidden = true
-            viewModel.addData(str: text)
-            delegate?.sendedDataFromPopUp()
-            self.dismiss(animated: true)
+            if viewModel.isContainsElement(str: text) {
+                errorLabel.text = "같은 목록이 존재합니다."
+                errorLabel.isHidden = false
+            } else {
+                errorLabel.isHidden = true
+                viewModel.addData(str: text)
+                delegate?.sendedDataFromPopUp()
+                self.dismiss(animated: true)
+            }
         }
+        print("delegate: \(delegate)")
     }
     @objc func checkBlankTextField(_ sender: UITextField) {
         if sender.text?.count == 0 {
