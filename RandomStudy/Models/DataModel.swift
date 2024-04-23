@@ -49,7 +49,21 @@ struct GitUser: Codable {
         case avatarUrl = "avatar_url"
     }
 }
-
+// MARK: Dark mode
+enum UIType {
+    case dark
+    case normal
+}
+class UIDarkmodeUserDefaults {
+    static var isDark: UIType = {
+        let dark = UserDefaults.standard.bool(forKey: "darkMode")
+        if dark {
+            return .dark
+        } else {
+            return .normal
+        }
+    }()
+}
 // MARK: - Setting ViewController Cell Struct
 struct Section {
     let title: String
