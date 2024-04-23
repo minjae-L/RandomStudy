@@ -14,7 +14,6 @@
 		B51C8AFF2BC7F735005ADC46 /* DBHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C8AFE2BC7F735005ADC46 /* DBHelper.swift */; };
 		B53529232AD63ED700C82383 /* check.json in Resources */ = {isa = PBXBuildFile; fileRef = B53529222AD63ED700C82383 /* check.json */; };
 		B54DE1D92B5AA97C00923530 /* GitSearchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54DE1D82B5AA97C00923530 /* GitSearchCollectionViewCell.swift */; };
-		B5785DDF2BD149B0006AA50D /* AddPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5785DDE2BD149B0006AA50D /* AddPopUpViewController.swift */; };
 		B58BE0112AD607970039D232 /* TodayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58BE0102AD607970039D232 /* TodayViewModel.swift */; };
 		B58D28DF2A2D830100947A24 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58D28DE2A2D830100947A24 /* AppDelegate.swift */; };
 		B58D28E12A2D830100947A24 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58D28E02A2D830100947A24 /* SceneDelegate.swift */; };
@@ -70,7 +69,6 @@
 		B51C8AFE2BC7F735005ADC46 /* DBHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBHelper.swift; sourceTree = "<group>"; };
 		B53529222AD63ED700C82383 /* check.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = check.json; sourceTree = "<group>"; };
 		B54DE1D82B5AA97C00923530 /* GitSearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitSearchCollectionViewCell.swift; sourceTree = "<group>"; };
-		B5785DDE2BD149B0006AA50D /* AddPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPopUpViewController.swift; sourceTree = "<group>"; };
 		B58BE0102AD607970039D232 /* TodayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewModel.swift; sourceTree = "<group>"; };
 		B58D28DB2A2D830100947A24 /* RandomStudy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RandomStudy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B58D28DE2A2D830100947A24 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -250,7 +248,6 @@
 				B5B7EB952AA4FCA0006944A8 /* AddViewController.swift */,
 				B59B658E2ADB3006008A60F1 /* HistoryViewController.swift */,
 				B5FE6C102B596C7B00542731 /* GitSearchViewController.swift */,
-				B5785DDE2BD149B0006AA50D /* AddPopUpViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -522,7 +519,6 @@
 				B58BE0112AD607970039D232 /* TodayViewModel.swift in Sources */,
 				B58D28DF2A2D830100947A24 /* AppDelegate.swift in Sources */,
 				B59B658F2ADB3006008A60F1 /* HistoryViewController.swift in Sources */,
-				B5785DDF2BD149B0006AA50D /* AddPopUpViewController.swift in Sources */,
 				B5CC3B2B2AB207E500D9FA24 /* SwitchTableViewCell.swift in Sources */,
 				B51C8AFF2BC7F735005ADC46 /* DBHelper.swift in Sources */,
 				B5CC3B1D2AB141E700D9FA24 /* DataModel.swift in Sources */,

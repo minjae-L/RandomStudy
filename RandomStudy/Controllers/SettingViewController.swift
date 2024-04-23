@@ -9,7 +9,7 @@ import UIKit
 
 // MARK: - Main
 class SettingViewController: UIViewController {
-    
+
     // 두가지 Custom Cell을 선언과 동시에 등록한다.
     private let tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .grouped)
