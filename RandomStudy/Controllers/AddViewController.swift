@@ -15,7 +15,7 @@ class AddViewController: UIViewController {
     private var viewModel = AddViewModel()
     private func addSubView() {
         view.addSubview(tableView)
-        settingUI()
+        settingUI(UIDarkmodeUserDefaults.shared.UIMode)
     }
     // 데이터 바인딩
     private func bindings() {
@@ -23,12 +23,32 @@ class AddViewController: UIViewController {
     }
     
     // UI 설정
-    private func settingUI() {
+    private func settingUI(_ type: UIType) {
+        let appearance = UINavigationBarAppearance()
+        switch type {
+        case .dark:
+            appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+            appearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+            appearance.backgroundColor = .darkGray
+            tableView.backgroundColor = .darkGray
+            view.backgroundColor = .darkGray
+        case .normal:
+            appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
+            appearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
+            appearance.backgroundColor = .white
+            tableView.backgroundColor = .white
+            view.backgroundColor = .white
+        default:
+            break
+        }
+        
         //NavigationBar
-        self.view.backgroundColor = .white
         self.navigationItem.title = "공부 목록"
+        self.navigationController?.navigationBar.prefersLargeTitles = false
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.navigationBar.standardAppearance = appearance
+        self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
         self.navigationItem.largeTitleDisplayMode = .never
-        self.navigationController?.navigationBar.barTintColor = .white
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(addCategory))
         
         // TableView
