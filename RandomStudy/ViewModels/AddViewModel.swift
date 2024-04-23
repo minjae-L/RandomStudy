@@ -22,6 +22,7 @@ final class AddViewModel {
             delegate?.didUpdate(with: elements)
         }
     }
+
     var dataCount: Int {
         return elements.count
     }
@@ -60,9 +61,7 @@ final class AddViewModel {
         }
         DBHelper.shared.deleteData(tableName: tableName, id: index)
         elements = DBHelper.shared.readData(tableName: tableName, column: column)
-    }
-    func fetchData() {
-        self.elements = DBHelper.shared.readData(tableName: tableName, column: column)
+        
     }
 }
 
