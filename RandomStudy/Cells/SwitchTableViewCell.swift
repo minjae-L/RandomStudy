@@ -37,7 +37,7 @@ class SwitchTableViewCell: UITableViewCell {
     private let mySwitch: UISwitch = {
         let mySwitch = UISwitch()
         mySwitch.onTintColor = .systemBlue
-        
+        mySwitch.addTarget(self, action: #selector(clickSwitch), for: UIControl.Event.valueChanged)
         return mySwitch
     }()
 
@@ -87,7 +87,9 @@ class SwitchTableViewCell: UITableViewCell {
         iconContainer.backgroundColor = nil
         mySwitch.isOn = false
     }
-    
+    @objc func clickSwitch() {
+        UIDarkmodeUserDefaults.shared.changeMode()
+    }
     func configure(with model: SettingSwitchOption) {
         label.text = model.title
         iconImageView.image = model.icon

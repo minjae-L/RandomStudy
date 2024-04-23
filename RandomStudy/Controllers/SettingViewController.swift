@@ -61,13 +61,14 @@ class SettingViewController: UIViewController {
     
     // 설정 목록
     private func configure() {
+        
         // 일반
         models.append(Section(title: "일반", options: [
             .switchCell(model: SettingSwitchOption(title: "다크 모드",
                                                    icon: UIImage(systemName: "moon"),
                                                    iconBackgroundColor: .systemPurple,
-                                                   handler: { },
-                                                   isOn: false)),
+                                                   handler: {},
+                                                   isOn: UIDarkmodeUserDefaults.shared.isDark)),
             .staticCell(model: SettingsOption(title: "내 기록",
                                               icon: UIImage(systemName: "checklist.checked"),
                                               iconBackgroundColor: .systemGreen,

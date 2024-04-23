@@ -55,7 +55,17 @@ enum UIType {
     case normal
 }
 class UIDarkmodeUserDefaults {
-    static var isDark: UIType = {
+    var isDark: Bool = UserDefaults.standard.bool(forKey: "darkMode") {
+        didSet {
+            UserDefaults.standard.setValue(self.isDark, forKey: "darkMode")
+            fetchMode()
+        }
+    }
+    
+    static let shared = UIDarkmodeUserDefaults()
+    private init(){}
+    
+    var UIMode: UIType = {
         let dark = UserDefaults.standard.bool(forKey: "darkMode")
         if dark {
             return .dark
@@ -63,6 +73,17 @@ class UIDarkmodeUserDefaults {
             return .normal
         }
     }()
+    private func fetchMode() {
+        switch self.isDark {
+        case true: self.UIMode = .dark
+        case false: self.UIMode = .normal
+        default:
+            break
+        }
+    }
+    func changeMode() {
+        self.isDark = !isDark
+    }
 }
 // MARK: - Setting ViewController Cell Struct
 struct Section {
