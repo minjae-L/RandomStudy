@@ -9,7 +9,6 @@ import UIKit
 
 class SettingTableViewCell: UITableViewCell {
     static let identifier = "SettingTableViewCell"
-
     private let iconContainer: UIView = {
         let view = UIView()
         view.clipsToBounds = true
@@ -40,7 +39,6 @@ class SettingTableViewCell: UITableViewCell {
         contentView.addSubview(label)
         contentView.addSubview(iconContainer)
         iconContainer.addSubview(iconImageView)
-        
         contentView.clipsToBounds = true
     }
     
@@ -71,7 +69,20 @@ class SettingTableViewCell: UITableViewCell {
         label.text = nil
         iconContainer.backgroundColor = nil
     }
-    
+    func setUIColor(_ mode: UIType) {
+        switch mode {
+        case .dark:
+            self.backgroundView?.backgroundColor = UIColor.gray.withAlphaComponent(0.2)
+            self.contentView.backgroundColor = UIColor.gray.withAlphaComponent(0.2)
+            self.accessoryView?.backgroundColor = UIColor.gray.withAlphaComponent(0.2)
+            self.label.textColor = .white
+        case .normal:
+            self.backgroundView?.backgroundColor = UIColor.white.withAlphaComponent(1)
+            self.contentView.backgroundColor = UIColor.white.withAlphaComponent(1)
+            self.accessoryView?.backgroundColor = UIColor.white.withAlphaComponent(1)
+            self.label.textColor = .black
+        }
+    }
     // 셀에 있는 이미지뷰와 라벨을 미리 정했던 구조체와 연결
     func configure(with model: SettingsOption) {
         label.text = model.title

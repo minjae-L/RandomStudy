@@ -28,7 +28,6 @@ final class TodayViewController: UIViewController {
     // 네비게이션 바
     private func configureNavigationbar(_ type: UIType) {
         let appearance = UINavigationBarAppearance()
-//        appearance.configureWithTransparentBackground()
         switch type {
         case .dark:
             appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
@@ -44,8 +43,6 @@ final class TodayViewController: UIViewController {
         }
         appearance.backgroundImage = UIImage()
         appearance.shadowImage = UIImage()
-//        self.navigationItem.standardAppearance?.backgroundImage = UIImage()
-//        self.navigationItem.standardAppearance?.shadowImage = UIImage()
         self.navigationItem.title = "Today"
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationController?.navigationBar.isTranslucent = false

@@ -17,23 +17,31 @@ class SettingViewController: UIViewController {
         table.register(SwitchTableViewCell.self, forCellReuseIdentifier: SwitchTableViewCell.identifier)
         return table
     }()
-    
     private var models = [Section]()
-    
     private func addSubView() {
         view.addSubview(tableView)
-        settingUI()
+        settingUI(UIDarkmodeUserDefaults.shared.UIMode)
     }
     
-    private func settingUI() {
+    private func settingUI(_ type: UIType) {
+        let navBarAppearance = UINavigationBarAppearance()
+        switch type {
+        case .dark:
+            self.view.backgroundColor = .black
+            navBarAppearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+            navBarAppearance.backgroundColor = .black
+            tableView.backgroundColor = .black
+        case .normal:
+            self.view.backgroundColor = .white
+            navBarAppearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
+            navBarAppearance.backgroundColor = .white
+            tableView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.2)
+        }
         // View
-        self.view.backgroundColor = .white
+        
         
         // NavigationBar
         self.navigationItem.title = "설정"
-        let navBarAppearance = UINavigationBarAppearance()
-        navBarAppearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
-        navBarAppearance.backgroundColor = .white
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.standardAppearance = navBarAppearance
         self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
@@ -53,10 +61,7 @@ class SettingViewController: UIViewController {
         super.viewDidLoad()
         addSubView()
         configure()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        settingUI()
+        settingUI(UIDarkmodeUserDefaults.shared.UIMode)
     }
     
     // 설정 목록
@@ -68,7 +73,8 @@ class SettingViewController: UIViewController {
                                                    icon: UIImage(systemName: "moon"),
                                                    iconBackgroundColor: .systemPurple,
                                                    handler: {},
-                                                   isOn: UIDarkmodeUserDefaults.shared.isDark)),
+                                                   isOn: UIDarkmodeUserDefaults.shared.isDark
+                                                   )),
             .staticCell(model: SettingsOption(title: "내 기록",
                                               icon: UIImage(systemName: "checklist.checked"),
                                               iconBackgroundColor: .systemGreen,
@@ -76,7 +82,8 @@ class SettingViewController: UIViewController {
                                                     let vc = HistoryViewController()
                                                     self.navigationController?.pushViewController(vc, animated: true)
                                                     },
-                                              accessoryType: .disclosureIndicator))
+                                              accessoryType: .disclosureIndicator
+                                              ))
         ]))
         
         // Git
@@ -97,7 +104,8 @@ class SettingViewController: UIViewController {
                                               handler: {
                                                   self.removeAllButtonEvent()
                                                 },
-                                              accessoryType: .none))]))
+                                              accessoryType: .none
+                                             ))]))
     }
     
     private func removeAllButtonEvent() {
@@ -109,13 +117,34 @@ class SettingViewController: UIViewController {
     }
 
 }
+// MARK: Switch Button Action
+extension SettingViewController: SwitchTableViewCellDelegate {
+    func changedViewMode() {
+        print("settingVC delegate")
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
+            self?.settingUI(UIDarkmodeUserDefaults.shared.UIMode)
+        }
+    }
+}
 
 
+// MARK: TableView Extension
 extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         let model = models[section]
         return model.title
+    }
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if let headerView = view as? UITableViewHeaderFooterView {
+            headerView.textLabel?.font = .boldSystemFont(ofSize: 15)
+            if UIDarkmodeUserDefaults.shared.isDark {
+                headerView.textLabel?.textColor = .lightGray
+            } else {
+                headerView.textLabel?.textColor = .black
+            }
+        }
     }
     func numberOfSections(in tableView: UITableView) -> Int {
         return models.count
@@ -135,6 +164,10 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
             ) as? SettingTableViewCell else {
                 return UITableViewCell()
             }
+            
+            cell.backgroundView = nil
+            cell.backgroundColor = .clear
+            cell.setUIColor(UIDarkmodeUserDefaults.shared.UIMode)
             cell.configure(with: model)
             return cell
         case .switchCell(let model):
@@ -144,6 +177,10 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
             ) as? SwitchTableViewCell else {
                 return UITableViewCell()
             }
+            cell.backgroundView = nil
+            cell.backgroundColor = .clear
+            cell.setUIColor(UIDarkmodeUserDefaults.shared.UIMode)
+            cell.delegate = self
             cell.configure(with: model)
             return cell
         }

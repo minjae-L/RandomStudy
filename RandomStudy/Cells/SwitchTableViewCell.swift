@@ -6,10 +6,12 @@
 //
 
 import UIKit
-
+protocol SwitchTableViewCellDelegate: AnyObject {
+    func changedViewMode()
+}
 class SwitchTableViewCell: UITableViewCell {
     static let identifier = "SwitchTableViewCell"
-    
+    weak var delegate: SwitchTableViewCellDelegate?
     private let iconContainer: UIView = {
         let view = UIView()
         view.clipsToBounds = true
@@ -89,6 +91,20 @@ class SwitchTableViewCell: UITableViewCell {
     }
     @objc func clickSwitch() {
         UIDarkmodeUserDefaults.shared.changeMode()
+        self.mySwitch.isOn = UIDarkmodeUserDefaults.shared.isDark
+        delegate?.changedViewMode()
+    }
+    func setUIColor(_ mode: UIType) {
+        switch mode {
+        case .dark:
+            self.backgroundView?.backgroundColor = UIColor.gray.withAlphaComponent(0.2)
+            self.contentView.backgroundColor = UIColor.gray.withAlphaComponent(0.2)
+            self.label.textColor = .white
+        case .normal:
+            self.backgroundView?.backgroundColor = UIColor.white.withAlphaComponent(1)
+            self.contentView.backgroundColor = UIColor.white.withAlphaComponent(1)
+            self.label.textColor = .black
+        }
     }
     func configure(with model: SettingSwitchOption) {
         label.text = model.title
