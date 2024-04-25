@@ -36,10 +36,10 @@ class SwitchTableViewCell: UITableViewCell {
         return label
     }()
     
-    private let mySwitch: UISwitch = {
+    let mySwitch: UISwitch = {
         let mySwitch = UISwitch()
         mySwitch.onTintColor = .systemBlue
-        mySwitch.addTarget(self, action: #selector(clickSwitch), for: UIControl.Event.valueChanged)
+        mySwitch.addTarget(self, action: #selector(clickSwitch), for: .valueChanged)
         return mySwitch
     }()
 
@@ -91,12 +91,12 @@ class SwitchTableViewCell: UITableViewCell {
     }
     @objc func clickSwitch() {
         UIDarkmodeUserDefaults.shared.changeMode()
-        self.mySwitch.isOn = UIDarkmodeUserDefaults.shared.isDark
         delegate?.changedViewMode()
     }
     func setUIColor(_ mode: UIType) {
         switch mode {
         case .dark:
+            self.backgroundColor = .clear
             self.backgroundView?.backgroundColor = UIColor.gray.withAlphaComponent(0.2)
             self.contentView.backgroundColor = UIColor.gray.withAlphaComponent(0.2)
             self.label.textColor = .white
@@ -110,6 +110,7 @@ class SwitchTableViewCell: UITableViewCell {
         label.text = model.title
         iconImageView.image = model.icon
         iconContainer.backgroundColor = model.iconBackgroundColor
+        mySwitch.setOn(UIDarkmodeUserDefaults.shared.isDark, animated: true)
         mySwitch.isOn = model.isOn
     }
 }

@@ -72,14 +72,12 @@ class SettingTableViewCell: UITableViewCell {
     func setUIColor(_ mode: UIType) {
         switch mode {
         case .dark:
-            self.backgroundView?.backgroundColor = UIColor.gray.withAlphaComponent(0.2)
-            self.contentView.backgroundColor = UIColor.gray.withAlphaComponent(0.2)
-            self.accessoryView?.backgroundColor = UIColor.gray.withAlphaComponent(0.2)
+            self.contentView.backgroundColor = .clear
+            self.backgroundColor = UIColor.gray.withAlphaComponent(0.2)
             self.label.textColor = .white
         case .normal:
-            self.backgroundView?.backgroundColor = UIColor.white.withAlphaComponent(1)
             self.contentView.backgroundColor = UIColor.white.withAlphaComponent(1)
-            self.accessoryView?.backgroundColor = UIColor.white.withAlphaComponent(1)
+            self.backgroundColor = UIColor.white.withAlphaComponent(1)
             self.label.textColor = .black
         }
     }

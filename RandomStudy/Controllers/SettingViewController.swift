@@ -122,8 +122,8 @@ extension SettingViewController: SwitchTableViewCellDelegate {
     func changedViewMode() {
         print("settingVC delegate")
         DispatchQueue.main.async { [weak self] in
-            self?.tableView.reloadData()
             self?.settingUI(UIDarkmodeUserDefaults.shared.UIMode)
+            self?.tableView.reloadData()
         }
     }
 }
