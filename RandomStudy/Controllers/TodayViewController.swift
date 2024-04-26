@@ -32,7 +32,7 @@ final class TodayViewController: UIViewController {
         case .dark:
             appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
             appearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-            appearance.backgroundColor = .darkGray
+            appearance.backgroundColor = .black
         case .normal:
             appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
             appearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
@@ -65,9 +65,9 @@ final class TodayViewController: UIViewController {
     private func settingUI(_ type: UIType) {
         switch type {
         case .dark:
-            self.navigationController?.view.backgroundColor = .gray
-            view.backgroundColor = .darkGray
-            tableView.backgroundColor = .darkGray
+            self.navigationController?.view.backgroundColor = .black
+            view.backgroundColor = .black
+            tableView.backgroundColor = .black
         case .normal:
             self.navigationController?.view.backgroundColor = .lightGray
             view.backgroundColor = .white
@@ -160,6 +160,7 @@ extension TodayViewController: UITableViewDataSource, UITableViewDelegate {
         if let name = study.name {
             cell.name = name
         }
+        cell.setUIColor(UIDarkmodeUserDefaults.shared.UIMode)
         cell.delegate = self
         cell.configure(with: study)
         return cell

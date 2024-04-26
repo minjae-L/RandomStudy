@@ -98,7 +98,6 @@ class TodayTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
-        contentView.backgroundColor = .white
         contentView.addSubview(label)
         contentView.addSubview(deleteBtn)
         contentView.addSubview(checkBtn)
@@ -106,7 +105,19 @@ class TodayTableViewCell: UITableViewCell {
         setLayout()
         setupButtonEvent()
     }
-    
+    func setUIColor(_ mode: UIType) {
+        switch mode {
+        case .dark:
+            self.backgroundColor = .clear
+//            self.backgroundView?.backgroundColor = UIColor.gray.withAlphaComponent(0.2)
+            self.contentView.backgroundColor = UIColor.gray.withAlphaComponent(0.2)
+            self.label.textColor = .white
+        case .normal:
+//            self.backgroundView?.backgroundColor = UIColor.white.withAlphaComponent(1)
+            self.contentView.backgroundColor = UIColor.white.withAlphaComponent(1)
+            self.label.textColor = .black
+        }
+    }
     required init?(coder: NSCoder) {
         fatalError()
     }
@@ -120,7 +131,6 @@ class TodayTableViewCell: UITableViewCell {
         item = model
         label.text = model.name
         if model.done == "0" {
-            contentView.backgroundColor = .white
             checkBtn.isEnabled = true
             checkView.isHidden = true
         } else {
