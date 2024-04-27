@@ -14,25 +14,41 @@ class HistoryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUI()
+        configureUI(UIDarkmodeUserDefaults.shared.UIMode)
     }
     
     // UI 그리기
-    private func configureUI() {
+    private func configureUI(_ type: UIType) {
+        let appearance = UINavigationBarAppearance()
+        switch type {
+        case .dark:
+            view.backgroundColor = .black
+            appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+            appearance.backgroundColor = .black
+            tableView.backgroundColor = .black
+        case .normal:
+            view.backgroundColor = .white
+            appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
+            appearance.backgroundColor = .white
+            tableView.backgroundColor = .white
+        }
+        appearance.backgroundImage = UIImage()
+        self.navigationController?.navigationBar.standardAppearance = appearance
+        self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        self.navigationItem.largeTitleDisplayMode = .never
+        self.navigationController?.navigationBar.prefersLargeTitles = true
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationItem.title = "내 기록"
         //addSubView
         view.addSubview(tableView)
-        //View
-        view.backgroundColor = .white
-        
-        //NavigationBar
-        self.navigationItem.title = "내 기록"
         
         //TableView
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(HistoryTableViewCell.self, forCellReuseIdentifier: HistoryTableViewCell.identifier)
-        
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.separatorStyle = .none
+        
         tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
@@ -62,6 +78,16 @@ extension HistoryViewController:  UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return String(viewModel.dateArray[section])
     }
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if let view = view as? UITableViewHeaderFooterView {
+            switch UIDarkmodeUserDefaults.shared.UIMode {
+            case .dark:
+                view.textLabel?.textColor = .white
+            case .normal:
+                view.textLabel?.textColor = .gray
+            }
+        }
+    }
     
     // Cell 구성
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -73,7 +99,7 @@ extension HistoryViewController:  UITableViewDelegate, UITableViewDataSource {
         ) as? HistoryTableViewCell else {
             return UITableViewCell()
         }
-
+        cell.setUIColor(UIDarkmodeUserDefaults.shared.UIMode)
         cell.configure(with: finished)
         return cell
     }

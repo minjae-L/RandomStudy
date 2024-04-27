@@ -37,9 +37,6 @@ class SettingViewController: UIViewController {
             navBarAppearance.backgroundColor = .white
             tableView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.2)
         }
-        // View
-        
-        
         // NavigationBar
         self.navigationItem.title = "설정"
         self.navigationController?.navigationBar.isTranslucent = false
@@ -61,12 +58,12 @@ class SettingViewController: UIViewController {
         super.viewDidLoad()
         addSubView()
         configure()
+    }
+    override func viewWillAppear(_ animated: Bool) {
         settingUI(UIDarkmodeUserDefaults.shared.UIMode)
     }
-    
     // 설정 목록
     private func configure() {
-        
         // 일반
         models.append(Section(title: "일반", options: [
             .switchCell(model: SettingSwitchOption(title: "다크 모드",
@@ -165,20 +162,17 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
                 return UITableViewCell()
             }
             
-            cell.backgroundView = nil
-            cell.backgroundColor = .clear
             cell.setUIColor(UIDarkmodeUserDefaults.shared.UIMode)
             cell.configure(with: model)
             return cell
-        case .switchCell(let model):
+        case .switchCell(var model):
             guard let cell = tableView.dequeueReusableCell(
                     withIdentifier: SwitchTableViewCell.identifier,
                     for: indexPath
             ) as? SwitchTableViewCell else {
                 return UITableViewCell()
             }
-            cell.backgroundView = nil
-            cell.backgroundColor = .clear
+            model.isOn = UIDarkmodeUserDefaults.shared.isDark
             cell.setUIColor(UIDarkmodeUserDefaults.shared.UIMode)
             cell.delegate = self
             cell.configure(with: model)

@@ -29,9 +29,9 @@ class AddViewController: UIViewController {
         case .dark:
             appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
             appearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-            appearance.backgroundColor = .darkGray
-            tableView.backgroundColor = .darkGray
-            view.backgroundColor = .darkGray
+            appearance.backgroundColor = .black
+            tableView.backgroundColor = .black
+            view.backgroundColor = .black
         case .normal:
             appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
             appearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
@@ -122,6 +122,7 @@ extension AddViewController: UITableViewDataSource, UITableViewDelegate {
         ) as? AddTableViewCell else {
             return UITableViewCell()
         }
+        cell.setUIColor(UIDarkmodeUserDefaults.shared.UIMode)
         cell.selectionStyle = .none
         cell.delegate = self
         cell.configure(with: study)
