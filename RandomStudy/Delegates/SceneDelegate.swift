@@ -20,14 +20,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         let mainViewController = TodayViewController()
         let navigationController = UINavigationController(rootViewController: mainViewController)
-        navigationController.view.backgroundColor = .white
-        
         
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
-        
-        if #available(iOS 13.0, *) {
+        print("mode: \(UIModeUserDefaults.shared.modeValue)")
+        switch UIModeUserDefaults.shared.modeValue {
+        case .dark:
+            window?.overrideUserInterfaceStyle = .dark
+        case .light:
             window?.overrideUserInterfaceStyle = .light
+        case .custom:
+            window?.overrideUserInterfaceStyle = .unspecified
         }
         
     }
