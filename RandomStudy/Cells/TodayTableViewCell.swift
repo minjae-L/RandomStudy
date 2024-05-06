@@ -33,7 +33,6 @@ class TodayTableViewCell: UITableViewCell {
         let lbl = UILabel()
         lbl.numberOfLines = 1
         lbl.translatesAutoresizingMaskIntoConstraints = false
-        
         return lbl
     }()
     
@@ -105,18 +104,9 @@ class TodayTableViewCell: UITableViewCell {
         setLayout()
         setupButtonEvent()
     }
-    func setUIColor(_ mode: UIType) {
-        switch mode {
-        case .dark:
-            self.backgroundColor = .clear
-//            self.backgroundView?.backgroundColor = UIColor.gray.withAlphaComponent(0.2)
-            self.contentView.backgroundColor = UIColor.gray.withAlphaComponent(0.2)
-            self.label.textColor = .white
-        case .normal:
-//            self.backgroundView?.backgroundColor = UIColor.white.withAlphaComponent(1)
-            self.contentView.backgroundColor = UIColor.white.withAlphaComponent(1)
-            self.label.textColor = .black
-        }
+    func setUIColor() {
+        label.textColor = UIColor(named: "LabelTextColor")
+        self.backgroundColor = UIColor(named: "CellBackgroundColor")
     }
     required init?(coder: NSCoder) {
         fatalError()

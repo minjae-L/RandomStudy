@@ -14,24 +14,16 @@ class HistoryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUI(UIDarkmodeUserDefaults.shared.UIMode)
+        configureUI()
     }
     
     // UI 그리기
-    private func configureUI(_ type: UIType) {
+    private func configureUI() {
         let appearance = UINavigationBarAppearance()
-        switch type {
-        case .dark:
-            view.backgroundColor = .black
-            appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-            appearance.backgroundColor = .black
-            tableView.backgroundColor = .black
-        case .normal:
-            view.backgroundColor = .white
-            appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
-            appearance.backgroundColor = .white
-            tableView.backgroundColor = .white
-        }
+        view.backgroundColor = UIColor(named: "ViewBackgroundColor")
+        appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(named: "LabelTextColor")]
+        appearance.backgroundColor = UIColor(named: "ViewBackgroundColor")
+        tableView.backgroundColor = UIColor(named: "ViewBackgroundColor")
         appearance.backgroundImage = UIImage()
         self.navigationController?.navigationBar.standardAppearance = appearance
         self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
@@ -80,12 +72,7 @@ extension HistoryViewController:  UITableViewDelegate, UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if let view = view as? UITableViewHeaderFooterView {
-            switch UIDarkmodeUserDefaults.shared.UIMode {
-            case .dark:
-                view.textLabel?.textColor = .white
-            case .normal:
-                view.textLabel?.textColor = .gray
-            }
+            view.textLabel?.textColor = UIColor(named: "LabelTextColor")
         }
     }
     
@@ -99,7 +86,7 @@ extension HistoryViewController:  UITableViewDelegate, UITableViewDataSource {
         ) as? HistoryTableViewCell else {
             return UITableViewCell()
         }
-        cell.setUIColor(UIDarkmodeUserDefaults.shared.UIMode)
+        cell.setUIColor()
         cell.configure(with: finished)
         return cell
     }

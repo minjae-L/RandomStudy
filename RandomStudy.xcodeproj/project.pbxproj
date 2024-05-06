@@ -27,6 +27,9 @@
 		B59B658F2ADB3006008A60F1 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B658E2ADB3006008A60F1 /* HistoryViewController.swift */; };
 		B59B65912ADB3483008A60F1 /* HistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B65902ADB3483008A60F1 /* HistoryTableViewCell.swift */; };
 		B5A3705F2ADF8029000F76C1 /* HistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A3705E2ADF8029000F76C1 /* HistoryViewModel.swift */; };
+		B5A98E5A2BE8FB8500E9CE2A /* DarkModeSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A98E592BE8FB8500E9CE2A /* DarkModeSettingViewController.swift */; };
+		B5A98E5C2BE8FEB000E9CE2A /* DarkModeSettingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A98E5B2BE8FEB000E9CE2A /* DarkModeSettingCollectionViewCell.swift */; };
+		B5A98E5E2BE906F600E9CE2A /* DarkModeSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A98E5D2BE906F600E9CE2A /* DarkModeSettingViewModel.swift */; };
 		B5B044702BB987CF00E17173 /* GitSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B0446F2BB987CF00E17173 /* GitSearchViewModel.swift */; };
 		B5B7EB962AA4FCA0006944A8 /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B7EB952AA4FCA0006944A8 /* AddViewController.swift */; };
 		B5BA4B4E2AC1AC9E004D7BF9 /* AddViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BA4B4D2AC1AC9E004D7BF9 /* AddViewModel.swift */; };
@@ -87,6 +90,9 @@
 		B59B658E2ADB3006008A60F1 /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		B59B65902ADB3483008A60F1 /* HistoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTableViewCell.swift; sourceTree = "<group>"; };
 		B5A3705E2ADF8029000F76C1 /* HistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModel.swift; sourceTree = "<group>"; };
+		B5A98E592BE8FB8500E9CE2A /* DarkModeSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkModeSettingViewController.swift; sourceTree = "<group>"; };
+		B5A98E5B2BE8FEB000E9CE2A /* DarkModeSettingCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkModeSettingCollectionViewCell.swift; sourceTree = "<group>"; };
+		B5A98E5D2BE906F600E9CE2A /* DarkModeSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkModeSettingViewModel.swift; sourceTree = "<group>"; };
 		B5B0446F2BB987CF00E17173 /* GitSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitSearchViewModel.swift; sourceTree = "<group>"; };
 		B5B7EB952AA4FCA0006944A8 /* AddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
 		B5BA4B4D2AC1AC9E004D7BF9 /* AddViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewModel.swift; sourceTree = "<group>"; };
@@ -230,6 +236,7 @@
 				B58BE0102AD607970039D232 /* TodayViewModel.swift */,
 				B5A3705E2ADF8029000F76C1 /* HistoryViewModel.swift */,
 				B5B0446F2BB987CF00E17173 /* GitSearchViewModel.swift */,
+				B5A98E5D2BE906F600E9CE2A /* DarkModeSettingViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -251,6 +258,7 @@
 				B59B658E2ADB3006008A60F1 /* HistoryViewController.swift */,
 				B5FE6C102B596C7B00542731 /* GitSearchViewController.swift */,
 				B5785DDE2BD149B0006AA50D /* AddPopUpViewController.swift */,
+				B5A98E592BE8FB8500E9CE2A /* DarkModeSettingViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -264,6 +272,7 @@
 				B5142D0F2AB5017200C3BB07 /* AddTableViewCell.swift */,
 				B59B65902ADB3483008A60F1 /* HistoryTableViewCell.swift */,
 				B54DE1D82B5AA97C00923530 /* GitSearchCollectionViewCell.swift */,
+				B5A98E5B2BE8FEB000E9CE2A /* DarkModeSettingCollectionViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -518,6 +527,8 @@
 			files = (
 				B58D28E32A2D830100947A24 /* TodayViewController.swift in Sources */,
 				B5142D102AB5017200C3BB07 /* AddTableViewCell.swift in Sources */,
+				B5A98E5E2BE906F600E9CE2A /* DarkModeSettingViewModel.swift in Sources */,
+				B5A98E5C2BE8FEB000E9CE2A /* DarkModeSettingCollectionViewCell.swift in Sources */,
 				B5C126872AB4180800DBF902 /* TableViewExtensions.swift in Sources */,
 				B58BE0112AD607970039D232 /* TodayViewModel.swift in Sources */,
 				B58D28DF2A2D830100947A24 /* AppDelegate.swift in Sources */,
@@ -534,6 +545,7 @@
 				B58D28E12A2D830100947A24 /* SceneDelegate.swift in Sources */,
 				B59B65912ADB3483008A60F1 /* HistoryTableViewCell.swift in Sources */,
 				B54DE1D92B5AA97C00923530 /* GitSearchCollectionViewCell.swift in Sources */,
+				B5A98E5A2BE8FB8500E9CE2A /* DarkModeSettingViewController.swift in Sources */,
 				B5CC3B2D2AB2080300D9FA24 /* SettingTableViewCell.swift in Sources */,
 				B5CC3B282AB2079000D9FA24 /* SettingViewController.swift in Sources */,
 				B5A3705F2ADF8029000F76C1 /* HistoryViewModel.swift in Sources */,

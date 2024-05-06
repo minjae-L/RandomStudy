@@ -26,26 +26,16 @@ final class TodayViewController: UIViewController {
     
 //    MARK: - UI Configure
     // 네비게이션 바
-    private func configureNavigationbar(_ type: UIType) {
+    private func configureNavigationbar() {
         let appearance = UINavigationBarAppearance()
-        switch type {
-        case .dark:
-            appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-            appearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-            appearance.backgroundColor = .black
-        case .normal:
-            appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
-            appearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
-            appearance.backgroundColor = .white
-            
-        default:
-            break
-        }
+        appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(named: "LabelTextColor")]
+        appearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(named: "LabelTextColor")]
+        appearance.backgroundColor = UIColor(named: "ViewBackgroundColor")
         appearance.backgroundImage = UIImage()
         appearance.shadowImage = UIImage()
         self.navigationItem.title = "Today"
         self.navigationController?.navigationBar.prefersLargeTitles = true
-        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.navigationBar.standardAppearance = appearance
         self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
         self.navigationItem.largeTitleDisplayMode = .always
@@ -62,20 +52,10 @@ final class TodayViewController: UIViewController {
     }
 
     // 전체적인 화면 구성
-    private func settingUI(_ type: UIType) {
-        switch type {
-        case .dark:
-            self.navigationController?.view.backgroundColor = .black
-            view.backgroundColor = .black
-            tableView.backgroundColor = .black
-        case .normal:
-            self.navigationController?.view.backgroundColor = .lightGray
-            view.backgroundColor = .white
-            tableView.backgroundColor = .white
-        default:
-            break
-        }
-        
+    private func settingUI() {
+        self.navigationController?.view.backgroundColor = UIColor(named: "ViewBackgroundColor")
+        view.backgroundColor = UIColor(named: "ViewBackgroundColor")
+        tableView.backgroundColor = UIColor(named: "ViewBackgroundColor")
         // TableView
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
@@ -92,11 +72,11 @@ final class TodayViewController: UIViewController {
         btn.setTitle("불러오기", for: .normal)
         btn.backgroundColor = .systemBlue
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        btn.heightAnchor.constraint(equalToConstant: 80).isActive = true
         btn.topAnchor.constraint(equalTo: tableView.bottomAnchor).isActive = true
         btn.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         btn.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        btn.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        btn.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         btn.addTarget(self, action: #selector(fetchStudyList), for: .touchUpInside)
     }
     
@@ -107,8 +87,10 @@ final class TodayViewController: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         viewModel.fetchTodoList()
-        settingUI(UIDarkmodeUserDefaults.shared.UIMode)
-        configureNavigationbar(UIDarkmodeUserDefaults.shared.UIMode)
+//        settingUI(UIDarkmodeUserDefaults.shared.UIMode)
+//        configureNavigationbar(UIDarkmodeUserDefaults.shared.UIMode)
+        settingUI()
+        configureNavigationbar()
     }
     
     @objc private func goSettingVC() {
@@ -160,7 +142,7 @@ extension TodayViewController: UITableViewDataSource, UITableViewDelegate {
         if let name = study.name {
             cell.name = name
         }
-        cell.setUIColor(UIDarkmodeUserDefaults.shared.UIMode)
+        cell.setUIColor()
         cell.delegate = self
         cell.configure(with: study)
         return cell

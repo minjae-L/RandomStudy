@@ -90,27 +90,17 @@ class SwitchTableViewCell: UITableViewCell {
         mySwitch.isOn = false
     }
     @objc func clickSwitch() {
-        UIDarkmodeUserDefaults.shared.changeMode()
         delegate?.changedViewMode()
     }
-    func setUIColor(_ mode: UIType) {
-        switch mode {
-        case .dark:
-            self.backgroundColor = .clear
-            self.backgroundView?.backgroundColor = UIColor.gray.withAlphaComponent(0.2)
-            self.contentView.backgroundColor = UIColor.gray.withAlphaComponent(0.2)
-            self.label.textColor = .white
-        case .normal:
-            self.backgroundView?.backgroundColor = UIColor.white.withAlphaComponent(1)
-            self.contentView.backgroundColor = UIColor.white.withAlphaComponent(1)
-            self.label.textColor = .black
-        }
+    func setUIColor() {
+        self.backgroundColor = UIColor(named: "CellBackgroundColor")
+        self.contentView.backgroundColor = UIColor(named: "CellBackgroundColor")
+        self.label.textColor = UIColor(named: "LabelTextColor")
     }
     func configure(with model: SettingSwitchOption) {
         label.text = model.title
         iconImageView.image = model.icon
         iconContainer.backgroundColor = model.iconBackgroundColor
-        mySwitch.setOn(UIDarkmodeUserDefaults.shared.isDark, animated: true)
         mySwitch.isOn = model.isOn
     }
 }

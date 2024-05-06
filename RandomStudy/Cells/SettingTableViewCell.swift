@@ -69,17 +69,10 @@ class SettingTableViewCell: UITableViewCell {
         label.text = nil
         iconContainer.backgroundColor = nil
     }
-    func setUIColor(_ mode: UIType) {
-        switch mode {
-        case .dark:
-            self.contentView.backgroundColor = .clear
-            self.backgroundColor = UIColor.gray.withAlphaComponent(0.2)
-            self.label.textColor = .white
-        case .normal:
-            self.contentView.backgroundColor = UIColor.white.withAlphaComponent(1)
-            self.backgroundColor = UIColor.white.withAlphaComponent(1)
-            self.label.textColor = .black
-        }
+    func setUIColor() {
+        self.backgroundColor = UIColor(named: "CellBackgroundColor")
+        self.contentView.backgroundColor = UIColor(named: "CellBackgroundColor")
+        self.label.textColor = UIColor(named: "LabelTextColor")
     }
     // 셀에 있는 이미지뷰와 라벨을 미리 정했던 구조체와 연결
     func configure(with model: SettingsOption) {

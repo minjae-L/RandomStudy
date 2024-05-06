@@ -18,33 +18,25 @@ class SettingViewController: UIViewController {
         return table
     }()
     private var models = [Section]()
+    private let appearance = UINavigationBarAppearance()
     private func addSubView() {
         view.addSubview(tableView)
-        settingUI(UIDarkmodeUserDefaults.shared.UIMode)
+        settingUI()
     }
     
-    private func settingUI(_ type: UIType) {
-        let navBarAppearance = UINavigationBarAppearance()
-        switch type {
-        case .dark:
-            self.view.backgroundColor = .black
-            navBarAppearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-            navBarAppearance.backgroundColor = .black
-            tableView.backgroundColor = .black
-        case .normal:
-            self.view.backgroundColor = .white
-            navBarAppearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
-            navBarAppearance.backgroundColor = .white
-            tableView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.2)
-        }
+    private func settingUI() {
+        self.view.backgroundColor = UIColor(named: "ViewBackgroundColor")
+        appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(named: "LabelTextColor")]
+        appearance.backgroundColor = UIColor(named: "ViewBackgroundColor")
         // NavigationBar
         self.navigationItem.title = "설정"
         self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.navigationBar.standardAppearance = navBarAppearance
-        self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
+        self.navigationController?.navigationBar.standardAppearance = appearance
+        self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
         self.navigationItem.largeTitleDisplayMode = .never
-        
+            
         // TableView
+        tableView.backgroundColor = UIColor(named: "ViewBackgroundColor")
         tableView.delegate = self
         tableView.dataSource = self
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -60,18 +52,20 @@ class SettingViewController: UIViewController {
         configure()
     }
     override func viewWillAppear(_ animated: Bool) {
-        settingUI(UIDarkmodeUserDefaults.shared.UIMode)
+        settingUI()
     }
     // 설정 목록
     private func configure() {
         // 일반
         models.append(Section(title: "일반", options: [
-            .switchCell(model: SettingSwitchOption(title: "다크 모드",
-                                                   icon: UIImage(systemName: "moon"),
-                                                   iconBackgroundColor: .systemPurple,
-                                                   handler: {},
-                                                   isOn: UIDarkmodeUserDefaults.shared.isDark
-                                                   )),
+            .staticCell(model: SettingsOption(title: "테마 설정",
+                                              icon: UIImage(systemName: "moon"),
+                                              iconBackgroundColor: .systemPurple,
+                                              handler: {
+                                                  let vc = DarkModeSettingViewController()
+                                                  self.navigationController?.pushViewController(vc, animated: true)
+                                              },
+                                              accessoryType: .none)),
             .staticCell(model: SettingsOption(title: "내 기록",
                                               icon: UIImage(systemName: "checklist.checked"),
                                               iconBackgroundColor: .systemGreen,
@@ -119,7 +113,7 @@ extension SettingViewController: SwitchTableViewCellDelegate {
     func changedViewMode() {
         print("settingVC delegate")
         DispatchQueue.main.async { [weak self] in
-            self?.settingUI(UIDarkmodeUserDefaults.shared.UIMode)
+            self?.settingUI()
             self?.tableView.reloadData()
         }
     }
@@ -136,11 +130,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if let headerView = view as? UITableViewHeaderFooterView {
             headerView.textLabel?.font = .boldSystemFont(ofSize: 15)
-            if UIDarkmodeUserDefaults.shared.isDark {
-                headerView.textLabel?.textColor = .lightGray
-            } else {
-                headerView.textLabel?.textColor = .black
-            }
+            headerView.textLabel?.textColor = UIColor(named: "LabelTextColor")
         }
     }
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -162,7 +152,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
                 return UITableViewCell()
             }
             
-            cell.setUIColor(UIDarkmodeUserDefaults.shared.UIMode)
+            cell.setUIColor()
             cell.configure(with: model)
             return cell
         case .switchCell(var model):
@@ -172,8 +162,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
             ) as? SwitchTableViewCell else {
                 return UITableViewCell()
             }
-            model.isOn = UIDarkmodeUserDefaults.shared.isDark
-            cell.setUIColor(UIDarkmodeUserDefaults.shared.UIMode)
+            cell.setUIColor()
             cell.delegate = self
             cell.configure(with: model)
             return cell

@@ -15,7 +15,7 @@ class AddViewController: UIViewController {
     private var viewModel = AddViewModel()
     private func addSubView() {
         view.addSubview(tableView)
-        settingUI(UIDarkmodeUserDefaults.shared.UIMode)
+        settingUI()
     }
     // 데이터 바인딩
     private func bindings() {
@@ -23,36 +23,22 @@ class AddViewController: UIViewController {
     }
     
     // UI 설정
-    private func settingUI(_ type: UIType) {
+    private func settingUI() {
         let appearance = UINavigationBarAppearance()
-        switch type {
-        case .dark:
-            appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-            appearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-            appearance.backgroundColor = .black
-            tableView.backgroundColor = .black
-            view.backgroundColor = .black
-        case .normal:
-            appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
-            appearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
-            appearance.backgroundColor = .white
-            tableView.backgroundColor = .white
-            view.backgroundColor = .white
-        default:
-            break
-        }
-        
+        view.backgroundColor = UIColor(named: "ViewBackgroundColor")
         //NavigationBar
         self.navigationItem.title = "공부 목록"
-        self.navigationController?.navigationBar.prefersLargeTitles = false
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.standardAppearance = appearance
         self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(named: "LabelTextColor")]
+        appearance.backgroundColor = UIColor(named: "ViewBackgroundColor")
         self.navigationItem.largeTitleDisplayMode = .never
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(addCategory))
         
         // TableView
         tableView.separatorStyle = .none
+        tableView.backgroundColor = UIColor(named: "ViewBackgroundColor")
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
@@ -122,7 +108,7 @@ extension AddViewController: UITableViewDataSource, UITableViewDelegate {
         ) as? AddTableViewCell else {
             return UITableViewCell()
         }
-        cell.setUIColor(UIDarkmodeUserDefaults.shared.UIMode)
+        cell.setUIColor()
         cell.selectionStyle = .none
         cell.delegate = self
         cell.configure(with: study)
