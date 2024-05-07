@@ -24,15 +24,21 @@ class AddViewController: UIViewController {
     
     // UI 설정
     private func settingUI() {
+        let appearance = UINavigationBarAppearance()
+        view.backgroundColor = UIColor(named: "ViewBackgroundColor")
         //NavigationBar
-        self.view.backgroundColor = .white
         self.navigationItem.title = "공부 목록"
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.navigationBar.standardAppearance = appearance
+        self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(named: "LabelTextColor")]
+        appearance.backgroundColor = UIColor(named: "ViewBackgroundColor")
         self.navigationItem.largeTitleDisplayMode = .never
-        self.navigationController?.navigationBar.barTintColor = .white
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(addCategory))
         
         // TableView
         tableView.separatorStyle = .none
+        tableView.backgroundColor = UIColor(named: "ViewBackgroundColor")
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
@@ -102,6 +108,7 @@ extension AddViewController: UITableViewDataSource, UITableViewDelegate {
         ) as? AddTableViewCell else {
             return UITableViewCell()
         }
+        cell.setUIColor()
         cell.selectionStyle = .none
         cell.delegate = self
         cell.configure(with: study)

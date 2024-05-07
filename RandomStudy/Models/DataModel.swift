@@ -49,7 +49,6 @@ struct GitUser: Codable {
         case avatarUrl = "avatar_url"
     }
 }
-
 // MARK: - Setting ViewController Cell Struct
 struct Section {
     let title: String

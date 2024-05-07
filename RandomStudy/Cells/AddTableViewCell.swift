@@ -71,7 +71,12 @@ class AddTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         label.text = nil
     }
-    
+    func setUIColor() {
+        self.backgroundColor = .clear
+        self.contentView.backgroundColor = UIColor(named: "CellBackgroundColor")
+        self.label.textColor = UIColor(named: "LabelTextColor")
+
+    }
     func configure(with model: StudyModel) {
         label.text = model.name
         if let name = model.name {

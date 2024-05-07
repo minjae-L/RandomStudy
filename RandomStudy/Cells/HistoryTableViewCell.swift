@@ -35,7 +35,12 @@ class HistoryTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+    func setUIColor() {
+        
+        self.backgroundColor = .clear
+        self.contentView.backgroundColor = UIColor(named: "CellBackgroundColor")
+        self.label.textColor = UIColor(named: "LabelTextColor")
+    }
     override func prepareForReuse() {
         label.text = nil
     }

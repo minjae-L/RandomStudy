@@ -84,10 +84,15 @@ class AddPopUpViewController: UIViewController {
         tf.backgroundColor = .white
         tf.borderStyle = .roundedRect
         tf.addTarget(self, action: #selector(checkBlankTextField(_:)), for: UIControl.Event.editingChanged)
-        tf.placeholder = "목록을 입력해주세요."
         return tf
     }()
-    
+    private func drawUI() {
+        self.containerView.backgroundColor = UIColor(named: "CellBackgroundColor")
+        self.titleLabel.textColor = UIColor(named: "LabelTextColor")
+        self.textField.backgroundColor = UIColor(named: "ViewBackgroundColor")
+        self.textField.attributedPlaceholder = NSAttributedString(string: "  목록을 입력해주세요.", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
+        self.textField.textColor = UIColor(named: "TextFieldTextColor")
+    }
     private func addView() {
         view.addSubview(containerView)
         containerView.addSubview(messageView)
@@ -163,7 +168,7 @@ class AddPopUpViewController: UIViewController {
         view.backgroundColor = .black.withAlphaComponent(0.3)
         addView()
         configureConstraints()
-        
+        drawUI()
     }
 
 }

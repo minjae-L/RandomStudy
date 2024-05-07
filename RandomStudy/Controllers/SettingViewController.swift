@@ -17,29 +17,26 @@ class SettingViewController: UIViewController {
         table.register(SwitchTableViewCell.self, forCellReuseIdentifier: SwitchTableViewCell.identifier)
         return table
     }()
-    
     private var models = [Section]()
-    
+    private let appearance = UINavigationBarAppearance()
     private func addSubView() {
         view.addSubview(tableView)
         settingUI()
     }
     
     private func settingUI() {
-        // View
-        self.view.backgroundColor = .white
-        
+        self.view.backgroundColor = UIColor(named: "ViewBackgroundColor")
+        appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(named: "LabelTextColor")]
+        appearance.backgroundColor = UIColor(named: "ViewBackgroundColor")
         // NavigationBar
         self.navigationItem.title = "설정"
-        let navBarAppearance = UINavigationBarAppearance()
-        navBarAppearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
-        navBarAppearance.backgroundColor = .white
         self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.navigationBar.standardAppearance = navBarAppearance
-        self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
+        self.navigationController?.navigationBar.standardAppearance = appearance
+        self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
         self.navigationItem.largeTitleDisplayMode = .never
-        
+            
         // TableView
+        tableView.backgroundColor = UIColor(named: "ViewBackgroundColor")
         tableView.delegate = self
         tableView.dataSource = self
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -54,20 +51,21 @@ class SettingViewController: UIViewController {
         addSubView()
         configure()
     }
-    
     override func viewWillAppear(_ animated: Bool) {
         settingUI()
     }
-    
     // 설정 목록
     private func configure() {
         // 일반
         models.append(Section(title: "일반", options: [
-            .switchCell(model: SettingSwitchOption(title: "다크 모드",
-                                                   icon: UIImage(systemName: "moon"),
-                                                   iconBackgroundColor: .systemPurple,
-                                                   handler: { },
-                                                   isOn: false)),
+            .staticCell(model: SettingsOption(title: "테마 설정",
+                                              icon: UIImage(systemName: "moon"),
+                                              iconBackgroundColor: .systemPurple,
+                                              handler: {
+                                                  let vc = DarkModeSettingViewController()
+                                                  self.navigationController?.pushViewController(vc, animated: true)
+                                              },
+                                              accessoryType: .none)),
             .staticCell(model: SettingsOption(title: "내 기록",
                                               icon: UIImage(systemName: "checklist.checked"),
                                               iconBackgroundColor: .systemGreen,
@@ -75,7 +73,8 @@ class SettingViewController: UIViewController {
                                                     let vc = HistoryViewController()
                                                     self.navigationController?.pushViewController(vc, animated: true)
                                                     },
-                                              accessoryType: .disclosureIndicator))
+                                              accessoryType: .disclosureIndicator
+                                              ))
         ]))
         
         // Git
@@ -96,7 +95,8 @@ class SettingViewController: UIViewController {
                                               handler: {
                                                   self.removeAllButtonEvent()
                                                 },
-                                              accessoryType: .none))]))
+                                              accessoryType: .none
+                                             ))]))
     }
     
     private func removeAllButtonEvent() {
@@ -108,13 +108,30 @@ class SettingViewController: UIViewController {
     }
 
 }
+// MARK: Switch Button Action
+extension SettingViewController: SwitchTableViewCellDelegate {
+    func changedViewMode() {
+        print("settingVC delegate")
+        DispatchQueue.main.async { [weak self] in
+            self?.settingUI()
+            self?.tableView.reloadData()
+        }
+    }
+}
 
 
+// MARK: TableView Extension
 extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         let model = models[section]
         return model.title
+    }
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if let headerView = view as? UITableViewHeaderFooterView {
+            headerView.textLabel?.font = .boldSystemFont(ofSize: 15)
+            headerView.textLabel?.textColor = UIColor(named: "LabelTextColor")
+        }
     }
     func numberOfSections(in tableView: UITableView) -> Int {
         return models.count
@@ -134,15 +151,19 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
             ) as? SettingTableViewCell else {
                 return UITableViewCell()
             }
+            
+            cell.setUIColor()
             cell.configure(with: model)
             return cell
-        case .switchCell(let model):
+        case .switchCell(var model):
             guard let cell = tableView.dequeueReusableCell(
                     withIdentifier: SwitchTableViewCell.identifier,
                     for: indexPath
             ) as? SwitchTableViewCell else {
                 return UITableViewCell()
             }
+            cell.setUIColor()
+            cell.delegate = self
             cell.configure(with: model)
             return cell
         }

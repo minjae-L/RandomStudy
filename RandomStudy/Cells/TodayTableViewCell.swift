@@ -33,7 +33,6 @@ class TodayTableViewCell: UITableViewCell {
         let lbl = UILabel()
         lbl.numberOfLines = 1
         lbl.translatesAutoresizingMaskIntoConstraints = false
-        
         return lbl
     }()
     
@@ -98,7 +97,6 @@ class TodayTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
-        contentView.backgroundColor = .white
         contentView.addSubview(label)
         contentView.addSubview(deleteBtn)
         contentView.addSubview(checkBtn)
@@ -106,7 +104,10 @@ class TodayTableViewCell: UITableViewCell {
         setLayout()
         setupButtonEvent()
     }
-    
+    func setUIColor() {
+        label.textColor = UIColor(named: "LabelTextColor")
+        self.backgroundColor = UIColor(named: "CellBackgroundColor")
+    }
     required init?(coder: NSCoder) {
         fatalError()
     }
@@ -120,11 +121,11 @@ class TodayTableViewCell: UITableViewCell {
         item = model
         label.text = model.name
         if model.done == "0" {
-            contentView.backgroundColor = .white
             checkBtn.isEnabled = true
             checkView.isHidden = true
+            contentView.backgroundColor = UIColor(named: "CellBackgroundColor")
         } else {
-            contentView.backgroundColor = .lightGray
+            contentView.backgroundColor = .gray
             checkBtn.isEnabled = false
             checkView.isHidden = false
             checkView.currentProgress = 20

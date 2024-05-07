@@ -6,10 +6,12 @@
 //
 
 import UIKit
-
+protocol SwitchTableViewCellDelegate: AnyObject {
+    func changedViewMode()
+}
 class SwitchTableViewCell: UITableViewCell {
     static let identifier = "SwitchTableViewCell"
-    
+    weak var delegate: SwitchTableViewCellDelegate?
     private let iconContainer: UIView = {
         let view = UIView()
         view.clipsToBounds = true
@@ -34,10 +36,10 @@ class SwitchTableViewCell: UITableViewCell {
         return label
     }()
     
-    private let mySwitch: UISwitch = {
+    let mySwitch: UISwitch = {
         let mySwitch = UISwitch()
         mySwitch.onTintColor = .systemBlue
-        
+        mySwitch.addTarget(self, action: #selector(clickSwitch), for: .valueChanged)
         return mySwitch
     }()
 
@@ -87,7 +89,14 @@ class SwitchTableViewCell: UITableViewCell {
         iconContainer.backgroundColor = nil
         mySwitch.isOn = false
     }
-    
+    @objc func clickSwitch() {
+        delegate?.changedViewMode()
+    }
+    func setUIColor() {
+        self.backgroundColor = UIColor(named: "CellBackgroundColor")
+        self.contentView.backgroundColor = UIColor(named: "CellBackgroundColor")
+        self.label.textColor = UIColor(named: "LabelTextColor")
+    }
     func configure(with model: SettingSwitchOption) {
         label.text = model.title
         iconImageView.image = model.icon
