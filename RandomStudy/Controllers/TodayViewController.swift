@@ -87,8 +87,6 @@ final class TodayViewController: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         viewModel.fetchTodoList()
-//        settingUI(UIDarkmodeUserDefaults.shared.UIMode)
-//        configureNavigationbar(UIDarkmodeUserDefaults.shared.UIMode)
         settingUI()
         configureNavigationbar()
     }

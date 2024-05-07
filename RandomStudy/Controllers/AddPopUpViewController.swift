@@ -89,9 +89,9 @@ class AddPopUpViewController: UIViewController {
     private func drawUI() {
         self.containerView.backgroundColor = UIColor(named: "CellBackgroundColor")
         self.titleLabel.textColor = UIColor(named: "LabelTextColor")
-        self.textField.backgroundColor = .white
+        self.textField.backgroundColor = UIColor(named: "ViewBackgroundColor")
         self.textField.attributedPlaceholder = NSAttributedString(string: "  목록을 입력해주세요.", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
-        self.textField.textColor = .white
+        self.textField.textColor = UIColor(named: "TextFieldTextColor")
     }
     private func addView() {
         view.addSubview(containerView)

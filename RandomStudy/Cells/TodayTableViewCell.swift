@@ -123,8 +123,9 @@ class TodayTableViewCell: UITableViewCell {
         if model.done == "0" {
             checkBtn.isEnabled = true
             checkView.isHidden = true
+            contentView.backgroundColor = UIColor(named: "CellBackgroundColor")
         } else {
-            contentView.backgroundColor = .lightGray
+            contentView.backgroundColor = .gray
             checkBtn.isEnabled = false
             checkView.isHidden = false
             checkView.currentProgress = 20

@@ -66,8 +66,10 @@ extension DarkModeSettingViewController: UICollectionViewDelegate, UICollectionV
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        view.window?.overrideUserInterfaceStyle =
         viewModel.changeMode(viewModel.options[indexPath.row])
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
     }
     
 }
