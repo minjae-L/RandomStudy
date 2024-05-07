@@ -22,7 +22,7 @@ class DarkModeSettingCollectionViewCell: UICollectionViewCell {
     private let button: UIButton = {
         let btn = UIButton()
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setImage(UIImage(systemName: "circle.circle"), for: .normal)
+        
         return btn
     }()
     
@@ -34,6 +34,7 @@ class DarkModeSettingCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            button.leftAnchor.constraint(equalTo: titleLabel.rightAnchor, constant: 50),
             button.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -30),
             button.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
             button.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20)
@@ -48,6 +49,12 @@ class DarkModeSettingCollectionViewCell: UICollectionViewCell {
     func configure(_ model: ModeOptions) {
         self.titleLabel.text = model.title
         let value = UIModeUserDefaults.shared.modeValue
+        if model.mode == value {
+            self.button.setImage(UIImage(systemName: "circle.circle.fill"), for: .normal)
+        } else {
+            self.button.setImage(UIImage(systemName: "circle.circle"), for: .normal)
+
+        }
     }
     
     required init?(coder: NSCoder) {
