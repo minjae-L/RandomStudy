@@ -9,7 +9,10 @@ target 'RandomStudy' do
 
   pod 'lottie-ios', '4.1.2'
   pod 'Kingfisher', '~> 7.0'
-
+  pod 'FirebaseUI'
+  pod 'FirebaseAnalytics'
+  pod 'FirebaseAuth'
+  pod 'FirebaseFirestore'
   target 'RandomStudyTests' do
     inherit! :search_paths
     # Pods for testing
