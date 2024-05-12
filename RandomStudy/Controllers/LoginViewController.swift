@@ -55,7 +55,7 @@ class LoginViewController: UIViewController {
     private let idTextField: UITextField = {
         let tf = UITextField()
         tf.translatesAutoresizingMaskIntoConstraints = false
-        tf.placeholder = "ID"
+        tf.placeholder = "E-mail"
         
         return tf
     }()
@@ -76,7 +76,7 @@ class LoginViewController: UIViewController {
     private let findLoginInfoButton: UIButton = {
         let btn = UIButton()
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setTitle("아이디/비밀번호 찾기", for: .normal)
+        btn.setTitle("이메일/비밀번호 찾기", for: .normal)
         
         return btn
     }()

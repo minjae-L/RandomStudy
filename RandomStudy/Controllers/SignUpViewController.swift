@@ -9,6 +9,7 @@ import UIKit
 import FirebaseAuth
 
 class SignUpViewController: UIViewController {
+//    MARK: UI Property
     private let stackView: UIStackView = {
         let sv = UIStackView()
         sv.axis = .vertical
@@ -29,7 +30,7 @@ class SignUpViewController: UIViewController {
     }()
     private let idTextField: UITextField = {
         let tf = UITextField()
-        tf.placeholder = "아이디를 입력해주세요."
+        tf.placeholder = "이메일을 입력해주세요."
         tf.translatesAutoresizingMaskIntoConstraints = false
         
         return tf
@@ -52,10 +53,12 @@ class SignUpViewController: UIViewController {
         let btn = UIButton()
         btn.setTitle("계정 생성", for: .normal)
         btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.addTarget(self, action: #selector(confirmButtonTapped), for: .touchUpInside)
         
         return btn
     }()
     
+//    MARK: Method
     private func addViews() {
         view.addSubview(stackView)
         view.addSubview(signUpLabel)
@@ -93,6 +96,29 @@ class SignUpViewController: UIViewController {
         confirmButton.backgroundColor = .systemBlue
         confirmButton.setTitleColor(.white, for: .normal)
     }
+    @objc func confirmButtonTapped() {
+        guard let id = idTextField.text,
+              let password = passwordTextField.text,
+              let confirmPassword = confirmPasswordTextField.text
+        else { return }
+        if id != "" && password != "" && confirmPassword != "" && password == confirmPassword {
+            print("can create")
+            self.showSpinner{
+                Auth.auth().createUser(withEmail: id, password: password) { authResult, error in
+                    self.hideSpinner {
+                        guard let user = authResult?.user, error == nil else {
+                            print("Creating Account Fail")
+                            print("error: \(error)")
+                            return
+                        }
+                        print("\(user.email!) created")
+                    }
+                }
+            }
+            
+        }
+        
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         addViews()
@@ -100,3 +126,7 @@ class SignUpViewController: UIViewController {
         configureColor()
     }
 }
+
+
+
+
