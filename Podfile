@@ -16,6 +16,10 @@ target 'RandomStudy' do
   target 'RandomStudyTests' do
     inherit! :search_paths
     # Pods for testing
+  pod 'FirebaseUI'
+  pod 'FirebaseAnalytics'
+  pod 'FirebaseAuth'
+  pod 'FirebaseFirestore'
   end
 
   target 'RandomStudyUITests' do

@@ -11,6 +11,8 @@
 		513F9CADF12505788DC432AB /* Pods_RandomStudyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B0D95428544FAE132975CB /* Pods_RandomStudyTests.framework */; };
 		96132F9CE00E6573F3E178E6 /* Pods_RandomStudy_RandomStudyUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5736CE7A6A817FFF3298E51D /* Pods_RandomStudy_RandomStudyUITests.framework */; };
 		B5142D102AB5017200C3BB07 /* AddTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5142D0F2AB5017200C3BB07 /* AddTableViewCell.swift */; };
+		B51C80FC2BF0E7D400DC6D1E /* FirebaseFirestore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5E189C92BF0CDF6008FACFF /* FirebaseFirestore.framework */; };
+		B51C80FF2BF0EE1900DC6D1E /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C80FE2BF0EE1900DC6D1E /* UIViewControllerExtensions.swift */; };
 		B51C8AFF2BC7F735005ADC46 /* DBHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C8AFE2BC7F735005ADC46 /* DBHelper.swift */; };
 		B53529232AD63ED700C82383 /* check.json in Resources */ = {isa = PBXBuildFile; fileRef = B53529222AD63ED700C82383 /* check.json */; };
 		B54DE1D92B5AA97C00923530 /* GitSearchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54DE1D82B5AA97C00923530 /* GitSearchCollectionViewCell.swift */; };
@@ -73,6 +75,10 @@
 		A2C86832494A7A42012FCEE3 /* Pods-RandomStudy-RandomStudyUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RandomStudy-RandomStudyUITests.debug.xcconfig"; path = "Target Support Files/Pods-RandomStudy-RandomStudyUITests/Pods-RandomStudy-RandomStudyUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		A6B0D95428544FAE132975CB /* Pods_RandomStudyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RandomStudyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5142D0F2AB5017200C3BB07 /* AddTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTableViewCell.swift; sourceTree = "<group>"; };
+		B51C80F22BF0E7AB00DC6D1E /* FirebaseCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B51C80F62BF0E7B200DC6D1E /* FirebaseAuth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseAuth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B51C80F92BF0E7CA00DC6D1E /* FirebaseFirestoreInternal_Privacy.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = FirebaseFirestoreInternal_Privacy.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		B51C80FE2BF0EE1900DC6D1E /* UIViewControllerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtensions.swift; sourceTree = "<group>"; };
 		B51C8AFE2BC7F735005ADC46 /* DBHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBHelper.swift; sourceTree = "<group>"; };
 		B53529222AD63ED700C82383 /* check.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = check.json; sourceTree = "<group>"; };
 		B54DE1D82B5AA97C00923530 /* GitSearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitSearchCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -108,6 +114,11 @@
 		B5CC3B272AB2079000D9FA24 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		B5CC3B2A2AB207E500D9FA24 /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
 		B5CC3B2C2AB2080300D9FA24 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
+		B5E189C92BF0CDF6008FACFF /* FirebaseFirestore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseFirestore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5E189CB2BF0CE7E008FACFF /* FirebaseAuth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseAuth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5E189CD2BF0CE93008FACFF /* FirebaseFirestoreInternal.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseFirestoreInternal.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5E189CF2BF0CF83008FACFF /* FirebaseFirestore_Privacy.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = FirebaseFirestore_Privacy.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5E189D22BF0CF94008FACFF /* FirebaseFirestoreInternal.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseFirestoreInternal.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5FE6C102B596C7B00542731 /* GitSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitSearchViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -117,6 +128,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2377C06B7AE0FF4CF3A9305C /* Pods_RandomStudy.framework in Frameworks */,
+				B51C80FC2BF0E7D400DC6D1E /* FirebaseFirestore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -155,6 +167,14 @@
 		AECD81F2141ABF3146F6B2B1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B51C80F92BF0E7CA00DC6D1E /* FirebaseFirestoreInternal_Privacy.bundle */,
+				B51C80F62BF0E7B200DC6D1E /* FirebaseAuth.framework */,
+				B51C80F22BF0E7AB00DC6D1E /* FirebaseCore.framework */,
+				B5E189D22BF0CF94008FACFF /* FirebaseFirestoreInternal.framework */,
+				B5E189CF2BF0CF83008FACFF /* FirebaseFirestore_Privacy.bundle */,
+				B5E189CD2BF0CE93008FACFF /* FirebaseFirestoreInternal.framework */,
+				B5E189CB2BF0CE7E008FACFF /* FirebaseAuth.framework */,
+				B5E189C92BF0CDF6008FACFF /* FirebaseFirestore.framework */,
 				778C3D6B33E71B19EA45A1DD /* Pods_RandomStudy.framework */,
 				5736CE7A6A817FFF3298E51D /* Pods_RandomStudy_RandomStudyUITests.framework */,
 				A6B0D95428544FAE132975CB /* Pods_RandomStudyTests.framework */,
@@ -211,6 +231,7 @@
 				B5CC3B292AB207C100D9FA24 /* Cells */,
 				B51C8AFD2BC7F704005ADC46 /* SQLite */,
 				B5C126862AB4180800DBF902 /* TableViewExtensions.swift */,
+				B51C80FE2BF0EE1900DC6D1E /* UIViewControllerExtensions.swift */,
 				B58D28E72A2D830200947A24 /* Assets.xcassets */,
 				B58D28E92A2D830200947A24 /* LaunchScreen.storyboard */,
 				B58D28EC2A2D830200947A24 /* Info.plist */,
@@ -313,8 +334,6 @@
 			dependencies = (
 			);
 			name = RandomStudy;
-			packageProductDependencies = (
-			);
 			productName = RandomStudy;
 			productReference = B58D28DB2A2D830100947A24 /* RandomStudy.app */;
 			productType = "com.apple.product-type.application";
@@ -327,6 +346,7 @@
 				B58D28ED2A2D830300947A24 /* Sources */,
 				B58D28EE2A2D830300947A24 /* Frameworks */,
 				B58D28EF2A2D830300947A24 /* Resources */,
+				24E558A5E74E2BC51BF8E94C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -390,8 +410,6 @@
 				Base,
 			);
 			mainGroup = B58D28D22A2D830100947A24;
-			packageReferences = (
-			);
 			productRefGroup = B58D28DC2A2D830100947A24 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -452,6 +470,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		24E558A5E74E2BC51BF8E94C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-RandomStudyTests/Pods-RandomStudyTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-RandomStudyTests/Pods-RandomStudyTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RandomStudyTests/Pods-RandomStudyTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		73115CC6098F9C92CBD8C266 /* [CP] Embed Pods Frameworks */ = {
@@ -561,6 +596,7 @@
 				B59B65912ADB3483008A60F1 /* HistoryTableViewCell.swift in Sources */,
 				B54DE1D92B5AA97C00923530 /* GitSearchCollectionViewCell.swift in Sources */,
 				B5A98E5A2BE8FB8500E9CE2A /* DarkModeSettingViewController.swift in Sources */,
+				B51C80FF2BF0EE1900DC6D1E /* UIViewControllerExtensions.swift in Sources */,
 				B5CC3B2D2AB2080300D9FA24 /* SettingTableViewCell.swift in Sources */,
 				B5CC3B282AB2079000D9FA24 /* SettingViewController.swift in Sources */,
 				B5AAA2292BEFA45800B4FDC9 /* SignUpViewController.swift in Sources */,
