@@ -14,8 +14,18 @@ class SignUpViewController: UIViewController {
         sv.axis = .vertical
         sv.spacing = 10
         sv.translatesAutoresizingMaskIntoConstraints = false
+        sv.distribution = .equalSpacing
         
         return sv
+    }()
+    private let signUpLabel: UILabel = {
+        let lb = UILabel()
+        lb.text = "회원가입"
+        lb.translatesAutoresizingMaskIntoConstraints = false
+        lb.textAlignment = .center
+        lb.font = .boldSystemFont(ofSize: 20)
+        
+        return lb
     }()
     private let idTextField: UITextField = {
         let tf = UITextField()
@@ -48,22 +58,30 @@ class SignUpViewController: UIViewController {
     
     private func addViews() {
         view.addSubview(stackView)
+        view.addSubview(signUpLabel)
         stackView.addArrangedSubview(idTextField)
         stackView.addArrangedSubview(passwordTextField)
         stackView.addArrangedSubview(confirmPasswordTextField)
+        stackView.addArrangedSubview(confirmButton)
         
-        configureLayout()
-        configureColor()
     }
     private func configureLayout() {
         NSLayoutConstraint.activate([
+            signUpLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 50),
+            signUpLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            signUpLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
-            stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
+            idTextField.heightAnchor.constraint(equalToConstant: 50),
+            passwordTextField.heightAnchor.constraint(equalToConstant: 50),
+            confirmButton.heightAnchor.constraint(equalToConstant: 50),
+            confirmPasswordTextField.heightAnchor.constraint(equalToConstant: 50),
         ])
     }
     private func configureColor() {
+        view.backgroundColor = UIColor(named: "ViewBackgroundColor")
         stackView.backgroundColor = UIColor(named: "ViewBackgroundColor")
         idTextField.backgroundColor = UIColor(named: "CellBackgroundColor")
         idTextField.textColor = UIColor(named: "TextFieldTextColor")
@@ -77,6 +95,7 @@ class SignUpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         addViews()
-        // Do any additional setup after loading the view.
+        configureLayout()
+        configureColor()
     }
 }
