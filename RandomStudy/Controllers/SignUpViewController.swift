@@ -82,6 +82,7 @@ class SignUpViewController: UIViewController {
     }
     private func configureColor() {
         view.backgroundColor = UIColor(named: "ViewBackgroundColor")
+        signUpLabel.textColor = UIColor(named: "LabelTextColor")
         stackView.backgroundColor = UIColor(named: "ViewBackgroundColor")
         idTextField.backgroundColor = UIColor(named: "CellBackgroundColor")
         idTextField.textColor = UIColor(named: "TextFieldTextColor")

@@ -14,6 +14,7 @@ class LoginViewController: UIViewController {
         lb.text = "로그인"
         lb.translatesAutoresizingMaskIntoConstraints = false
         lb.textAlignment = .center
+        lb.font = .boldSystemFont(ofSize: 30)
         
         return lb
     }()
@@ -83,6 +84,7 @@ class LoginViewController: UIViewController {
         let btn = UIButton()
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.setTitle("회원가입", for: .normal)
+        btn.addTarget(self, action: #selector(signUpButtonTapped), for: .touchUpInside)
         
         return btn
     }()
@@ -118,10 +120,8 @@ class LoginViewController: UIViewController {
         NSLayoutConstraint.activate([
             stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-//            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-//            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-//            stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
-//            stackView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor, constant: -20),
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             idTextField.heightAnchor.constraint(equalToConstant: 50),
             passwordTextField.heightAnchor.constraint(equalToConstant: 50),
         ])
@@ -131,5 +131,8 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         addViews()
     }
-
+    @objc func signUpButtonTapped() {
+        let vc = SignUpViewController()
+        self.present(vc, animated: true)
+    }
 }
