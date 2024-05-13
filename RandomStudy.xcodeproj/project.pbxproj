@@ -198,6 +198,15 @@
 			path = Files;
 			sourceTree = "<group>";
 		};
+		B552525E2BF242BB004041B0 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				B5C126862AB4180800DBF902 /* TableViewExtensions.swift */,
+				B51C80FE2BF0EE1900DC6D1E /* UIViewControllerExtensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		B58D28D22A2D830100947A24 = {
 			isa = PBXGroup;
 			children = (
@@ -223,6 +232,7 @@
 		B58D28DD2A2D830100947A24 /* RandomStudy */ = {
 			isa = PBXGroup;
 			children = (
+				B552525E2BF242BB004041B0 /* Extensions */,
 				B53529212AD63EC000C82383 /* Files */,
 				B5D58FB72AC50EB200515CED /* Delegates */,
 				B5CB35C32AC1282C003FB08D /* Controllers */,
@@ -230,8 +240,6 @@
 				B5CB35C12AC12812003FB08D /* ViewModels */,
 				B5CC3B292AB207C100D9FA24 /* Cells */,
 				B51C8AFD2BC7F704005ADC46 /* SQLite */,
-				B5C126862AB4180800DBF902 /* TableViewExtensions.swift */,
-				B51C80FE2BF0EE1900DC6D1E /* UIViewControllerExtensions.swift */,
 				B58D28E72A2D830200947A24 /* Assets.xcassets */,
 				B58D28E92A2D830200947A24 /* LaunchScreen.storyboard */,
 				B58D28EC2A2D830200947A24 /* Info.plist */,

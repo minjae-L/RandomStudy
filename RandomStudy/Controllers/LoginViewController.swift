@@ -132,6 +132,7 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         addViews()
+        print("current account: \(Auth.auth().currentUser)")
     }
     @objc func signUpButtonTapped() {
         let vc = SignUpViewController()

@@ -50,7 +50,23 @@ extension UIViewController {
         present(alertController, animated: true, completion: completion)
         
     }
-    
+    func showReConfirmAlert(_ message: String,_ completion: @escaping ((Bool) -> Void)) {
+        let alertController = UIAlertController(title: nil,
+                                                message: message,
+                                                preferredStyle: .alert)
+        let acceptButton = UIAlertAction(title: "예",
+                                     style: .default, handler: { _ in
+            completion(true)
+        })
+        let cancelButton = UIAlertAction(title: "아니오",
+                                         style: .default,
+                                         handler: { _ in
+            completion(false)
+        })
+        alertController.addAction(acceptButton)
+        alertController.addAction(cancelButton)
+        present(alertController, animated: true)
+    }
     func hideSpinner(_ completion: (() -> Void)?) {
         if let controller = SaveAlertHandle.get() {
             SaveAlertHandle.clear()
