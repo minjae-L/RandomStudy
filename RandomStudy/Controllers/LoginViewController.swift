@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class LoginViewController: UIViewController {
 //    MARK: UI Property
@@ -52,7 +53,7 @@ class LoginViewController: UIViewController {
         
         return sv
     }()
-    private let idTextField: UITextField = {
+    private let emailTextField: UITextField = {
         let tf = UITextField()
         tf.translatesAutoresizingMaskIntoConstraints = false
         tf.placeholder = "E-mail"
@@ -70,6 +71,7 @@ class LoginViewController: UIViewController {
         let btn = UIButton()
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.setTitle("로그인", for: .normal)
+        btn.addTarget(self, action: #selector(logInButtonTapped), for: .touchUpInside)
         
         return btn
     }()
@@ -93,7 +95,7 @@ class LoginViewController: UIViewController {
         stackView.addArrangedSubview(loginLabel)
         stackView.addArrangedSubview(textFieldStackView)
         stackView.addArrangedSubview(buttonStackView)
-        textFieldStackView.addArrangedSubview(idTextField)
+        textFieldStackView.addArrangedSubview(emailTextField)
         textFieldStackView.addArrangedSubview(passwordTextField)
         buttonStackView.addArrangedSubview(loginButton)
         buttonStackView.addArrangedSubview(findLoginInfoButton)
@@ -104,8 +106,8 @@ class LoginViewController: UIViewController {
     private func configureColor() {
         view.backgroundColor = UIColor(named: "ViewBackgroundColor")
         loginLabel.textColor = UIColor(named: "LabelTextColor")
-        idTextField.backgroundColor = UIColor(named: "CellBackgroundColor")
-        idTextField.textColor = UIColor(named: "TextFieldTextColor")
+        emailTextField.backgroundColor = UIColor(named: "CellBackgroundColor")
+        emailTextField.textColor = UIColor(named: "TextFieldTextColor")
         passwordTextField.backgroundColor = UIColor(named: "CellBackgroundColor")
         passwordTextField.textColor = UIColor(named: "TextFieldTextColor")
         loginButton.setTitleColor(UIColor.white, for: .normal)
@@ -122,7 +124,7 @@ class LoginViewController: UIViewController {
             stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            idTextField.heightAnchor.constraint(equalToConstant: 50),
+            emailTextField.heightAnchor.constraint(equalToConstant: 50),
             passwordTextField.heightAnchor.constraint(equalToConstant: 50),
         ])
     }
@@ -134,5 +136,45 @@ class LoginViewController: UIViewController {
     @objc func signUpButtonTapped() {
         let vc = SignUpViewController()
         self.present(vc, animated: true)
+    }
+    @objc func logInButtonTapped() {
+        print("login")
+        guard let email = emailTextField.text,
+              let password = passwordTextField.text
+        else { return }
+        if email.isEmpty || password.isEmpty {
+            self.showMessageAlert("이메일 또는 비밀번호를 입력해주세요.")
+            return
+        }
+        showSpinner {
+            Auth.auth().signIn(withEmail: email, password: password) {[weak self] authResult, error in
+                guard let self = self else { return }
+                self.hideSpinner {
+                    if let error = error {
+                        let authError = error as NSError
+                        if let ac = AuthErrorCode.Code(rawValue: authError.code) {
+                            switch ac {
+                            case .wrongPassword:
+                                self.showMessageAlert("비밀번호가 일치하지 않습니다.")
+                            case .invalidEmail:
+                                self.showMessageAlert("이메일 형식이 올바르지 않습니다.")
+                            case .userDisabled:
+                                self.showMessageAlert("이 계정은 현재 사용중지 상태입니다.")
+                            case .operationNotAllowed:
+                                self.showMessageAlert("현재 이메일 로그인을 지원하지 않습니다.")
+                            default:
+                                self.showMessageAlert("로그인 실패\n이메일과 비밀번호를 확인해주세요.")
+                            }
+                        }
+                    } else {
+                        let vc = TodayViewController()
+                        let navigationController = UINavigationController(rootViewController: vc)
+                        navigationController.modalPresentationStyle = .fullScreen
+                        self.present(navigationController, animated: true)
+                        print("login success")
+                    }
+                }
+            }
+        }
     }
 }

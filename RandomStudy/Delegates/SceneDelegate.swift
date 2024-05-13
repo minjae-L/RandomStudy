@@ -6,9 +6,7 @@
 //
 
 import UIKit
-//import FirebaseFirestore
 import FirebaseCore
-import FirebaseAuth
 
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -25,9 +23,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         let mvc = LoginViewController()
         let mainViewController = TodayViewController()
-        let navigationController = UINavigationController(rootViewController: mvc)
+//        let navigationController = UINavigationController(rootViewController: mvc)
         
-        window?.rootViewController = navigationController
+//        window?.rootViewController = navigationController
+        window?.rootViewController = mvc
         window?.makeKeyAndVisible()
         print("mode: \(UIModeUserDefaults.shared.modeValue)")
         switch UIModeUserDefaults.shared.modeValue {

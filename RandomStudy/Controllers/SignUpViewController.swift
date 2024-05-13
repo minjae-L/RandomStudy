@@ -28,7 +28,7 @@ class SignUpViewController: UIViewController {
         
         return lb
     }()
-    private let idTextField: UITextField = {
+    private let emailTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "이메일을 입력해주세요."
         tf.translatesAutoresizingMaskIntoConstraints = false
@@ -64,7 +64,7 @@ class SignUpViewController: UIViewController {
     private func addViews() {
         view.addSubview(stackView)
         view.addSubview(signUpLabel)
-        stackView.addArrangedSubview(idTextField)
+        stackView.addArrangedSubview(emailTextField)
         stackView.addArrangedSubview(passwordTextField)
         stackView.addArrangedSubview(confirmPasswordTextField)
         stackView.addArrangedSubview(confirmButton)
@@ -79,7 +79,7 @@ class SignUpViewController: UIViewController {
             stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            idTextField.heightAnchor.constraint(equalToConstant: 50),
+            emailTextField.heightAnchor.constraint(equalToConstant: 50),
             passwordTextField.heightAnchor.constraint(equalToConstant: 50),
             confirmButton.heightAnchor.constraint(equalToConstant: 50),
             confirmPasswordTextField.heightAnchor.constraint(equalToConstant: 50),
@@ -89,8 +89,8 @@ class SignUpViewController: UIViewController {
         view.backgroundColor = UIColor(named: "ViewBackgroundColor")
         signUpLabel.textColor = UIColor(named: "LabelTextColor")
         stackView.backgroundColor = UIColor(named: "ViewBackgroundColor")
-        idTextField.backgroundColor = UIColor(named: "CellBackgroundColor")
-        idTextField.textColor = UIColor(named: "TextFieldTextColor")
+        emailTextField.backgroundColor = UIColor(named: "CellBackgroundColor")
+        emailTextField.textColor = UIColor(named: "TextFieldTextColor")
         passwordTextField.backgroundColor = UIColor(named: "CellBackgroundColor")
         passwordTextField.textColor = UIColor(named: "TextFieldTextColor")
         confirmPasswordTextField.backgroundColor = UIColor(named: "CellBackgroundColor")
@@ -99,7 +99,7 @@ class SignUpViewController: UIViewController {
         confirmButton.setTitleColor(.white, for: .normal)
     }
     @objc func confirmButtonTapped() {
-        guard let id = idTextField.text,
+        guard let id = emailTextField.text,
               let password = passwordTextField.text,
               let confirmPassword = confirmPasswordTextField.text
         else { return }
