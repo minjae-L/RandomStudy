@@ -23,6 +23,16 @@ private class SaveAlertHandle {
 }
 
 extension UIViewController {
+    func showMessageAlert(_ message: String) {
+        let alertController = UIAlertController(title: nil,
+                                                message: message,
+                                                preferredStyle: .alert)
+        let okButton = UIAlertAction(title: "확인",
+                                     style: .default,
+                                     handler: nil)
+        alertController.addAction(okButton)
+        present(alertController, animated: true)
+    }
     func showSpinner(_ completion: (() -> Void)?) {
         let alertController = UIAlertController(title: nil,
                                                 message: "잠시 기다려주세요...\n\n\n",
