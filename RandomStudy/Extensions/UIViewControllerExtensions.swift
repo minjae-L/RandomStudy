@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+// AlertVC를 클래스로 관리 (로딩화면을 위해)
 private class SaveAlertHandle {
     static var alertHandle: UIAlertController?
     
@@ -23,6 +24,8 @@ private class SaveAlertHandle {
 }
 
 extension UIViewController {
+//    MARK: AlertController Methods
+    // 메세지와 확인버튼만 있는 alert 보여주기
     func showMessageAlert(_ message: String) {
         let alertController = UIAlertController(title: nil,
                                                 message: message,
@@ -33,6 +36,7 @@ extension UIViewController {
         alertController.addAction(okButton)
         present(alertController, animated: true)
     }
+    // 로딩화면 보여주기
     func showSpinner(_ completion: (() -> Void)?) {
         let alertController = UIAlertController(title: nil,
                                                 message: "잠시 기다려주세요...\n\n\n",
@@ -50,6 +54,7 @@ extension UIViewController {
         present(alertController, animated: true, completion: completion)
         
     }
+    // 재확인 alert 보여주기 (확인 버튼 클릭시 클로저 실행)
     func showReConfirmAlert(_ message: String,_ completion: @escaping ((Bool) -> Void)) {
         let alertController = UIAlertController(title: nil,
                                                 message: message,
@@ -67,6 +72,7 @@ extension UIViewController {
         alertController.addAction(cancelButton)
         present(alertController, animated: true)
     }
+    // 로딩화면 숨기기
     func hideSpinner(_ completion: (() -> Void)?) {
         if let controller = SaveAlertHandle.get() {
             SaveAlertHandle.clear()

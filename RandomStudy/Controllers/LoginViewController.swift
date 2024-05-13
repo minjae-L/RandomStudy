@@ -80,6 +80,7 @@ class LoginViewController: UIViewController {
         let btn = UIButton()
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.setTitle("이메일/비밀번호 찾기", for: .normal)
+        btn.isEnabled = false
         
         return btn
     }()
@@ -91,6 +92,8 @@ class LoginViewController: UIViewController {
         
         return btn
     }()
+//    MARK: Methods
+    // UI Property 등록
     private func addViews() {
         view.addSubview(stackView)
         stackView.addArrangedSubview(loginLabel)
@@ -101,9 +104,8 @@ class LoginViewController: UIViewController {
         buttonStackView.addArrangedSubview(loginButton)
         buttonStackView.addArrangedSubview(findLoginInfoButton)
         buttonStackView.addArrangedSubview(signUpButton)
-        configureColor()
-        configureLayout()
     }
+    // UI Property 색 설정
     private func configureColor() {
         view.backgroundColor = UIColor(named: "ViewBackgroundColor")
         loginLabel.textColor = UIColor(named: "LabelTextColor")
@@ -114,11 +116,12 @@ class LoginViewController: UIViewController {
         loginButton.setTitleColor(UIColor.white, for: .normal)
         loginButton.backgroundColor = .systemBlue
         findLoginInfoButton.setTitleColor(UIColor.white, for: .normal)
-        findLoginInfoButton.backgroundColor = .systemBlue
+        findLoginInfoButton.backgroundColor = .systemGray
         signUpButton.setTitleColor(UIColor.white, for: .normal)
         signUpButton.backgroundColor = .systemBlue
         stackView.backgroundColor = UIColor(named: "ViewBackgroundColor")
     }
+    // 레이아웃 설정
     private func configureLayout() {
         NSLayoutConstraint.activate([
             stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -133,13 +136,17 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         addViews()
+        configureColor()
+        configureLayout()
         print("current account: \(Auth.auth().currentUser)")
     }
     
+    // 키보드에 맞춰서 UI크기 조정
     override func viewWillAppear(_ animated: Bool) {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardUp), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDown), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
+    // 빈화면 클릭시 키보드 내리기
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
     }
@@ -155,23 +162,28 @@ class LoginViewController: UIViewController {
     @objc func keyboardDown() {
         self.view.transform = .identity
     }
+//    MARK: Button Actions
+    // 회원가입 뷰로 이동
     @objc func signUpButtonTapped() {
         let vc = SignUpViewController()
         self.present(vc, animated: true)
     }
+    // 로그인
     @objc func logInButtonTapped() {
-        print("login")
         guard let email = emailTextField.text,
               let password = passwordTextField.text
         else { return }
+        // 예외처리 1
         if email.isEmpty || password.isEmpty {
             self.showMessageAlert("이메일 또는 비밀번호를 입력해주세요.")
             return
         }
+        // 로딩화면 보여주고, 로딩화면 지우면서 로그인 과정 실행
         showSpinner {
             Auth.auth().signIn(withEmail: email, password: password) {[weak self] authResult, error in
                 guard let self = self else { return }
                 self.hideSpinner {
+                    // 예외처리 2
                     if let error = error {
                         let authError = error as NSError
                         if let ac = AuthErrorCode.Code(rawValue: authError.code) {
@@ -189,6 +201,7 @@ class LoginViewController: UIViewController {
                             }
                         }
                     } else {
+                        // 로그인 성공하면 TodayVC로 이동
                         let vc = TodayViewController()
                         let navigationController = UINavigationController(rootViewController: vc)
                         navigationController.modalPresentationStyle = .fullScreen

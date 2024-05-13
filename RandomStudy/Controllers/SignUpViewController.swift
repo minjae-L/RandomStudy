@@ -61,6 +61,7 @@ class SignUpViewController: UIViewController {
     }()
     
 //    MARK: Method
+    // UI Property 등록
     private func addViews() {
         view.addSubview(stackView)
         view.addSubview(signUpLabel)
@@ -70,6 +71,7 @@ class SignUpViewController: UIViewController {
         stackView.addArrangedSubview(confirmButton)
         
     }
+    // 레이아웃 설정
     private func configureLayout() {
         NSLayoutConstraint.activate([
             signUpLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 50),
@@ -85,6 +87,7 @@ class SignUpViewController: UIViewController {
             confirmPasswordTextField.heightAnchor.constraint(equalToConstant: 50),
         ])
     }
+    // UI Property 색 설정
     private func configureColor() {
         view.backgroundColor = UIColor(named: "ViewBackgroundColor")
         signUpLabel.textColor = UIColor(named: "LabelTextColor")
@@ -98,11 +101,13 @@ class SignUpViewController: UIViewController {
         confirmButton.backgroundColor = .systemBlue
         confirmButton.setTitleColor(.white, for: .normal)
     }
+//    MARK: Button Action
     @objc func confirmButtonTapped() {
         guard let id = emailTextField.text,
               let password = passwordTextField.text,
               let confirmPassword = confirmPasswordTextField.text
         else { return }
+        // 예외처리
         if id.isEmpty {
             showMessageAlert("아이디를 입력해주세요.")
             return
@@ -113,12 +118,14 @@ class SignUpViewController: UIViewController {
             showMessageAlert("비밀번호가 일치하지 않습니다.")
             return
         }
+        // 로딩화면 출력하고, 숨기면서 계정 등록
         self.showSpinner{
             Auth.auth().createUser(withEmail: id, password: password) { authResult, error in
                 self.hideSpinner {
                     guard let user = authResult?.user, error == nil else {
                         print("Creating Account Fail")
                         print("error: \(error)")
+                        // 회원가입 실패 예외처리
                         guard let authError = error as? NSError else { return }
                         self.showMessageAlert(authError.localizedDescription)
                         return
@@ -136,6 +143,7 @@ class SignUpViewController: UIViewController {
         configureLayout()
         configureColor()
     }
+    // 키보드 화면에 따른 뷰 조정
     override func viewWillAppear(_ animated: Bool) {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardUp), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDown), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -143,7 +151,7 @@ class SignUpViewController: UIViewController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
     }
-    
+    // 키보드의 크기를 구하고, 크기에 따라서 뷰 조정
     @objc func keyboardUp(notification: Notification) {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             let keyboardRectangle = keyboardFrame.cgRectValue
