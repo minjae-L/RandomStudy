@@ -64,6 +64,7 @@ class LoginViewController: UIViewController {
         let tf = UITextField()
         tf.translatesAutoresizingMaskIntoConstraints = false
         tf.placeholder = "Password"
+        tf.isSecureTextEntry = true
         
         return tf
     }()
@@ -133,6 +134,26 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         addViews()
         print("current account: \(Auth.auth().currentUser)")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardUp), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDown), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
+    @objc func keyboardUp(notification: Notification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            
+            UIView.animate(withDuration: 0.3, animations: {
+                self.view.transform = CGAffineTransform(translationX: 0, y: -keyboardRectangle.height/2)
+            })
+        }
+    }
+    @objc func keyboardDown() {
+        self.view.transform = .identity
     }
     @objc func signUpButtonTapped() {
         let vc = SignUpViewController()
