@@ -39,6 +39,7 @@ class SignUpViewController: UIViewController {
         let tf = UITextField()
         tf.placeholder = "비밀번호를 입력해주세요."
         tf.translatesAutoresizingMaskIntoConstraints = false
+        tf.isSecureTextEntry = true
         
         return tf
     }()
@@ -46,6 +47,7 @@ class SignUpViewController: UIViewController {
         let tf = UITextField()
         tf.placeholder = "비밀번호를 한번 더 입력해주세요."
         tf.translatesAutoresizingMaskIntoConstraints = false
+        tf.isSecureTextEntry = true
         
         return tf
     }()
@@ -101,21 +103,30 @@ class SignUpViewController: UIViewController {
               let password = passwordTextField.text,
               let confirmPassword = confirmPasswordTextField.text
         else { return }
-        if id != "" && password != "" && confirmPassword != "" && password == confirmPassword {
-            print("can create")
-            self.showSpinner{
-                Auth.auth().createUser(withEmail: id, password: password) { authResult, error in
-                    self.hideSpinner {
-                        guard let user = authResult?.user, error == nil else {
-                            print("Creating Account Fail")
-                            print("error: \(error)")
-                            return
-                        }
-                        print("\(user.email!) created")
+        if id.isEmpty {
+            showMessageAlert("아이디를 입력해주세요.")
+            return
+        } else if password.isEmpty || confirmPassword.isEmpty {
+            showMessageAlert("비밀번호를 입력해주세요.")
+            return
+        } else if password != confirmPassword {
+            showMessageAlert("비밀번호가 일치하지 않습니다.")
+            return
+        }
+        self.showSpinner{
+            Auth.auth().createUser(withEmail: id, password: password) { authResult, error in
+                self.hideSpinner {
+                    guard let user = authResult?.user, error == nil else {
+                        print("Creating Account Fail")
+                        print("error: \(error)")
+                        guard let authError = error as? NSError else { return }
+                        self.showMessageAlert(authError.localizedDescription)
+                        return
                     }
+                    print("\(user.email!) created")
+                    self.dismiss(animated: true)
                 }
             }
-            
         }
         
     }
