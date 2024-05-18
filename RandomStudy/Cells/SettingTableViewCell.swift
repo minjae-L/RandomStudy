@@ -57,7 +57,7 @@ class SettingTableViewCell: UITableViewCell {
         label.frame = CGRect(
             x: 25 + iconContainer.frame.size.width,
             y: 0,
-            width: contentView.frame.size.width - 15 - iconContainer.frame.size.width,
+            width: contentView.frame.size.width - 2 * (25 + iconContainer.frame.size.width),
             height: contentView.frame.size.height
         )
     }
@@ -74,11 +74,20 @@ class SettingTableViewCell: UITableViewCell {
         self.contentView.backgroundColor = UIColor(named: "CellBackgroundColor")
         self.label.textColor = UIColor(named: "LabelTextColor")
     }
+    func logOutCellConfigure() {
+        label.textColor = .systemRed
+        self.backgroundColor = .clear
+        self.contentView.backgroundColor = .clear
+        label.textAlignment = .center
+    }
     // 셀에 있는 이미지뷰와 라벨을 미리 정했던 구조체와 연결
     func configure(with model: SettingsOption) {
         label.text = model.title
         iconImageView.image = model.icon
         iconContainer.backgroundColor = model.iconBackgroundColor
         self.accessoryType = model.accessoryType
+        if label.text == "로그아웃" {
+            logOutCellConfigure()
+        }
     }
 }

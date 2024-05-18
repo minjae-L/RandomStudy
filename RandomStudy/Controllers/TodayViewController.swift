@@ -7,6 +7,7 @@
 
 import UIKit
 import Lottie
+import FirebaseAuth
 
 final class TodayViewController: UIViewController {
     // UI 선언
@@ -84,6 +85,7 @@ final class TodayViewController: UIViewController {
         super.viewDidLoad()
         addView()
         bindings()
+        print("current account: \(Auth.auth().currentUser)")
     }
     override func viewWillAppear(_ animated: Bool) {
         viewModel.fetchTodoList()

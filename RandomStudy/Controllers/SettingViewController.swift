@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 // MARK: - Main
 class SettingViewController: UIViewController {
@@ -15,6 +16,8 @@ class SettingViewController: UIViewController {
         let table = UITableView(frame: .zero, style: .grouped)
         table.register(SettingTableViewCell.self, forCellReuseIdentifier: SettingTableViewCell.identifier)
         table.register(SwitchTableViewCell.self, forCellReuseIdentifier: SwitchTableViewCell.identifier)
+        table.separatorStyle = .none
+        
         return table
     }()
     private var models = [Section]()
@@ -97,13 +100,29 @@ class SettingViewController: UIViewController {
                                                 },
                                               accessoryType: .none
                                              ))]))
+        models.append(Section(title: "", options: [
+            .staticCell(model: SettingsOption(title: "로그아웃",
+                                              icon: nil,
+                                              iconBackgroundColor: .clear,
+                                              handler: {
+                                                  do {
+                                                      try Auth.auth().signOut()
+                                                      self.showReConfirmAlert("정말 로그아웃하시겠습니까?") { confirm in
+                                                          if confirm {
+                                                              self.navigationController?.popToRootViewController(animated: false)
+                                                              self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)
+                                                          }
+                                                      }
+                                                  }catch {
+                                                      print("logout fail")
+                                                  }
+                                              },
+                                              accessoryType: .none
+                                             ))]))
     }
     
     private func removeAllButtonEvent() {
-        let alert = UIAlertController(title: "초기화", message: "초기화하였습니다.", preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "확인", style: .default)
-        alert.addAction(okAction)
-        self.present(alert, animated: true)
+        self.showMessageAlert("초기화되었습니다.")
         DBHelper.shared.resetAllTable()
     }
 
