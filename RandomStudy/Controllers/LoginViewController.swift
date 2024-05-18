@@ -138,7 +138,8 @@ class LoginViewController: UIViewController {
         addViews()
         configureColor()
         configureLayout()
-//        print("current account: \(Auth.auth().currentUser)")
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
     }
     
     // 키보드에 맞춰서 UI크기 조정
@@ -187,5 +188,13 @@ class LoginViewController: UIViewController {
             }
             self.hideSpinner{}
         }
+    }
+}
+
+// MARK: TextField Delegate
+extension LoginViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }

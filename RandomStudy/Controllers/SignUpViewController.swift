@@ -122,6 +122,9 @@ class SignUpViewController: UIViewController {
         addViews()
         configureLayout()
         configureColor()
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
+        confirmPasswordTextField.delegate = self
     }
     // 키보드 화면에 따른 뷰 조정
     override func viewWillAppear(_ animated: Bool) {
@@ -146,6 +149,13 @@ class SignUpViewController: UIViewController {
     }
 }
 
+// MARK: TextField Delegate
+extension SignUpViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}
 
 
 

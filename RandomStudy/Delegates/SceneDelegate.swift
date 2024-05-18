@@ -22,12 +22,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
         let mvc = LoginViewController()
-        let mainViewController = TodayViewController()
-//        let navigationController = UINavigationController(rootViewController: mvc)
-        
-//        window?.rootViewController = navigationController
         window?.rootViewController = mvc
         window?.makeKeyAndVisible()
+        
         print("mode: \(UIModeUserDefaults.shared.modeValue)")
         switch UIModeUserDefaults.shared.modeValue {
         case .dark:
