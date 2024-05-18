@@ -6,9 +6,9 @@
 //
 
 import UIKit
-import FirebaseAuth
 
 class LoginViewController: UIViewController {
+    private let viewModel = LoginViewModel()
 //    MARK: UI Property
     private let loginLabel: UILabel = {
         let lb = UILabel()
@@ -138,7 +138,7 @@ class LoginViewController: UIViewController {
         addViews()
         configureColor()
         configureLayout()
-        print("current account: \(Auth.auth().currentUser)")
+//        print("current account: \(Auth.auth().currentUser)")
     }
     
     // 키보드에 맞춰서 UI크기 조정
@@ -173,43 +173,19 @@ class LoginViewController: UIViewController {
         guard let email = emailTextField.text,
               let password = passwordTextField.text
         else { return }
-        // 예외처리 1
-        if email.isEmpty || password.isEmpty {
-            self.showMessageAlert("이메일 또는 비밀번호를 입력해주세요.")
-            return
-        }
-        // 로딩화면 보여주고, 로딩화면 지우면서 로그인 과정 실행
-        showSpinner {
-            Auth.auth().signIn(withEmail: email, password: password) {[weak self] authResult, error in
-                guard let self = self else { return }
-                self.hideSpinner {
-                    // 예외처리 2
-                    if let error = error {
-                        let authError = error as NSError
-                        if let ac = AuthErrorCode.Code(rawValue: authError.code) {
-                            switch ac {
-                            case .wrongPassword:
-                                self.showMessageAlert("비밀번호가 일치하지 않습니다.")
-                            case .invalidEmail:
-                                self.showMessageAlert("이메일 형식이 올바르지 않습니다.")
-                            case .userDisabled:
-                                self.showMessageAlert("이 계정은 현재 사용중지 상태입니다.")
-                            case .operationNotAllowed:
-                                self.showMessageAlert("현재 이메일 로그인을 지원하지 않습니다.")
-                            default:
-                                self.showMessageAlert("로그인 실패\n이메일과 비밀번호를 확인해주세요.")
-                            }
-                        }
-                    } else {
-                        // 로그인 성공하면 TodayVC로 이동
-                        let vc = TodayViewController()
-                        let navigationController = UINavigationController(rootViewController: vc)
-                        navigationController.modalPresentationStyle = .fullScreen
-                        self.present(navigationController, animated: true)
-                        print("login success")
-                    }
+        
+        self.showSpinner{
+            self.viewModel.login(email: email, password: password) { [weak self] result, errorMessage in
+                if result {
+                    let navigationController = UINavigationController(rootViewController: TodayViewController())
+                    navigationController.modalPresentationStyle = .fullScreen
+                    self?.present(navigationController, animated: true)
+                } else {
+                    self?.showMessageAlert(errorMessage)
                 }
+                
             }
+            self.hideSpinner{}
         }
     }
 }

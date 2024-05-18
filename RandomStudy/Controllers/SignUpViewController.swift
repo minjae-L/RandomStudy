@@ -6,9 +6,9 @@
 //
 
 import UIKit
-import FirebaseAuth
 
 class SignUpViewController: UIViewController {
+    private var viewModel = SignUpViewModel()
 //    MARK: UI Property
     private let stackView: UIStackView = {
         let sv = UIStackView()
@@ -103,35 +103,15 @@ class SignUpViewController: UIViewController {
     }
 //    MARK: Button Action
     @objc func confirmButtonTapped() {
-        guard let id = emailTextField.text,
+        guard let email = emailTextField.text,
               let password = passwordTextField.text,
               let confirmPassword = confirmPasswordTextField.text
         else { return }
-        // 예외처리
-        if id.isEmpty {
-            showMessageAlert("아이디를 입력해주세요.")
-            return
-        } else if password.isEmpty || confirmPassword.isEmpty {
-            showMessageAlert("비밀번호를 입력해주세요.")
-            return
-        } else if password != confirmPassword {
-            showMessageAlert("비밀번호가 일치하지 않습니다.")
-            return
-        }
-        // 로딩화면 출력하고, 숨기면서 계정 등록
+        
         self.showSpinner{
-            Auth.auth().createUser(withEmail: id, password: password) { authResult, error in
-                self.hideSpinner {
-                    guard let user = authResult?.user, error == nil else {
-                        print("Creating Account Fail")
-                        print("error: \(error)")
-                        // 회원가입 실패 예외처리
-                        guard let authError = error as? NSError else { return }
-                        self.showMessageAlert(authError.localizedDescription)
-                        return
-                    }
-                    print("\(user.email!) created")
-                    self.dismiss(animated: true)
+            self.hideSpinner{
+                self.viewModel.signUp(email: email, password: password, confirmPassword: confirmPassword) { [weak self] isCreated, result in
+                    isCreated ? self?.dismiss(animated: true) : self?.showMessageAlert(result)
                 }
             }
         }
