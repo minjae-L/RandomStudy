@@ -6,8 +6,8 @@
 //
 
 import UIKit
-import Lottie
 import FirebaseAuth
+import FirebaseFirestore
 
 final class TodayViewController: UIViewController {
     // UI 선언
@@ -18,13 +18,36 @@ final class TodayViewController: UIViewController {
     private func bindings() {
         viewModel.delegate = self
     }
-    
+
     // UI 넣기
     private func addView() {
         view.addSubview(tableView)
         view.addSubview(btn)
     }
-    
+    let db = Firestore.firestore()
+    private func createData(_ uid: String) {
+        print("uid: \(uid)")
+        do {
+            try db.collection("users").document(uid).setData(["hi": "bye"])
+            print("Document successfully written")
+        } catch {
+            print("Error writing document")
+        }
+    }
+    private func showUser(complection: @escaping (String?) -> () ) {
+        Auth.auth().addStateDidChangeListener { auth, user in
+            print(auth)
+            complection(user?.uid)
+        }
+    }
+    private func dataMigration() {
+        if DBHelper.shared.isDataExist() {
+            let vc = DataMigrationViewController()
+            vc.modalPresentationStyle = .overFullScreen
+            vc.modalTransitionStyle = .crossDissolve
+            self.present(vc,animated: true)
+        }
+    }
 //    MARK: - UI Configure
     // 네비게이션 바
     private func configureNavigationbar() {
@@ -85,7 +108,8 @@ final class TodayViewController: UIViewController {
         super.viewDidLoad()
         addView()
         bindings()
-        print("current account: \(Auth.auth().currentUser)")
+        dataMigration()
+        print("isDataExist: \(DBHelper.shared.isDataExist())")
     }
     override func viewWillAppear(_ animated: Bool) {
         viewModel.fetchTodoList()
@@ -161,3 +185,5 @@ extension TodayViewController: TodayViewModelDelegate {
         }
     }
 }
+
+

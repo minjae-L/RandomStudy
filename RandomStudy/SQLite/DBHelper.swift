@@ -217,7 +217,15 @@ class DBHelper {
             print("\(i) reset, \(i): \(readData(tableName: i, column: column))")
         }
         self.delegate?.removeAllDatas()
-//        self.dele
+    }
+    
+//    MARK: Is Data Exist?
+    func isDataExist() -> Bool{
+        for i in tableNames {
+            let data = DBHelper.shared.readData(tableName: i, column:  column)
+            if !data.isEmpty { return true }
+        }
+        return false
     }
 }
 

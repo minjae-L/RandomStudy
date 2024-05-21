@@ -946,26 +946,12 @@ PODS:
     - abseil/meta/type_traits
     - abseil/xcprivacy
   - abseil/xcprivacy (1.20240116.2)
-  - AppAuth (1.7.5):
-    - AppAuth/Core (= 1.7.5)
-    - AppAuth/ExternalUserAgent (= 1.7.5)
-  - AppAuth/Core (1.7.5)
-  - AppAuth/ExternalUserAgent (1.7.5):
-    - AppAuth/Core
   - BoringSSL-GRPC (0.0.32):
     - BoringSSL-GRPC/Implementation (= 0.0.32)
     - BoringSSL-GRPC/Interface (= 0.0.32)
   - BoringSSL-GRPC/Implementation (0.0.32):
     - BoringSSL-GRPC/Interface (= 0.0.32)
   - BoringSSL-GRPC/Interface (0.0.32)
-  - FBAEMKit (16.3.1):
-    - FBSDKCoreKit_Basics (= 16.3.1)
-  - FBSDKCoreKit (16.3.1):
-    - FBAEMKit (= 16.3.1)
-    - FBSDKCoreKit_Basics (= 16.3.1)
-  - FBSDKCoreKit_Basics (16.3.1)
-  - FBSDKLoginKit (16.3.1):
-    - FBSDKCoreKit (= 16.3.1)
   - FirebaseAnalytics (10.25.0):
     - FirebaseAnalytics/AdIdSupport (= 10.25.0)
     - FirebaseCore (~> 10.0)
@@ -984,10 +970,6 @@ PODS:
     - GoogleUtilities/Network (~> 7.11)
     - "GoogleUtilities/NSData+zlib (~> 7.11)"
     - nanopb (< 2.30911.0, >= 2.30908.0)
-  - FirebaseAnonymousAuthUI (13.1.0):
-    - FirebaseAuth (< 11.0, >= 8.0)
-    - FirebaseAuthUI
-    - FirebaseCore
   - FirebaseAppCheckInterop (10.25.0)
   - FirebaseAuth (10.25.0):
     - FirebaseAppCheckInterop (~> 10.17)
@@ -996,10 +978,6 @@ PODS:
     - GoogleUtilities/Environment (~> 7.8)
     - GTMSessionFetcher/Core (< 4.0, >= 2.1)
     - RecaptchaInterop (~> 100.0)
-  - FirebaseAuthInterop (10.25.0)
-  - FirebaseAuthUI (13.1.0):
-    - FirebaseAuth (< 11.0, >= 8.0)
-    - FirebaseCore
   - FirebaseCore (10.25.0):
     - FirebaseCoreInternal (~> 10.0)
     - GoogleUtilities/Environment (~> 7.12)
@@ -1008,25 +986,6 @@ PODS:
     - FirebaseCore (~> 10.0)
   - FirebaseCoreInternal (10.25.0):
     - "GoogleUtilities/NSData+zlib (~> 7.8)"
-  - FirebaseDatabase (10.25.0):
-    - FirebaseAppCheckInterop (~> 10.17)
-    - FirebaseCore (~> 10.0)
-    - FirebaseSharedSwift (~> 10.0)
-    - GoogleUtilities/UserDefaults (~> 7.13)
-    - leveldb-library (~> 1.22)
-  - FirebaseDatabaseUI (13.1.0):
-    - FirebaseDatabase (< 11.0, >= 8.0)
-  - FirebaseEmailAuthUI (13.1.0):
-    - FirebaseAuth
-    - FirebaseAuthUI
-    - FirebaseCore
-    - GoogleUtilities/UserDefaults
-  - FirebaseFacebookAuthUI (13.1.0):
-    - FBSDKCoreKit_Basics
-    - FBSDKLoginKit (< 17.0, >= 11.0)
-    - FirebaseAuth
-    - FirebaseAuthUI
-    - FirebaseCore
   - FirebaseFirestore (10.25.0):
     - FirebaseCore (~> 10.0)
     - FirebaseCoreExtension (~> 10.0)
@@ -1047,66 +1006,12 @@ PODS:
     - gRPC-Core (~> 1.62.0)
     - leveldb-library (~> 1.22)
     - nanopb (< 2.30911.0, >= 2.30908.0)
-  - FirebaseFirestoreUI (13.1.0):
-    - FirebaseFirestore (< 11.0, >= 8.0)
-  - FirebaseGoogleAuthUI (13.1.0):
-    - FirebaseAuth
-    - FirebaseAuthUI
-    - FirebaseCore
-    - GoogleSignIn (~> 6.0)
   - FirebaseInstallations (10.25.0):
     - FirebaseCore (~> 10.0)
     - GoogleUtilities/Environment (~> 7.8)
     - GoogleUtilities/UserDefaults (~> 7.8)
     - PromisesObjC (~> 2.1)
-  - FirebaseOAuthUI (13.1.0):
-    - FirebaseAuth (< 11.0, >= 8.0)
-    - FirebaseAuthUI (< 14.0, >= 12.0.2)
-  - FirebasePhoneAuthUI (13.1.0):
-    - FirebaseAuth
-    - FirebaseAuthUI
   - FirebaseSharedSwift (10.25.0)
-  - FirebaseStorage (10.25.0):
-    - FirebaseAppCheckInterop (~> 10.0)
-    - FirebaseAuthInterop (~> 10.25)
-    - FirebaseCore (~> 10.0)
-    - FirebaseCoreExtension (~> 10.0)
-    - GoogleUtilities/Environment (~> 7.12)
-    - GTMSessionFetcher/Core (< 4.0, >= 2.1)
-  - FirebaseStorageUI (13.1.0):
-    - FirebaseStorage (< 11.0, >= 8.0)
-    - SDWebImage (~> 5.6)
-  - FirebaseUI (13.1.0):
-    - FirebaseUI/Anonymous (= 13.1.0)
-    - FirebaseUI/Auth (= 13.1.0)
-    - FirebaseUI/Database (= 13.1.0)
-    - FirebaseUI/Email (= 13.1.0)
-    - FirebaseUI/Facebook (= 13.1.0)
-    - FirebaseUI/Firestore (= 13.1.0)
-    - FirebaseUI/Google (= 13.1.0)
-    - FirebaseUI/OAuth (= 13.1.0)
-    - FirebaseUI/Phone (= 13.1.0)
-    - FirebaseUI/Storage (= 13.1.0)
-  - FirebaseUI/Anonymous (13.1.0):
-    - FirebaseAnonymousAuthUI (~> 13.0)
-  - FirebaseUI/Auth (13.1.0):
-    - FirebaseAuthUI (~> 13.0)
-  - FirebaseUI/Database (13.1.0):
-    - FirebaseDatabaseUI (~> 13.0)
-  - FirebaseUI/Email (13.1.0):
-    - FirebaseEmailAuthUI (~> 13.0)
-  - FirebaseUI/Facebook (13.1.0):
-    - FirebaseFacebookAuthUI (~> 13.0)
-  - FirebaseUI/Firestore (13.1.0):
-    - FirebaseFirestoreUI (~> 13.0)
-  - FirebaseUI/Google (13.1.0):
-    - FirebaseGoogleAuthUI (~> 13.0)
-  - FirebaseUI/OAuth (13.1.0):
-    - FirebaseOAuthUI (~> 13.0)
-  - FirebaseUI/Phone (13.1.0):
-    - FirebasePhoneAuthUI (~> 13.0)
-  - FirebaseUI/Storage (13.1.0):
-    - FirebaseStorageUI (~> 13.0)
   - GoogleAppMeasurement (10.25.0):
     - GoogleAppMeasurement/AdIdSupport (= 10.25.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.11)
@@ -1127,10 +1032,6 @@ PODS:
     - GoogleUtilities/Network (~> 7.11)
     - "GoogleUtilities/NSData+zlib (~> 7.11)"
     - nanopb (< 2.30911.0, >= 2.30908.0)
-  - GoogleSignIn (6.2.4):
-    - AppAuth (~> 1.5)
-    - GTMAppAuth (~> 1.3)
-    - GTMSessionFetcher/Core (< 3.0, >= 1.1)
   - GoogleUtilities/AppDelegateSwizzler (7.13.3):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
@@ -1237,10 +1138,7 @@ PODS:
     - gRPC-Core/Privacy (= 1.62.5)
   - gRPC-Core/Interface (1.62.5)
   - gRPC-Core/Privacy (1.62.5)
-  - GTMAppAuth (1.3.1):
-    - AppAuth/Core (~> 1.6)
-    - GTMSessionFetcher/Core (< 3.0, >= 1.5)
-  - GTMSessionFetcher/Core (2.3.0)
+  - GTMSessionFetcher/Core (3.4.1)
   - Kingfisher (7.11.0)
   - leveldb-library (1.22.5)
   - lottie-ios (4.1.2)
@@ -1251,57 +1149,32 @@ PODS:
   - nanopb/encode (2.30910.0)
   - PromisesObjC (2.4.0)
   - RecaptchaInterop (100.0.0)
-  - SDWebImage (5.19.2):
-    - SDWebImage/Core (= 5.19.2)
-  - SDWebImage/Core (5.19.2)
 
 DEPENDENCIES:
   - FirebaseAnalytics
   - FirebaseAuth
   - FirebaseFirestore
-  - FirebaseUI
   - Kingfisher (~> 7.0)
   - lottie-ios (= 4.1.2)
 
 SPEC REPOS:
   trunk:
     - abseil
-    - AppAuth
     - BoringSSL-GRPC
-    - FBAEMKit
-    - FBSDKCoreKit
-    - FBSDKCoreKit_Basics
-    - FBSDKLoginKit
     - FirebaseAnalytics
-    - FirebaseAnonymousAuthUI
     - FirebaseAppCheckInterop
     - FirebaseAuth
-    - FirebaseAuthInterop
-    - FirebaseAuthUI
     - FirebaseCore
     - FirebaseCoreExtension
     - FirebaseCoreInternal
-    - FirebaseDatabase
-    - FirebaseDatabaseUI
-    - FirebaseEmailAuthUI
-    - FirebaseFacebookAuthUI
     - FirebaseFirestore
     - FirebaseFirestoreInternal
-    - FirebaseFirestoreUI
-    - FirebaseGoogleAuthUI
     - FirebaseInstallations
-    - FirebaseOAuthUI
-    - FirebasePhoneAuthUI
     - FirebaseSharedSwift
-    - FirebaseStorage
-    - FirebaseStorageUI
-    - FirebaseUI
     - GoogleAppMeasurement
-    - GoogleSignIn
     - GoogleUtilities
     - "gRPC-C++"
     - gRPC-Core
-    - GTMAppAuth
     - GTMSessionFetcher
     - Kingfisher
     - leveldb-library
@@ -1309,55 +1182,32 @@ SPEC REPOS:
     - nanopb
     - PromisesObjC
     - RecaptchaInterop
-    - SDWebImage
 
 SPEC CHECKSUMS:
   abseil: d121da9ef7e2ff4cab7666e76c5a3e0915ae08c3
-  AppAuth: 501c04eda8a8d11f179dbe8637b7a91bb7e5d2fa
   BoringSSL-GRPC: 1e2348957acdbcad360b80a264a90799984b2ba6
-  FBAEMKit: 6c7b5eb77c96861bb59e040842c6e55bf39512ce
-  FBSDKCoreKit: 5e4dd478947ab1bcc887e8cfadeae0727af1a942
-  FBSDKCoreKit_Basics: cd7b5f5d1e8868c26706917919d058999ca672c3
-  FBSDKLoginKit: 572cca0bc6c90067ef197187697cb3b584310c52
   FirebaseAnalytics: ec00fe8b93b41dc6fe4a28784b8e51da0647a248
-  FirebaseAnonymousAuthUI: 03392075a7f79a674b49af1678989ded80e106f2
   FirebaseAppCheckInterop: 5da5ce93e8797a215e3f677fb0654b74e736c8b8
   FirebaseAuth: c0f93dcc570c9da2bffb576969d793e95c344fbb
-  FirebaseAuthInterop: 2753ef68cb3cd5aefebe0f58082671cede78350f
-  FirebaseAuthUI: 9b4de780078d674019a2bfc560bb812f23b45ff1
   FirebaseCore: 7ec4d0484817f12c3373955bc87762d96842d483
   FirebaseCoreExtension: 8a47811d0b155501559ef05d089518152a0a1677
   FirebaseCoreInternal: 910a81992c33715fec9263ca7381d59ab3a750b7
-  FirebaseDatabase: faa489a42f5f868d23a55dd442d6e2099348458e
-  FirebaseDatabaseUI: 13f9d60a13ac9e35a4121e1cb20ba69d4de7ed7e
-  FirebaseEmailAuthUI: 548b1b5b557b67b15fd3197d18da29d91a154ef8
-  FirebaseFacebookAuthUI: 2f10fb7eb4ca4e507e266dc65b544dbc548e2238
   FirebaseFirestore: 977ccc27a3caa5d68279f209c3b0450f85b9dc5f
   FirebaseFirestoreInternal: 04b8afa77b4e5b84e86ab5ad985193e9573239fa
-  FirebaseFirestoreUI: 98ddae8daaea34a3c8bc0a51e4f5c104b997f8b8
-  FirebaseGoogleAuthUI: 420e5b1c10f13a47c18579303d93275842f1a8a0
   FirebaseInstallations: 91950fe859846fff0fbd296180909dd273103b09
-  FirebaseOAuthUI: 5f19522e97d992841163d89a0b44afe315674020
-  FirebasePhoneAuthUI: 4e32b332ba0484a0b6cf8246c93c23a24f9dbcad
   FirebaseSharedSwift: 0274086954b1b2d5fd7e829eccc587044d72a4ba
-  FirebaseStorage: 44f4e25073f6fa0d4d8c09f5bec299ee9e4eb985
-  FirebaseStorageUI: 5db14fc4c251fdbe3b706eb1a9dddc55bc51b414
-  FirebaseUI: d3e0d3f81f5c464554945195a6133a3ab905b6a7
   GoogleAppMeasurement: 9abf64b682732fed36da827aa2a68f0221fd2356
-  GoogleSignIn: 5651ce3a61e56ca864160e79b484cd9ed3f49b7a
   GoogleUtilities: ea963c370a38a8069cc5f7ba4ca849a60b6d7d15
   "gRPC-C++": e725ef63c4475d7cdb7e2cf16eb0fde84bd9ee51
   gRPC-Core: eee4be35df218649fe66d721a05a7f27a28f069b
-  GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
-  GTMSessionFetcher: 3a63d75eecd6aa32c2fc79f578064e1214dfdec2
+  GTMSessionFetcher: 8000756fc1c19d2e5697b90311f7832d2e33f6cd
   Kingfisher: b9c985d864d43515f404f1ef4a8ce7d802ace3ac
   leveldb-library: e8eadf9008a61f9e1dde3978c086d2b6d9b9dc28
   lottie-ios: b3846a9fa8ca1a1a3bebfa256ebe8b6fd4aaaaad
   nanopb: 438bc412db1928dac798aa6fd75726007be04262
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
-  SDWebImage: dfe95b2466a9823cf9f0c6d01217c06550d7b29a
 
-PODFILE CHECKSUM: 5eb6f890ab267b9bd639b76e64bfd7a0bd16b327
+PODFILE CHECKSUM: 5063114311921f4c0371e34f2ab9424fb4573119
 
 COCOAPODS: 1.15.2

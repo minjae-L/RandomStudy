@@ -10,6 +10,7 @@
 		2377C06B7AE0FF4CF3A9305C /* Pods_RandomStudy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 778C3D6B33E71B19EA45A1DD /* Pods_RandomStudy.framework */; };
 		513F9CADF12505788DC432AB /* Pods_RandomStudyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B0D95428544FAE132975CB /* Pods_RandomStudyTests.framework */; };
 		96132F9CE00E6573F3E178E6 /* Pods_RandomStudy_RandomStudyUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5736CE7A6A817FFF3298E51D /* Pods_RandomStudy_RandomStudyUITests.framework */; };
+		B508F9432BF8D6BF0018069A /* DataMigrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B508F9422BF8D6BF0018069A /* DataMigrationViewController.swift */; };
 		B5142D102AB5017200C3BB07 /* AddTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5142D0F2AB5017200C3BB07 /* AddTableViewCell.swift */; };
 		B51C80FF2BF0EE1900DC6D1E /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C80FE2BF0EE1900DC6D1E /* UIViewControllerExtensions.swift */; };
 		B51C8AFF2BC7F735005ADC46 /* DBHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C8AFE2BC7F735005ADC46 /* DBHelper.swift */; };
@@ -75,12 +76,17 @@
 		839648DEB82B2A9924B21F46 /* Pods-RandomStudyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RandomStudyTests.debug.xcconfig"; path = "Target Support Files/Pods-RandomStudyTests/Pods-RandomStudyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A2C86832494A7A42012FCEE3 /* Pods-RandomStudy-RandomStudyUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RandomStudy-RandomStudyUITests.debug.xcconfig"; path = "Target Support Files/Pods-RandomStudy-RandomStudyUITests/Pods-RandomStudy-RandomStudyUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		A6B0D95428544FAE132975CB /* Pods_RandomStudyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RandomStudyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B50149B92BFB497B002F97B7 /* FirebaseFirestore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseFirestore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B508F9422BF8D6BF0018069A /* DataMigrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataMigrationViewController.swift; sourceTree = "<group>"; };
 		B5142D0F2AB5017200C3BB07 /* AddTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTableViewCell.swift; sourceTree = "<group>"; };
+		B5151AE42BFC552C0063B3EF /* FirebaseFirestore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseFirestore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5151AE82BFC555C0063B3EF /* FirebaseFirestoreInternal.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseFirestoreInternal.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B51C80F22BF0E7AB00DC6D1E /* FirebaseCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B51C80F62BF0E7B200DC6D1E /* FirebaseAuth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseAuth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B51C80F92BF0E7CA00DC6D1E /* FirebaseFirestoreInternal_Privacy.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = FirebaseFirestoreInternal_Privacy.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		B51C80FE2BF0EE1900DC6D1E /* UIViewControllerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtensions.swift; sourceTree = "<group>"; };
 		B51C8AFE2BC7F735005ADC46 /* DBHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBHelper.swift; sourceTree = "<group>"; };
+		B52156502BFB3B5600316305 /* FirebaseFirestore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseFirestore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B53529222AD63ED700C82383 /* check.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = check.json; sourceTree = "<group>"; };
 		B54DE1D82B5AA97C00923530 /* GitSearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitSearchCollectionViewCell.swift; sourceTree = "<group>"; };
 		B552525A2BF1F634004041B0 /* FirebaseFirestoreInternal.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseFirestoreInternal.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -170,6 +176,10 @@
 		AECD81F2141ABF3146F6B2B1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B5151AE82BFC555C0063B3EF /* FirebaseFirestoreInternal.framework */,
+				B5151AE42BFC552C0063B3EF /* FirebaseFirestore.framework */,
+				B50149B92BFB497B002F97B7 /* FirebaseFirestore.framework */,
+				B52156502BFB3B5600316305 /* FirebaseFirestore.framework */,
 				B552525A2BF1F634004041B0 /* FirebaseFirestoreInternal.framework */,
 				B51C80F92BF0E7CA00DC6D1E /* FirebaseFirestoreInternal_Privacy.bundle */,
 				B51C80F62BF0E7B200DC6D1E /* FirebaseAuth.framework */,
@@ -303,6 +313,7 @@
 				B5A98E592BE8FB8500E9CE2A /* DarkModeSettingViewController.swift */,
 				B5AAA2262BEF699800B4FDC9 /* LoginViewController.swift */,
 				B5AAA2282BEFA45800B4FDC9 /* SignUpViewController.swift */,
+				B508F9422BF8D6BF0018069A /* DataMigrationViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -341,7 +352,7 @@
 				B58D28D72A2D830100947A24 /* Sources */,
 				B58D28D82A2D830100947A24 /* Frameworks */,
 				B58D28D92A2D830100947A24 /* Resources */,
-				73115CC6098F9C92CBD8C266 /* [CP] Embed Pods Frameworks */,
+				7015A36BE245FE20E664CCA7 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -360,7 +371,6 @@
 				B58D28ED2A2D830300947A24 /* Sources */,
 				B58D28EE2A2D830300947A24 /* Frameworks */,
 				B58D28EF2A2D830300947A24 /* Resources */,
-				24E558A5E74E2BC51BF8E94C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -380,7 +390,7 @@
 				B58D28F72A2D830300947A24 /* Sources */,
 				B58D28F82A2D830300947A24 /* Frameworks */,
 				B58D28F92A2D830300947A24 /* Resources */,
-				F57A11A14025B7E39CAABABB /* [CP] Embed Pods Frameworks */,
+				CF4F9BC3907C074EEEB13439 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -486,24 +496,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		24E558A5E74E2BC51BF8E94C /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-RandomStudyTests/Pods-RandomStudyTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-RandomStudyTests/Pods-RandomStudyTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RandomStudyTests/Pods-RandomStudyTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		73115CC6098F9C92CBD8C266 /* [CP] Embed Pods Frameworks */ = {
+		7015A36BE245FE20E664CCA7 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -542,7 +535,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F57A11A14025B7E39CAABABB /* [CP] Embed Pods Frameworks */ = {
+		CF4F9BC3907C074EEEB13439 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -599,6 +592,7 @@
 				B5785DDF2BD149B0006AA50D /* AddPopUpViewController.swift in Sources */,
 				B5CC3B2B2AB207E500D9FA24 /* SwitchTableViewCell.swift in Sources */,
 				B51C8AFF2BC7F735005ADC46 /* DBHelper.swift in Sources */,
+				B508F9432BF8D6BF0018069A /* DataMigrationViewController.swift in Sources */,
 				B5CC3B1D2AB141E700D9FA24 /* DataModel.swift in Sources */,
 				B5C126852AB3660400DBF902 /* TodayTableViewCell.swift in Sources */,
 				B5AAA2272BEF699800B4FDC9 /* LoginViewController.swift in Sources */,
