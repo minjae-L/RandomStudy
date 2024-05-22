@@ -6,8 +6,6 @@
 //
 
 import UIKit
-import FirebaseAuth
-import FirebaseFirestore
 
 final class TodayViewController: UIViewController {
     // UI 선언
@@ -24,23 +22,7 @@ final class TodayViewController: UIViewController {
         view.addSubview(tableView)
         view.addSubview(btn)
     }
-    let db = Firestore.firestore()
-    private func createData(_ uid: String) {
-        print("uid: \(uid)")
-        do {
-            try db.collection("users").document(uid).setData(["hi": "bye"])
-            print("Document successfully written")
-        } catch {
-            print("Error writing document")
-        }
-    }
-    private func showUser(complection: @escaping (String?) -> () ) {
-        Auth.auth().addStateDidChangeListener { auth, user in
-            print(auth)
-            complection(user?.uid)
-        }
-    }
-    private func dataMigration() {
+    private func isPreviousDataExist() {
         if DBHelper.shared.isDataExist() {
             let vc = DataMigrationViewController()
             vc.modalPresentationStyle = .overFullScreen
@@ -108,8 +90,7 @@ final class TodayViewController: UIViewController {
         super.viewDidLoad()
         addView()
         bindings()
-        dataMigration()
-        print("isDataExist: \(DBHelper.shared.isDataExist())")
+        isPreviousDataExist()
     }
     override func viewWillAppear(_ animated: Bool) {
         viewModel.fetchTodoList()
