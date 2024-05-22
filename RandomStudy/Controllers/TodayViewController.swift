@@ -92,12 +92,12 @@ final class TodayViewController: UIViewController {
         bindings()
         isPreviousDataExist()
         
-        print("td: \(viewModel.td)")
+        print("td: \(viewModel.todo)")
         print("todo: \(viewModel.todo)")
     }
     override func viewWillAppear(_ animated: Bool) {
         
-        print("td: \(viewModel.td)")
+        print("td: \(viewModel.todo)")
         viewModel.fetchTodoList()
         settingUI()
         configureNavigationbar()
@@ -131,13 +131,13 @@ extension TodayViewController: TodayTableViewCellDelegate {
 // MARK: - TableView
 extension TodayViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if viewModel.td.count == 0 {
+        if viewModel.dataCount == 0 {
             tableView.setEmptyView(title: "비어있음",
                                    message: "목록을 추가해주세요.")
         } else {
             tableView.restore()
         }
-        return viewModel.td.count
+        return viewModel.dataCount
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -148,7 +148,7 @@ extension TodayViewController: UITableViewDataSource, UITableViewDelegate {
             return UITableViewCell()
         }
         
-        let study = viewModel.td[indexPath.row]
+        let study = viewModel.todo[indexPath.row]
         print("study: \(study)")
         cell.setUIColor()
         cell.delegate = self
@@ -163,7 +163,7 @@ extension TodayViewController: UITableViewDataSource, UITableViewDelegate {
 
 // MARK: - ViewModel Delegate
 extension TodayViewController: TodayViewModelDelegate {
-    func didUpdateToday(with value: [SM]) {
+    func didUpdateToday(with value: [StudyModel]) {
         print("didUpdateToday")
         DispatchQueue.main.async { [weak self] in
             self?.tableView.reloadData()

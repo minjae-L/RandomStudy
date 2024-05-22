@@ -10,7 +10,7 @@ import FirebaseAuth
 import FirebaseFirestore
 
 protocol TodayViewModelDelegate: AnyObject {
-    func didUpdateToday(with value: [SM])
+    func didUpdateToday(with value: [StudyModel])
 }
 
 final class TodayViewModel {
@@ -20,15 +20,10 @@ final class TodayViewModel {
     var tableName = "todo"
     var column = ["name", "done", "date"]
     var db = DBHelper()
-    var td: [SM] = [] {
+    
+    var todo: [StudyModel] = [] {
         didSet {
-            print("td didSet")
-            delegate?.didUpdateToday(with: td)
-        }
-    }
-    var todo: [StudyModel] = DBHelper.shared.readData(tableName: "todo", column:  ["name", "done", "date"]) {
-        didSet {
-//            delegate?.didUpdateToday(with: todo)
+            delegate?.didUpdateToday(with: todo)
         }
     }
     let database = Firestore.firestore()
@@ -40,10 +35,10 @@ final class TodayViewModel {
         DBHelper.shared.getDataFromFirebase(dataName: "todo") { dataModel in
             print("vm in td: \(dataModel)")
             guard let data = dataModel else {
-                self.td = []
+                self.todo = []
                 return
             }
-            self.td = data
+            self.todo = data
         }
     }
     
@@ -62,9 +57,9 @@ final class TodayViewModel {
     func getDataFromFirebase() {
         DBHelper.shared.getDataFromFirebase(dataName: "todo") { dataModel in
             guard let data = dataModel else { return }
-            self.td = data
+            self.todo = data
             print("td recieved")
-            print(self.td)
+            print(self.todo)
         }
     }
     // 추가한 공부목록으로 부터 불러오는 메소드 (불러오기)
@@ -90,39 +85,39 @@ final class TodayViewModel {
     
     // 완료 버튼 이벤트
     func complete(name: String) {
-        guard let id = todo.filter{$0.name == name}[0].id else { return }
-        DBHelper.shared.updateData(tableName: tableName, id: id, done: "1", date: dateFommatter.string(from: Date()))
-        todo = DBHelper.shared.readData(tableName: tableName, column: column)
-        insertDataToHistory(id: id)
+//        guard let id = todo.filter{$0.name == name}[0].id else { return }
+//        DBHelper.shared.updateData(tableName: tableName, id: id, done: "1", date: dateFommatter.string(from: Date()))
+//        todo = DBHelper.shared.readData(tableName: tableName, column: column)
+//        insertDataToHistory(id: id)
         
     }
     // 체크 버튼 이벤트
     func insertDataToHistory(id: Int) {
-        for i in 0..<todo.count {
-            if todo[i].id == id {
-                guard let name = todo[i].name, let done = todo[i].done, let date = todo[i].date else { return }
-                let data = [name, done, date]
-                DBHelper.shared.insertData(tableName: "history", columns: column, insertData: data)
-                break
-            }
-        }
+//        for i in 0..<todo.count {
+//            if todo[i].id == id {
+//                guard let name = todo[i].name, let done = todo[i].done, let date = todo[i].date else { return }
+//                let data = [name, done, date]
+//                DBHelper.shared.insertData(tableName: "history", columns: column, insertData: data)
+//                break
+//            }
+//        }
     }
     
     // 삭제버튼 이벤트
     func remove(name: String) {
         var id = -1
-        for i in 0..<todo.count {
-            if todo[i].name == name, let index = todo[i].id {
-                id = index
-                todo.remove(at: i)
-                break
-            }
-        }
+//        for i in 0..<todo.count {
+//            if todo[i].name == name, let index = todo[i].id {
+//                id = index
+//                todo.remove(at: i)
+//                break
+//            }
+//        }
         DBHelper.shared.deleteData(tableName: tableName, id: id)
     }
     // 데이터 최신화
     func fetchTodoList() {
-        self.todo = DBHelper.shared.readData(tableName: tableName, column: column)
+//        self.todo = DBHelper.shared.readData(tableName: tableName, column: column)
     }
     
 }

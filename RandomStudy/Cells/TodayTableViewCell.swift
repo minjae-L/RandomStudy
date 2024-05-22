@@ -116,7 +116,7 @@ class TodayTableViewCell: UITableViewCell {
         checkView.isHidden = true
     }
     
-    func configure(with model: SM) {
+    func configure(with model: StudyModel) {
         label.text = model.name
         if model.done == "0" {
             checkBtn.isEnabled = true
