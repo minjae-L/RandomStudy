@@ -17,7 +17,6 @@ class TodayTableViewCell: UITableViewCell {
     static let identifier = "TodayTableViewCell"
     weak var delegate: TodayTableViewCellDelegate?
     
-    private var item: StudyModel?
     var name: String = ""
     
     // 체크버튼
@@ -117,8 +116,7 @@ class TodayTableViewCell: UITableViewCell {
         checkView.isHidden = true
     }
     
-    func configure(with model: StudyModel) {
-        item = model
+    func configure(with model: SM) {
         label.text = model.name
         if model.done == "0" {
             checkBtn.isEnabled = true

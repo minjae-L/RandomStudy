@@ -6,9 +6,11 @@
 //
 
 import Foundation
+import FirebaseAuth
+import FirebaseFirestore
 
 protocol TodayViewModelDelegate: AnyObject {
-    func didUpdateToday(with value: [StudyModel])
+    func didUpdateToday(with value: [SM])
 }
 
 final class TodayViewModel {
@@ -18,15 +20,31 @@ final class TodayViewModel {
     var tableName = "todo"
     var column = ["name", "done", "date"]
     var db = DBHelper()
-    var todo: [StudyModel] = DBHelper.shared.readData(tableName: "todo", column:  ["name", "done", "date"]) {
+    var td: [SM] = [] {
         didSet {
-            delegate?.didUpdateToday(with: todo)
+            print("td didSet")
+            delegate?.didUpdateToday(with: td)
         }
     }
+    var todo: [StudyModel] = DBHelper.shared.readData(tableName: "todo", column:  ["name", "done", "date"]) {
+        didSet {
+//            delegate?.didUpdateToday(with: todo)
+        }
+    }
+    let database = Firestore.firestore()
     
     init() {
         db.delegate = self
         print("today viewmodel init")
+
+        DBHelper.shared.getDataFromFirebase(dataName: "todo") { dataModel in
+            print("vm in td: \(dataModel)")
+            guard let data = dataModel else {
+                self.td = []
+                return
+            }
+            self.td = data
+        }
     }
     
     private var dateFommatter: DateFormatter = {
@@ -39,9 +57,16 @@ final class TodayViewModel {
     var dataCount: Int {
         return todo.count
     }
-
-    // MARK: Method
     
+    // MARK: Method
+    func getDataFromFirebase() {
+        DBHelper.shared.getDataFromFirebase(dataName: "todo") { dataModel in
+            guard let data = dataModel else { return }
+            self.td = data
+            print("td recieved")
+            print(self.td)
+        }
+    }
     // 추가한 공부목록으로 부터 불러오는 메소드 (불러오기)
     func fetchData() {
         let study = DBHelper.shared.readData(tableName: "study", column: column)
