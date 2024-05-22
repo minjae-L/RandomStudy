@@ -153,7 +153,7 @@ class DBHelper {
         while sqlite3_step(statement) == SQLITE_ROW {
             let id = sqlite3_column_int(statement, 0)
             var data = Dictionary<String, String>()
-            var d = StudyModel(id: Int(id), name: nil, done: nil, date: nil)
+            var d = StudyModel(name: nil, done: nil, date: nil)
             for  i in 0..<column.count {
                 data[column[i]] = String(cString: sqlite3_column_text(statement, Int32(i+1)))
                 let load = String(cString: sqlite3_column_text(statement, Int32(i+1)))
@@ -265,7 +265,7 @@ class DBHelper {
             self?.resetAllTable()
         }
     }
-    func getDataFromFirebase(dataName: String, completion: @escaping ([SM]?) -> ()) {
+    func getDataFromFirebase(dataName: String, completion: @escaping ([StudyModel]?) -> ()) {
         guard let uid = Auth.auth().currentUser?.uid else {
             completion(nil)
             return
@@ -290,7 +290,7 @@ class DBHelper {
             
             do {
                 let jsonFile = try JSONSerialization.data(withJSONObject: filtered)
-                let data = try JSONDecoder().decode([String: [SM]].self, from: jsonFile)
+                let data = try JSONDecoder().decode([String: [StudyModel]].self, from: jsonFile)
                 let converted = Array(data.values).flatMap{$0}
                 completion(converted)
                 print("receive Data Successful")

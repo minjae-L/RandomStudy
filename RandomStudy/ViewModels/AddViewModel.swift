@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import FirebaseAuth
+import FirebaseFirestore
 
 protocol AddViewModelDelegate: AnyObject {
     func didUpdate(with value: [StudyModel])
@@ -16,7 +18,7 @@ final class AddViewModel {
     weak var delegate: AddViewModelDelegate?
     private let tableName = "study"
     private let column = ["name", "done", "date"]
-    
+    private let db = Firestore.firestore()
     private var elements: [StudyModel] = [] {
         didSet {
             delegate?.didUpdate(with: elements)
@@ -52,26 +54,36 @@ final class AddViewModel {
     // 배열에 값 추가
     func addData(str: String) {
         if str == "" { return }
-        var data = [str]
-        for i in 0..<column.count-1 {
-            data.append("0")
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let data: [[String: String]] = [["name": str, "done": "0", "date": "0"]]
+        do {
+            try db.collection("users").document(uid).updateData(["study": FieldValue.arrayUnion(data)])
+            print("addVM:: Success Data Write")
+        } catch {
+            print("addVM:: Fail Data Write")
         }
-        DBHelper.shared.insertData(tableName: tableName, columns: column, insertData: data)
-        elements = DBHelper.shared.readData(tableName: tableName, column: column)
+        self.fetchData()
     }
     
     func removeData(name: String) {
-        var index = -1
-//        for i in 0..<elements.count {
-//            if elements[i].name == name, let num = elements[i].id {
-//                index = num
-//            }
-//        }
-        DBHelper.shared.deleteData(tableName: tableName, id: index)
-        elements = DBHelper.shared.readData(tableName: tableName, column: column)
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let removed: [[String: String]] = [["name": name, "done": "0", "date": "0"]]
+        do {
+            try db.collection("users").document(uid).updateData(["study": FieldValue.arrayRemove(removed)])
+            print("addVM:: Success Data Removed")
+        } catch {
+            print("addVM:: Fail Data Removed")
+        }
+        self.fetchData()
     }
     func fetchData() {
-        self.elements = DBHelper.shared.readData(tableName: tableName, column: column)
+        DBHelper.shared.getDataFromFirebase(dataName: "study") { dataModel in
+            guard let data = dataModel else {
+                self.elements = []
+                return
+            }
+            self.elements = data
+        }
     }
 }
 
