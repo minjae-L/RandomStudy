@@ -91,13 +91,9 @@ final class TodayViewController: UIViewController {
         addView()
         bindings()
         isPreviousDataExist()
-        
-        print("td: \(viewModel.todo)")
-        print("todo: \(viewModel.todo)")
+        print("TodayVC:: todd: \(viewModel.todo)")
     }
     override func viewWillAppear(_ animated: Bool) {
-        
-        print("td: \(viewModel.todo)")
         viewModel.fetchData()
         settingUI()
         configureNavigationbar()

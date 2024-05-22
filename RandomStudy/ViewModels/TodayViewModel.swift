@@ -17,29 +17,17 @@ final class TodayViewModel {
     
     // MARK: Property
     weak var delegate: TodayViewModelDelegate?
-    var tableName = "todo"
-    var column = ["name", "done", "date"]
-    var db = DBHelper()
+    private let db = Firestore.firestore()
     
     var todo: [StudyModel] = [] {
         didSet {
             delegate?.didUpdateToday(with: todo)
         }
     }
-    let database = Firestore.firestore()
     
     init() {
-        db.delegate = self
         print("today viewmodel init")
-
-        DBHelper.shared.getDataFromFirebase(dataName: "todo") { dataModel in
-            print("vm in td: \(dataModel)")
-            guard let data = dataModel else {
-                self.todo = []
-                return
-            }
-            self.todo = data
-        }
+        self.fetchData()
     }
     
     private var dateFommatter: DateFormatter = {
@@ -55,7 +43,8 @@ final class TodayViewModel {
     
     // MARK: Method
     func getDataFromFirebase() {
-        DBHelper.shared.getDataFromFirebase(dataName: "todo") { dataModel in
+        DBHelper.shared.getDataFromFirebase(dataName: "todo") { [weak self] dataModel in
+            guard let self = self else { return }
             guard let data = dataModel else { return }
             self.todo = data
             print("td recieved")
@@ -63,61 +52,73 @@ final class TodayViewModel {
         }
     }
     // 추가한 공부목록으로 부터 불러오는 메소드 (불러오기)
-    func fetchData() {
-        let study = DBHelper.shared.readData(tableName: "study", column: column)
-        for i in study {
-            var check = true
-            for j in todo {
-                if i.name == j.name {
-                    check = false
-                    break
+    func uploadStudy() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        DBHelper.shared.getDataFromFirebase(dataName: "study") { [weak self] dataModel in
+            guard let self = self,
+                  let data = dataModel
+            else { return }
+            for i in data {
+                let filtered = self.todo.filter{$0.name == i.name}
+                if filtered.isEmpty {
+                    
+                    let data = [["name": i.name, "done": "0", "date": "0"]]
+                    print("different, data: \(data)")
+                    self.db.collection("users").document(uid).updateData(["todo": FieldValue.arrayUnion(data)])
                 }
             }
-            if check {
-                guard let name = i.name, let done = i.done, let date = i.date else { return }
-                let data = [name, done, date]
-                DBHelper.shared.insertData(tableName: tableName, columns: column, insertData: data)
-                todo.append(i)
-                
-            }
+            self.fetchData()
         }
     }
     
     // 완료 버튼 이벤트
     func complete(name: String) {
-//        guard let id = todo.filter{$0.name == name}[0].id else { return }
-//        DBHelper.shared.updateData(tableName: tableName, id: id, done: "1", date: dateFommatter.string(from: Date()))
-//        todo = DBHelper.shared.readData(tableName: tableName, column: column)
-//        insertDataToHistory(id: id)
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let previous = [["name": name, "done": "0", "date": "0"]]
+        let completion = [["name": name, "done": "1", "date": dateFommatter.string(from: Date())]]
+        self.insertDataToHistory(completion: completion)
+        do {
+            try db.collection("users").document(uid).updateData(["todo": FieldValue.arrayRemove(previous)])
+            try db.collection("users").document(uid).updateData(["todo": FieldValue.arrayUnion(completion)])
+            print("TodayVM:: Complete Success")
+        } catch {
+            print("TodayVM:: Complete Fail")
+        }
+        self.fetchData()
         
     }
     // 체크 버튼 이벤트
-    func insertDataToHistory(id: Int) {
-//        for i in 0..<todo.count {
-//            if todo[i].id == id {
-//                guard let name = todo[i].name, let done = todo[i].done, let date = todo[i].date else { return }
-//                let data = [name, done, date]
-//                DBHelper.shared.insertData(tableName: "history", columns: column, insertData: data)
-//                break
-//            }
-//        }
+    func insertDataToHistory(completion: [[String: String]]) {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        do {
+            try db.collection("users").document(uid).updateData(["history": FieldValue.arrayUnion(completion)])
+            print("TodayVM:: insertDataToHistory Success")
+        } catch {
+            print("TodayVM:: insertDataToHistory Fail")
+        }
     }
     
     // 삭제버튼 이벤트
     func remove(name: String) {
-        var id = -1
-//        for i in 0..<todo.count {
-//            if todo[i].name == name, let index = todo[i].id {
-//                id = index
-//                todo.remove(at: i)
-//                break
-//            }
-//        }
-        DBHelper.shared.deleteData(tableName: tableName, id: id)
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let data = todo.filter{$0.name == name}[0]
+        let removed = [["name": data.name, "done": data.done, "date": data.date]]
+        do {
+            try db.collection("users").document(uid).updateData(["todo": FieldValue.arrayRemove(removed)])
+            print("TodayVM:: Remove Success")
+        } catch {
+            print("TodayVM:: Remove Fail")
+        }
+        self.fetchData()
     }
     // 데이터 최신화
-    func fetchTodoList() {
-//        self.todo = DBHelper.shared.readData(tableName: tableName, column: column)
+    func fetchData() {
+        DBHelper.shared.getDataFromFirebase(dataName: "todo") { [weak self] dataModel in
+            guard let self = self,
+            let data = dataModel
+            else { return }
+            self.todo = data
+        }
     }
     
 }
