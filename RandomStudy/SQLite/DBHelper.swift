@@ -240,6 +240,7 @@ class DBHelper {
             guard let uid = uid else { return }
             guard let tables = self?.tableNames else { return }
             guard let column = self?.column else { return }
+            guard let self = self else { return }
             do {
                 try Firestore.firestore().collection("users").document(uid).setData(["uid": uid])
                 print("success written uid")
@@ -247,7 +248,7 @@ class DBHelper {
                 print("fail writing uid")
             }
             for i in tables {
-                guard let data = self?.readData(tableName: i, column: column) else { continue }
+                let data = self.readData(tableName: i, column: column)
                 if data.isEmpty { continue }
                 print(data)
                 var dataArray = [[String: String]]()
@@ -262,7 +263,7 @@ class DBHelper {
                 }
                 
             }
-            self?.resetAllTable()
+            self.resetAllTable()
         }
     }
     func getDataFromFirebase(dataName: String, completion: @escaping ([StudyModel]?) -> ()) {

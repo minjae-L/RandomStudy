@@ -16,8 +16,6 @@ protocol AddViewModelDelegate: AnyObject {
 final class AddViewModel {
     
     weak var delegate: AddViewModelDelegate?
-    private let tableName = "study"
-    private let column = ["name", "done", "date"]
     private let db = Firestore.firestore()
     private var elements: [StudyModel] = [] {
         didSet {
@@ -25,13 +23,7 @@ final class AddViewModel {
         }
     }
     init() {
-        DBHelper.shared.getDataFromFirebase(dataName: "study") { dataModel in
-            guard let data = dataModel else {
-                self.elements = []
-                return
-            }
-            self.elements = data
-        }
+        self.fetchData()
     }
     var dataCount: Int {
         return elements.count
@@ -77,9 +69,9 @@ final class AddViewModel {
         self.fetchData()
     }
     func fetchData() {
-        DBHelper.shared.getDataFromFirebase(dataName: "study") { dataModel in
-            guard let data = dataModel else {
-                self.elements = []
+        DBHelper.shared.getDataFromFirebase(dataName: "study") { [weak self] dataModel in
+            guard let self = self, let data = dataModel else {
+                self?.elements = []
                 return
             }
             self.elements = data

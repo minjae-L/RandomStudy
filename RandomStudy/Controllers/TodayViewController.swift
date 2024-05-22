@@ -98,7 +98,7 @@ final class TodayViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         
         print("td: \(viewModel.todo)")
-        viewModel.fetchTodoList()
+        viewModel.fetchData()
         settingUI()
         configureNavigationbar()
     }
@@ -114,7 +114,7 @@ final class TodayViewController: UIViewController {
     
     // 불러오기 버튼 이벤트
     @objc private func fetchStudyList() {
-        viewModel.fetchData()
+        viewModel.uploadStudy()
     }
 }
 // MARK: - Cell Button Action
