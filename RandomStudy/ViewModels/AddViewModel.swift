@@ -17,9 +17,18 @@ final class AddViewModel {
     private let tableName = "study"
     private let column = ["name", "done", "date"]
     
-    private var elements: [StudyModel] = DBHelper.shared.readData(tableName: "study", column: ["name", "done", "date"]) {
+    private var elements: [StudyModel] = [] {
         didSet {
             delegate?.didUpdate(with: elements)
+        }
+    }
+    init() {
+        DBHelper.shared.getDataFromFirebase(dataName: "study") { dataModel in
+            guard let data = dataModel else {
+                self.elements = []
+                return
+            }
+            self.elements = data
         }
     }
     var dataCount: Int {
@@ -53,11 +62,11 @@ final class AddViewModel {
     
     func removeData(name: String) {
         var index = -1
-        for i in 0..<elements.count {
-            if elements[i].name == name, let num = elements[i].id {
-                index = num
-            }
-        }
+//        for i in 0..<elements.count {
+//            if elements[i].name == name, let num = elements[i].id {
+//                index = num
+//            }
+//        }
         DBHelper.shared.deleteData(tableName: tableName, id: index)
         elements = DBHelper.shared.readData(tableName: tableName, column: column)
     }
