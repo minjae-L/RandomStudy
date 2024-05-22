@@ -30,6 +30,7 @@ class DBHelper {
             print("table \(i): \(self.readData(tableName: i, column: column))")
         }
         
+        
     }
     
     deinit {
@@ -239,7 +240,12 @@ class DBHelper {
             guard let uid = uid else { return }
             guard let tables = self?.tableNames else { return }
             guard let column = self?.column else { return }
-            
+            do {
+                try Firestore.firestore().collection("users").document(uid).setData(["uid": uid])
+                print("success written uid")
+            } catch {
+                print("fail writing uid")
+            }
             for i in tables {
                 guard let data = self?.readData(tableName: i, column: column) else { continue }
                 if data.isEmpty { continue }
@@ -258,7 +264,40 @@ class DBHelper {
             }
             self?.resetAllTable()
         }
-        
+    }
+    func getDataFromFirebase(dataName: String, completion: @escaping ([SM]?) -> ()) {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            completion(nil)
+            return
+        }
+        let db = Firestore.firestore()
+        db.collection("users").whereField("uid", isEqualTo: uid).getDocuments { snapshot, error in
+            if error != nil {
+                let networkError = error as! NSError
+                print(networkError.localizedDescription)
+                completion(nil)
+                return
+            }
+            if snapshot!.documents.isEmpty {
+                completion(nil)
+                return
+            }
+            
+            guard let filtered = snapshot?.documents[0].data().filter({ (key: String, value: Any) in
+                if key == dataName { return true }
+                return false
+            }) else { return }
+            
+            do {
+                let jsonFile = try JSONSerialization.data(withJSONObject: filtered)
+                let data = try JSONDecoder().decode([String: [SM]].self, from: jsonFile)
+                let converted = Array(data.values).flatMap{$0}
+                completion(converted)
+                print("receive Data Successful")
+            } catch {
+                print("receive Data Fail")
+            }
+        }
     }
 }
 

@@ -9,6 +9,11 @@ import Foundation
 import UIKit
 
 // MARK: - Model
+struct SM: Equatable, Codable {
+    var name: String
+    var done: String
+    var date: String
+}
 struct StudyModel: Equatable, Codable {
     var id: Int?
     var name: String?
