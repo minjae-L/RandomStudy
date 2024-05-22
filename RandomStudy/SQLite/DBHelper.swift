@@ -7,6 +7,8 @@
 
 import Foundation
 import SQLite3
+import FirebaseAuth
+import FirebaseFirestore
 
 protocol DBHelperDelegate: AnyObject {
     func removeAllDatas()
@@ -219,13 +221,44 @@ class DBHelper {
         self.delegate?.removeAllDatas()
     }
     
-//    MARK: Is Data Exist?
+//    MARK: Data Migration (SQLite3 -> Firebase)
     func isDataExist() -> Bool{
         for i in tableNames {
             let data = DBHelper.shared.readData(tableName: i, column:  column)
             if !data.isEmpty { return true }
         }
         return false
+    }
+    func getUserInfo(completion: @escaping (String?) -> ()) {
+        Auth.auth().addStateDidChangeListener { auth, user in
+            completion(user?.uid)
+        }
+    }
+    func dataMigration() {
+        self.getUserInfo { [weak self] uid in
+            guard let uid = uid else { return }
+            guard let tables = self?.tableNames else { return }
+            guard let column = self?.column else { return }
+            
+            for i in tables {
+                guard let data = self?.readData(tableName: i, column: column) else { continue }
+                if data.isEmpty { continue }
+                print(data)
+                var dataArray = [[String: String]]()
+                for j in data {
+                    dataArray.append(["name": j.name!, "done": j.done!, "date": j.date!])
+                }
+                do {
+                    try Firestore.firestore().collection("users").document(uid).updateData(["\(i)": dataArray])
+                    print("success written document")
+                } catch {
+                    print("fail writing document")
+                }
+                
+            }
+            self?.resetAllTable()
+        }
+        
     }
 }
 

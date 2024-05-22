@@ -8,6 +8,8 @@
 import UIKit
 
 class DataMigrationViewController: UIViewController {
+    private let viewModel = DataMigrationViewModel()
+//    MARK: UI Property
     private let contentStackView: UIStackView = {
         let view = UIStackView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -64,6 +66,7 @@ class DataMigrationViewController: UIViewController {
         btn.setTitle("연동하기", for: .normal)
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.backgroundColor = .systemBlue
+        btn.addTarget(self, action: #selector(confirmButtonTapped), for: .touchUpInside)
         
         return btn
     }()
@@ -72,8 +75,11 @@ class DataMigrationViewController: UIViewController {
         btn.setTitle("삭제하기", for: .normal)
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.backgroundColor = .systemRed
+        btn.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+        
         return btn
     }()
+//    MARK: Method
     private func addView() {
         contentStackView.addArrangedSubview(titleLabel)
         contentStackView.addArrangedSubview(descriptionLabel)
@@ -96,6 +102,18 @@ class DataMigrationViewController: UIViewController {
     private func configureColor() {
         view.backgroundColor = .black.withAlphaComponent(0.3)
         contentStackView.backgroundColor = UIColor(named: "ViewBackgroundColor")
+    }
+    @objc func confirmButtonTapped() {
+        showSpinner{
+            self.hideSpinner {
+                self.viewModel.dataMigration()
+                self.dismiss(animated: true)
+            }
+        }
+    }
+    @objc func cancelButtonTapped() {
+        DBHelper.shared.resetAllTable()
+        self.dismiss(animated: true)
     }
     override func viewDidLoad() {
         super.viewDidLoad()

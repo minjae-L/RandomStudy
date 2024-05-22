@@ -40,6 +40,7 @@
 		B5BA4B4E2AC1AC9E004D7BF9 /* AddViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BA4B4D2AC1AC9E004D7BF9 /* AddViewModel.swift */; };
 		B5C126852AB3660400DBF902 /* TodayTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C126842AB3660400DBF902 /* TodayTableViewCell.swift */; };
 		B5C126872AB4180800DBF902 /* TableViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C126862AB4180800DBF902 /* TableViewExtensions.swift */; };
+		B5C7AC372BFCB6530099B85C /* DataMigrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C7AC362BFCB6530099B85C /* DataMigrationViewModel.swift */; };
 		B5CC3B1D2AB141E700D9FA24 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CC3B1C2AB141E700D9FA24 /* DataModel.swift */; };
 		B5CC3B282AB2079000D9FA24 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CC3B272AB2079000D9FA24 /* SettingViewController.swift */; };
 		B5CC3B2B2AB207E500D9FA24 /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CC3B2A2AB207E500D9FA24 /* SwitchTableViewCell.swift */; };
@@ -118,6 +119,7 @@
 		B5BA4B4D2AC1AC9E004D7BF9 /* AddViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewModel.swift; sourceTree = "<group>"; };
 		B5C126842AB3660400DBF902 /* TodayTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayTableViewCell.swift; sourceTree = "<group>"; };
 		B5C126862AB4180800DBF902 /* TableViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewExtensions.swift; sourceTree = "<group>"; };
+		B5C7AC362BFCB6530099B85C /* DataMigrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataMigrationViewModel.swift; sourceTree = "<group>"; };
 		B5CC3B1C2AB141E700D9FA24 /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		B5CC3B272AB2079000D9FA24 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		B5CC3B2A2AB207E500D9FA24 /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
@@ -289,6 +291,7 @@
 				B5A98E5D2BE906F600E9CE2A /* DarkModeSettingViewModel.swift */,
 				B5EFFA962BF863040063341F /* LoginViewModel.swift */,
 				B5EFFA982BF88B3D0063341F /* SignUpViewModel.swift */,
+				B5C7AC362BFCB6530099B85C /* DataMigrationViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -596,6 +599,7 @@
 				B5CC3B1D2AB141E700D9FA24 /* DataModel.swift in Sources */,
 				B5C126852AB3660400DBF902 /* TodayTableViewCell.swift in Sources */,
 				B5AAA2272BEF699800B4FDC9 /* LoginViewController.swift in Sources */,
+				B5C7AC372BFCB6530099B85C /* DataMigrationViewModel.swift in Sources */,
 				B5B044702BB987CF00E17173 /* GitSearchViewModel.swift in Sources */,
 				B5B7EB962AA4FCA0006944A8 /* AddViewController.swift in Sources */,
 				B5EFFA992BF88B3D0063341F /* SignUpViewModel.swift in Sources */,
