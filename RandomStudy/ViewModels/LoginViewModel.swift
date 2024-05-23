@@ -8,7 +8,9 @@
 import Foundation
 import FirebaseAuth
 import FirebaseFirestore
+
 class LoginViewModel {
+//  MARK: Method
     // 로그인
     func login(email: String, password: String, completion: @escaping (Bool,String) -> Void) {
         if email.isEmpty || password.isEmpty {
@@ -38,6 +40,7 @@ class LoginViewModel {
             
         }
     }
+    // uid 문서 생성
     func makeFirebaseDocument() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         let db = Firestore.firestore()
@@ -46,6 +49,7 @@ class LoginViewModel {
                 print("LoginVM:: maekFirebaseDocument Error")
             }
             print("LoginVM:: snapshot: \(snapshot?.data())")
+            // 로그인한 uid의 문서가 존재하지 않는다면 생성해준다.
             if snapshot?.data() == nil {
                 print("LoginVM:: firebase document is nil")
                 do {

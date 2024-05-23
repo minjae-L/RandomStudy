@@ -22,6 +22,7 @@ final class TodayViewController: UIViewController {
         view.addSubview(tableView)
         view.addSubview(btn)
     }
+    // 내부데이터가 존재한다면, 데이터마이그레이션 진행
     private func isPreviousDataExist() {
         if Firebase.shared.isDataExist() {
             let vc = DataMigrationViewController()
@@ -168,7 +169,7 @@ extension TodayViewController: TodayViewModelDelegate {
     }
 }
 
-
+// MARK: DataMigrationVC Delegate
 extension TodayViewController: DataMigrationViewControllerDelegate {
     func didTappedInitialData() {
         self.viewModel.fetchData()

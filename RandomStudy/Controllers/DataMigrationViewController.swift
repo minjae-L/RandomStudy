@@ -6,9 +6,12 @@
 //
 
 import UIKit
+
+// 데이터 연동시 정보 전달을 위한 델리게이트
 protocol DataMigrationViewControllerDelegate: AnyObject {
     func didTappedInitialData()
 }
+
 class DataMigrationViewController: UIViewController {
     private let viewModel = DataMigrationViewModel()
     weak var delegate: DataMigrationViewControllerDelegate?
@@ -106,17 +109,21 @@ class DataMigrationViewController: UIViewController {
         view.backgroundColor = .black.withAlphaComponent(0.3)
         contentStackView.backgroundColor = UIColor(named: "ViewBackgroundColor")
     }
+    // 연동하기 버튼 액션
     @objc func confirmButtonTapped() {
         print("DataMigrationVC:: confirmButtonTapped:: Excuted")
         showSpinner{
             self.hideSpinner {
+                // 데이터 마이그레이션 진행하고, 값이 변경됬다는것을 델리게이트를 통해서 todayVC에게 알림
                 self.viewModel.dataMigration()
                 self.delegate?.didTappedInitialData()
                 self.dismiss(animated: true)
             }
         }
     }
+    // 삭제하기 버튼 액션
     @objc func cancelButtonTapped() {
+        // 내부데이터 제거
         DBHelper.shared.resetAllTable()
         self.dismiss(animated: true)
     }

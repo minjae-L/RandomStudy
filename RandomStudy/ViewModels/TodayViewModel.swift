@@ -42,14 +42,6 @@ final class TodayViewModel {
     }
     
     // MARK: Method
-    func getDataFromFirebase() {
-        Firebase.shared.getDataFromFirebase(dataName: "todo") { [weak self] dataModel in
-            guard let self = self else { return }
-            guard let data = dataModel else { return }
-            self.todo = data
-            print(self.todo)
-        }
-    }
     // 추가한 공부목록으로 부터 불러오는 메소드 (불러오기)
     func uploadStudy() {
         guard let uid = Auth.auth().currentUser?.uid else { return }

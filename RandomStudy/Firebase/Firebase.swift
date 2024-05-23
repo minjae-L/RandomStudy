@@ -16,7 +16,8 @@ class Firebase {
     private let column = ["name", "done", "date"]
     init () {
     }
-    
+//    MARK: Method
+    // 내부DB에 데이터가 존재하는지 확인하는 함수
     func isDataExist() -> Bool{
         for i in tableNames {
             let data = DBHelper.shared.readData(tableName: i, column:  column)
@@ -24,11 +25,13 @@ class Firebase {
         }
         return false
     }
+    // 유저 정보 불러오기
     func getUserInfo(completion: @escaping (String?) -> ()) {
         Auth.auth().addStateDidChangeListener { auth, user in
             completion(user?.uid)
         }
     }
+    // 데이터 마이그레이션
     func dataMigration() {
         print("Firebase:: dataMigration:: Excuted")
         self.getUserInfo { [weak self] uid in
@@ -53,6 +56,7 @@ class Firebase {
             DBHelper.shared.resetAllTable()
         }
     }
+    // Firebase로부터 데이터 불러오기
     func getDataFromFirebase(dataName: String, completion: @escaping ([StudyModel]?) -> ()) {
         guard let uid = Auth.auth().currentUser?.uid else {
             completion(nil)
@@ -88,6 +92,7 @@ class Firebase {
             }
         }
     }
+    // Firebase의 데이터 지우기(Field 값 지우기)
     func removeFirebaseData() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         let db = Firestore.firestore()
