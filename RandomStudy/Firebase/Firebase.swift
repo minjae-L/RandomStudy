@@ -30,16 +30,11 @@ class Firebase {
         }
     }
     func dataMigration() {
+        print("Firebase:: dataMigration:: Excuted")
         self.getUserInfo { [weak self] uid in
             guard let self = self,
                   let uid = uid
             else { return }
-            do {
-                try Firestore.firestore().collection("users").document(uid).setData(["uid": uid])
-                print("Firebase:: dataMigration:: success written uid")
-            } catch {
-                print("Firebase:: dataMigration:: fail writing uid")
-            }
             for i in tableNames {
                 let data = DBHelper.shared.readData(tableName: i, column: column)
                 if data.isEmpty { continue }
@@ -72,6 +67,7 @@ class Firebase {
                 return
             }
             if snapshot!.documents.isEmpty {
+                print("Firebase:: getDataFromFirebase:: Empty Documents")
                 completion([])
                 return
             }
@@ -86,9 +82,9 @@ class Firebase {
                 let data = try JSONDecoder().decode([String: [StudyModel]].self, from: jsonFile)
                 let converted = Array(data.values).flatMap{$0}
                 completion(converted)
-                print("receive Data Successful")
+                print("Firebase:: getDataFromFirebase:: receive Data Successful")
             } catch {
-                print("receive Data Fail")
+                print("Firebase:: getDataFromFirebase:: receive Data Fail")
             }
         }
     }

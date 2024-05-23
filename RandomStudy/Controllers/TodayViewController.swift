@@ -92,7 +92,7 @@ final class TodayViewController: UIViewController {
         addView()
         bindings()
         isPreviousDataExist()
-        print("TodayVC:: todd: \(viewModel.todo)")
+        print("TodayVC:: todo: \(viewModel.todo)")
     }
     override func viewWillAppear(_ animated: Bool) {
         viewModel.fetchData()

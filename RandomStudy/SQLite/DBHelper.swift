@@ -7,27 +7,19 @@
 
 import Foundation
 import SQLite3
-import FirebaseAuth
-import FirebaseFirestore
 
-protocol DBHelperDelegate: AnyObject {
-    func removeAllDatas()
-}
 class DBHelper {
     var db: OpaquePointer?
     var databaseName: String = "mydb.sqlite"
     static let shared = DBHelper()
     let tableNames = ["study", "todo", "history"]
     let column = ["name", "done", "date"]
-    weak var delegate: DBHelperDelegate?
+
     init() {
-        print("DB helper init")
         self.db = createDB()
         
         for i in tableNames {
             self.createTable(tableName: i, stringColumn: column)
-            print("create table \(i)")
-            print("table \(i): \(self.readData(tableName: i, column: column))")
         }
     }
     
@@ -217,15 +209,6 @@ class DBHelper {
             self.createTable(tableName: i, stringColumn: column)
             print("\(i) reset, \(i): \(readData(tableName: i, column: column))")
         }
-        self.delegate?.removeAllDatas()
-    }
-    
-    func makeSampleData() {
-        for i in tableNames {
-            self.insertData(tableName: i, columns: column, insertData: ["\(i)_1","0","0"])
-            print("DBHelper:: makeSampleData:: \(self.readData(tableName: i, column: column))")
-        }
-        
     }
 }
 

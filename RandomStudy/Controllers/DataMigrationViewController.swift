@@ -107,11 +107,12 @@ class DataMigrationViewController: UIViewController {
         contentStackView.backgroundColor = UIColor(named: "ViewBackgroundColor")
     }
     @objc func confirmButtonTapped() {
+        print("DataMigrationVC:: confirmButtonTapped:: Excuted")
         showSpinner{
             self.hideSpinner {
                 self.viewModel.dataMigration()
-                self.dismiss(animated: true)
                 self.delegate?.didTappedInitialData()
+                self.dismiss(animated: true)
             }
         }
     }

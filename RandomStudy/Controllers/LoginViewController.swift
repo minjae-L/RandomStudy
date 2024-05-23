@@ -179,10 +179,10 @@ class LoginViewController: UIViewController {
             self.viewModel.login(email: email, password: password) { [weak self] result, errorMessage in
                 guard let self = self else { return }
                 if result {
+                    self.viewModel.makeFirebaseDocument()
                     let navigationController = UINavigationController(rootViewController: TodayViewController())
                     navigationController.modalPresentationStyle = .fullScreen
                     self.present(navigationController, animated: true)
-                    self.viewModel.makeFirebaseDocument()
                 } else {
                     self.showMessageAlert(errorMessage)
                 }

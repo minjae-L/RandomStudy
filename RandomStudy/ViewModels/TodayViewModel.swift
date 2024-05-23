@@ -47,7 +47,6 @@ final class TodayViewModel {
             guard let self = self else { return }
             guard let data = dataModel else { return }
             self.todo = data
-            print("td recieved")
             print(self.todo)
         }
     }
@@ -121,11 +120,4 @@ final class TodayViewModel {
         }
     }
     
-}
-
-extension TodayViewModel: DBHelperDelegate {
-    func removeAllDatas() {
-        print("DBDelegate - todo")
-        todo.removeAll()
-    }
 }
