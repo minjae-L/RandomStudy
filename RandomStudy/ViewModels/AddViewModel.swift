@@ -69,7 +69,7 @@ final class AddViewModel {
         self.fetchData()
     }
     func fetchData() {
-        DBHelper.shared.getDataFromFirebase(dataName: "study") { [weak self] dataModel in
+        Firebase.shared.getDataFromFirebase(dataName: "study") { [weak self] dataModel in
             guard let self = self, let data = dataModel else {
                 self?.elements = []
                 return

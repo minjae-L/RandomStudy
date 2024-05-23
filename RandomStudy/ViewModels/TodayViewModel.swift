@@ -10,7 +10,7 @@ import FirebaseAuth
 import FirebaseFirestore
 
 protocol TodayViewModelDelegate: AnyObject {
-    func didUpdateToday(with value: [StudyModel])
+    func didUpdateToday()
 }
 
 final class TodayViewModel {
@@ -21,7 +21,7 @@ final class TodayViewModel {
     
     var todo: [StudyModel] = [] {
         didSet {
-            delegate?.didUpdateToday(with: todo)
+            delegate?.didUpdateToday()
         }
     }
     
@@ -43,7 +43,7 @@ final class TodayViewModel {
     
     // MARK: Method
     func getDataFromFirebase() {
-        DBHelper.shared.getDataFromFirebase(dataName: "todo") { [weak self] dataModel in
+        Firebase.shared.getDataFromFirebase(dataName: "todo") { [weak self] dataModel in
             guard let self = self else { return }
             guard let data = dataModel else { return }
             self.todo = data
@@ -54,7 +54,7 @@ final class TodayViewModel {
     // 추가한 공부목록으로 부터 불러오는 메소드 (불러오기)
     func uploadStudy() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
-        DBHelper.shared.getDataFromFirebase(dataName: "study") { [weak self] dataModel in
+        Firebase.shared.getDataFromFirebase(dataName: "study") { [weak self] dataModel in
             guard let self = self,
                   let data = dataModel
             else { return }
@@ -113,7 +113,7 @@ final class TodayViewModel {
     }
     // 데이터 최신화
     func fetchData() {
-        DBHelper.shared.getDataFromFirebase(dataName: "todo") { [weak self] dataModel in
+        Firebase.shared.getDataFromFirebase(dataName: "todo") { [weak self] dataModel in
             guard let self = self,
             let data = dataModel
             else { return }

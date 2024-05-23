@@ -6,9 +6,12 @@
 //
 
 import UIKit
-
+protocol DataMigrationViewControllerDelegate: AnyObject {
+    func didTappedInitialData()
+}
 class DataMigrationViewController: UIViewController {
     private let viewModel = DataMigrationViewModel()
+    weak var delegate: DataMigrationViewControllerDelegate?
 //    MARK: UI Property
     private let contentStackView: UIStackView = {
         let view = UIStackView()
@@ -108,6 +111,7 @@ class DataMigrationViewController: UIViewController {
             self.hideSpinner {
                 self.viewModel.dataMigration()
                 self.dismiss(animated: true)
+                self.delegate?.didTappedInitialData()
             }
         }
     }

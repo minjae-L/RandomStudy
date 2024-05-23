@@ -23,8 +23,9 @@ final class TodayViewController: UIViewController {
         view.addSubview(btn)
     }
     private func isPreviousDataExist() {
-        if DBHelper.shared.isDataExist() {
+        if Firebase.shared.isDataExist() {
             let vc = DataMigrationViewController()
+            vc.delegate = self
             vc.modalPresentationStyle = .overFullScreen
             vc.modalTransitionStyle = .crossDissolve
             self.present(vc,animated: true)
@@ -159,7 +160,7 @@ extension TodayViewController: UITableViewDataSource, UITableViewDelegate {
 
 // MARK: - ViewModel Delegate
 extension TodayViewController: TodayViewModelDelegate {
-    func didUpdateToday(with value: [StudyModel]) {
+    func didUpdateToday() {
         print("didUpdateToday")
         DispatchQueue.main.async { [weak self] in
             self?.tableView.reloadData()
@@ -168,3 +169,11 @@ extension TodayViewController: TodayViewModelDelegate {
 }
 
 
+extension TodayViewController: DataMigrationViewControllerDelegate {
+    func didTappedInitialData() {
+        self.viewModel.fetchData()
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
+        }
+    }
+}

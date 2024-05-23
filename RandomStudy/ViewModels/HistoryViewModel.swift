@@ -33,7 +33,7 @@ final class HistoryViewModel {
         return Array(Set(completions.compactMap { $0.date })).sorted()
     }
     private func fetchData() {
-        DBHelper.shared.getDataFromFirebase(dataName: "history") { [weak self] dataModel in
+        Firebase.shared.getDataFromFirebase(dataName: "history") { [weak self] dataModel in
             guard let self = self,
                   let data = dataModel
             else { return }
