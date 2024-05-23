@@ -280,7 +280,7 @@ class DBHelper {
                 return
             }
             if snapshot!.documents.isEmpty {
-                completion(nil)
+                completion([])
                 return
             }
             
@@ -298,6 +298,18 @@ class DBHelper {
             } catch {
                 print("receive Data Fail")
             }
+        }
+    }
+    func removeFirebaseData() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let db = Firestore.firestore()
+        do {
+            try db.collection("users").document(uid).updateData(["todo": FieldValue.delete()])
+            try db.collection("users").document(uid).updateData(["history": FieldValue.delete()])
+            try db.collection("users").document(uid).updateData(["study": FieldValue.delete()])
+            print("DBHelper:: delete Success")
+        } catch {
+            print("DBHelper:: do delete fail")
         }
     }
 }
