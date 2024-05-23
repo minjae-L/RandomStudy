@@ -7,7 +7,7 @@
 
 import Foundation
 import FirebaseAuth
-
+import FirebaseFirestore
 class LoginViewModel {
     // 로그인
     func login(email: String, password: String, completion: @escaping (Bool,String) -> Void) {
@@ -34,6 +34,26 @@ class LoginViewModel {
                 }
             } else {
                 completion(true, "")
+            }
+            
+        }
+    }
+    func makeFirebaseDocument() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let db = Firestore.firestore()
+        db.collection("users").document(uid).getDocument { snapshot, error in
+            if error != nil {
+                print("LoginVM:: maekFirebaseDocument Error")
+            }
+            print("LoginVM:: snapshot: \(snapshot?.data())")
+            if snapshot?.data() == nil {
+                print("LoginVM:: firebase document is nil")
+                do {
+                    try db.collection("users").document(uid).setData(["uid": uid])
+                    print("LoginVM:: make document success")
+                } catch {
+                    print("LoginVM:: make document Error")
+                }
             }
             
         }
