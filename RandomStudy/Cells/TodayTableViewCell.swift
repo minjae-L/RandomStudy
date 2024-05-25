@@ -117,7 +117,8 @@ class TodayTableViewCell: UITableViewCell {
     }
     
     func configure(with model: StudyModel) {
-        name = model.name!
+        guard let name = model.name else { return }
+        self.name = name
         label.text = model.name
         if model.done == "0" {
             checkBtn.isEnabled = true

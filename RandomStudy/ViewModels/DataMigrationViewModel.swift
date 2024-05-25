@@ -11,6 +11,6 @@ class DataMigrationViewModel {
     // 데이터 마이그레이션 함수
     func dataMigration() {
         print("DataMigrationVM:: dataMigration:: Excuted")
-        Firebase.shared.dataMigration()
+        FirebaseManager.shared.dataMigration()
     }
 }

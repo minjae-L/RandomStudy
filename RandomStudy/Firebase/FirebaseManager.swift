@@ -9,9 +9,9 @@ import Foundation
 import FirebaseAuth
 import FirebaseFirestore
 
-class Firebase {
+class FirebaseManager {
     private let db = Firestore.firestore()
-    static let shared = Firebase()
+    static let shared = FirebaseManager()
     private let tableNames = ["study", "todo", "history"]
     private let column = ["name", "done", "date"]
     init () {
@@ -26,7 +26,7 @@ class Firebase {
         return false
     }
     // 유저 정보 불러오기
-    func getUserInfo(completion: @escaping (String?) -> ()) {
+    private func getUserInfo(completion: @escaping (String?) -> ()) {
         Auth.auth().addStateDidChangeListener { auth, user in
             completion(user?.uid)
         }
@@ -64,9 +64,8 @@ class Firebase {
         }
         let db = Firestore.firestore()
         db.collection("users").whereField("uid", isEqualTo: uid).getDocuments { snapshot, error in
-            if error != nil {
-                let networkError = error as! NSError
-                print(networkError.localizedDescription)
+            if let error = error as? NSError {
+                print(error.localizedDescription)
                 completion(nil)
                 return
             }

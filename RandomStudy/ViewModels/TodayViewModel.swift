@@ -14,12 +14,12 @@ protocol TodayViewModelDelegate: AnyObject {
 }
 
 final class TodayViewModel {
-    
+     
     // MARK: Property
     weak var delegate: TodayViewModelDelegate?
     private let db = Firestore.firestore()
     
-    var todo: [StudyModel] = [] {
+    private(set) var todo: [StudyModel] = [] {
         didSet {
             delegate?.didUpdateToday()
         }
@@ -45,14 +45,13 @@ final class TodayViewModel {
     // 추가한 공부목록으로 부터 불러오는 메소드 (불러오기)
     func uploadStudy() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
-        Firebase.shared.getDataFromFirebase(dataName: "study") { [weak self] dataModel in
+        FirebaseManager.shared.getDataFromFirebase(dataName: "study") { [weak self] dataModel in
             guard let self = self,
                   let data = dataModel
             else { return }
             for i in data {
                 let filtered = self.todo.filter{$0.name == i.name}
                 if filtered.isEmpty {
-                    
                     let data = [["name": i.name, "done": "0", "date": "0"]]
                     print("different, data: \(data)")
                     self.db.collection("users").document(uid).updateData(["todo": FieldValue.arrayUnion(data)])
@@ -104,7 +103,7 @@ final class TodayViewModel {
     }
     // 데이터 최신화
     func fetchData() {
-        Firebase.shared.getDataFromFirebase(dataName: "todo") { [weak self] dataModel in
+        FirebaseManager.shared.getDataFromFirebase(dataName: "todo") { [weak self] dataModel in
             guard let self = self,
             let data = dataModel
             else { return }

@@ -24,7 +24,7 @@ final class TodayViewController: UIViewController {
     }
     // 내부데이터가 존재한다면, 데이터마이그레이션 진행
     private func isPreviousDataExist() {
-        if Firebase.shared.isDataExist() {
+        if FirebaseManager.shared.isDataExist() {
             let vc = DataMigrationViewController()
             vc.delegate = self
             vc.modalPresentationStyle = .overFullScreen

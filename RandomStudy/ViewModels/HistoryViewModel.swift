@@ -12,7 +12,7 @@ protocol HistoryViewModelDelegate: AnyObject {
 }
 final class HistoryViewModel {
     
-    var completions: [StudyModel] = [] {
+    private(set) var completions: [StudyModel] = [] {
         didSet {
             delegate?.fetchedData()
         }
@@ -33,7 +33,7 @@ final class HistoryViewModel {
         return Array(Set(completions.compactMap { $0.date })).sorted()
     }
     private func fetchData() {
-        Firebase.shared.getDataFromFirebase(dataName: "history") { [weak self] dataModel in
+        FirebaseManager.shared.getDataFromFirebase(dataName: "history") { [weak self] dataModel in
             guard let self = self,
                   let data = dataModel
             else { return }

@@ -67,7 +67,7 @@ class DataMigrationViewController: UIViewController {
         
         return lb
     }()
-    private let confirmButton: UIButton = {
+    private lazy var confirmButton: UIButton = {
         let btn = UIButton()
         btn.setTitle("연동하기", for: .normal)
         btn.translatesAutoresizingMaskIntoConstraints = false
@@ -76,7 +76,7 @@ class DataMigrationViewController: UIViewController {
         
         return btn
     }()
-    private let cancelButton: UIButton = {
+    private lazy var cancelButton: UIButton = {
         let btn = UIButton()
         btn.setTitle("삭제하기", for: .normal)
         btn.translatesAutoresizingMaskIntoConstraints = false

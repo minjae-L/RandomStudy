@@ -122,7 +122,7 @@ class SettingViewController: UIViewController {
     }
     
     private func removeAllButtonEvent() {
-        Firebase.shared.removeFirebaseData()
+        FirebaseManager.shared.removeFirebaseData()
         self.showMessageAlert("초기화 되었습니다.")
     }
 
