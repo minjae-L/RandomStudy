@@ -116,11 +116,11 @@ class TodayTableViewCell: UITableViewCell {
         checkView.isHidden = true
     }
     
-    func configure(with model: StudyModel) {
-        guard let name = model.name else { return }
-        self.name = name
+    func configure(with model: FirebaseDataModel) {
+        self.name = model.name
         label.text = model.name
-        if model.done == "0" {
+        guard let done = model.done else { return }
+        if !done {
             checkBtn.isEnabled = true
             checkView.isHidden = true
             contentView.backgroundColor = UIColor(named: "CellBackgroundColor")

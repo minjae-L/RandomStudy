@@ -10,14 +10,14 @@ import FirebaseAuth
 import FirebaseFirestore
 
 protocol AddViewModelDelegate: AnyObject {
-    func didUpdate(with value: [StudyModel])
+    func didUpdate(with value: [FirebaseDataModel])
 }
 
 final class AddViewModel {
     
     weak var delegate: AddViewModelDelegate?
     private let db = Firestore.firestore()
-    private var elements: [StudyModel] = [] {
+    private var elements: [FirebaseDataModel] = [] {
         didSet {
             delegate?.didUpdate(with: elements)
         }
@@ -29,7 +29,7 @@ final class AddViewModel {
         return elements.count
     }
     
-    var study: [StudyModel] {
+    var study: [FirebaseDataModel] {
         return elements
     }
     func isContainsElement(str: String) -> Bool {
@@ -47,9 +47,9 @@ final class AddViewModel {
     func addData(str: String) {
         if str == "" { return }
         guard let uid = Auth.auth().currentUser?.uid else { return }
-        let data: [[String: String]] = [["name": str, "done": "0", "date": "0"]]
+        let data: [[String: String]] = [["name": str]]
         do {
-            try db.collection("users").document(uid).updateData(["study": FieldValue.arrayUnion(data)])
+            try db.collection("users").document(uid).updateData(["data": FieldValue.arrayUnion(data)])
             print("addVM:: Success Data Write")
         } catch {
             print("addVM:: Fail Data Write")
@@ -59,9 +59,10 @@ final class AddViewModel {
     
     func removeData(name: String) {
         guard let uid = Auth.auth().currentUser?.uid else { return }
-        let removed: [[String: String]] = [["name": name, "done": "0", "date": "0"]]
+        let removed: [[String: String]] = [["name": name]]
+        print("AddVM:: removed: \(removed)")
         do {
-            try db.collection("users").document(uid).updateData(["study": FieldValue.arrayRemove(removed)])
+            try db.collection("users").document(uid).updateData(["data": FieldValue.arrayRemove(removed)])
             print("addVM:: Success Data Removed")
         } catch {
             print("addVM:: Fail Data Removed")
@@ -69,12 +70,12 @@ final class AddViewModel {
         self.fetchData()
     }
     func fetchData() {
-        FirebaseManager.shared.getDataFromFirebase(dataName: "study") { [weak self] dataModel in
+        FirebaseManager.shared.getDataFromFirebase(dataName: "data") { [weak self] dataModel in
             guard let self = self, let data = dataModel else {
                 self?.elements = []
                 return
             }
-            self.elements = data
+            self.elements = data.filter{$0.date == nil && $0.done == nil}
         }
     }
 }

@@ -82,7 +82,7 @@ extension AddViewController: AddViewControllerButtonDelegate {
     }
 }
 extension AddViewController: AddViewModelDelegate {
-    func didUpdate(with value: [StudyModel]) {
+    func didUpdate(with value: [FirebaseDataModel]) {
         DispatchQueue.main.async { [weak self] in
             self?.tableView.reloadData()
         }

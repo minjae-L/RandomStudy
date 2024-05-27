@@ -38,26 +38,43 @@ class FirebaseManager {
             guard let self = self,
                   let uid = uid
             else { return }
-            for i in tableNames {
-                let data = DBHelper.shared.readData(tableName: i, column: column)
-                if data.isEmpty { continue }
-                var dataArray = [[String: String]]()
-                for j in data {
-                    dataArray.append(["name": j.name!, "done": j.done!, "date": j.date!])
-                }
-                do {
-                    try Firestore.firestore().collection("users").document(uid).updateData(["\(i)": dataArray])
-                    print("Firebase:: dataMigration:: success written document")
-                } catch {
-                    print("Firebase:: dataMigration:: fail writing document")
-                }
-                
+            do {
+                try Firestore.firestore().collection("users").document(uid).updateData(["data": FieldValue.arrayUnion(getDataFromSQLite())])
+                print("Firebase:: dataMigration:: success written document")
+            } catch {
+                print("Firebase:: dataMigration:: fail writing document")
             }
             DBHelper.shared.resetAllTable()
         }
     }
+    // 마이그레이션 전에 SQLite로부터 데이터 불러오기
+    func getDataFromSQLite() -> [[String: Any]]{
+        var dataArray = [[String: Any]]()
+        var data = DBHelper.shared.readData(tableName: "todo", column: column)
+        
+        if !data.isEmpty {
+            for j in data {
+                dataArray.append(["name": j.name!])
+            }
+        }
+        
+        data = DBHelper.shared.readData(tableName: "study", column: column)
+        if !data.isEmpty {
+            for j in data {
+                dataArray.append(["name": j.name!, "done": (j.done == "0" ? false : true)])
+            }
+        }
+        
+        data = DBHelper.shared.readData(tableName: "history", column: column)
+        if !data.isEmpty {
+            for j in data {
+                dataArray.append(["name": j.name!, "done": true, "date": j.date!])
+            }
+        }
+        return dataArray
+    }
     // Firebase로부터 데이터 불러오기
-    func getDataFromFirebase(dataName: String, completion: @escaping ([StudyModel]?) -> ()) {
+    func getDataFromFirebase(dataName: String, completion: @escaping ([FirebaseDataModel]?) -> ()) {
         guard let uid = Auth.auth().currentUser?.uid else {
             completion(nil)
             return
@@ -82,7 +99,7 @@ class FirebaseManager {
             
             do {
                 let jsonFile = try JSONSerialization.data(withJSONObject: filtered)
-                let data = try JSONDecoder().decode([String: [StudyModel]].self, from: jsonFile)
+                let data = try JSONDecoder().decode([String: [FirebaseDataModel]].self, from: jsonFile)
                 let converted = Array(data.values).flatMap{$0}
                 completion(converted)
                 print("Firebase:: getDataFromFirebase:: receive Data Successful")
@@ -96,9 +113,7 @@ class FirebaseManager {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         let db = Firestore.firestore()
         do {
-            try db.collection("users").document(uid).updateData(["todo": FieldValue.delete()])
-            try db.collection("users").document(uid).updateData(["history": FieldValue.delete()])
-            try db.collection("users").document(uid).updateData(["study": FieldValue.delete()])
+            try db.collection("users").document(uid).updateData(["data": FieldValue.delete()])
             print("DBHelper:: delete Success")
         } catch {
             print("DBHelper:: do delete fail")

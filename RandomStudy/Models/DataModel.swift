@@ -18,6 +18,15 @@ struct StudyModel: Equatable, Codable {
         return lhs.name == rhs.name
     }
 }
+struct FirebaseDataModel: Equatable, Codable {
+    let name: String
+    var done: Bool?
+    var date: String?
+    
+    static func ==(lhs: FirebaseDataModel, rhs: FirebaseDataModel) -> Bool {
+        return lhs.name == rhs.name
+    }
+}
 
 // GitSearch 데이터 모델
 struct GitSearchRepository: Codable {
