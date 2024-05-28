@@ -6,8 +6,6 @@
 //
 
 import UIKit
-import Lottie
-import FirebaseAuth
 
 final class TodayViewController: UIViewController {
     // UI 선언
@@ -18,13 +16,22 @@ final class TodayViewController: UIViewController {
     private func bindings() {
         viewModel.delegate = self
     }
-    
+
     // UI 넣기
     private func addView() {
         view.addSubview(tableView)
         view.addSubview(btn)
     }
-    
+    // 내부데이터가 존재한다면, 데이터마이그레이션 진행
+    private func isPreviousDataExist() {
+        if FirebaseManager.shared.isDataExist() {
+            let vc = DataMigrationViewController()
+            vc.delegate = self
+            vc.modalPresentationStyle = .overFullScreen
+            vc.modalTransitionStyle = .crossDissolve
+            self.present(vc,animated: true)
+        }
+    }
 //    MARK: - UI Configure
     // 네비게이션 바
     private func configureNavigationbar() {
@@ -85,10 +92,11 @@ final class TodayViewController: UIViewController {
         super.viewDidLoad()
         addView()
         bindings()
-        print("current account: \(Auth.auth().currentUser)")
+        isPreviousDataExist()
+        print("TodayVC:: todo: \(viewModel.todo)")
     }
     override func viewWillAppear(_ animated: Bool) {
-        viewModel.fetchTodoList()
+        viewModel.fetchData()
         settingUI()
         configureNavigationbar()
     }
@@ -104,7 +112,7 @@ final class TodayViewController: UIViewController {
     
     // 불러오기 버튼 이벤트
     @objc private func fetchStudyList() {
-        viewModel.fetchData()
+        viewModel.uploadStudy()
     }
 }
 // MARK: - Cell Button Action
@@ -139,9 +147,7 @@ extension TodayViewController: UITableViewDataSource, UITableViewDelegate {
         }
         
         let study = viewModel.todo[indexPath.row]
-        if let name = study.name {
-            cell.name = name
-        }
+        print("study: \(study)")
         cell.setUIColor()
         cell.delegate = self
         cell.configure(with: study)
@@ -155,7 +161,18 @@ extension TodayViewController: UITableViewDataSource, UITableViewDelegate {
 
 // MARK: - ViewModel Delegate
 extension TodayViewController: TodayViewModelDelegate {
-    func didUpdateToday(with value: [StudyModel]) {
+    func didUpdateToday() {
+        print("didUpdateToday")
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
+        }
+    }
+}
+
+// MARK: DataMigrationVC Delegate
+extension TodayViewController: DataMigrationViewControllerDelegate {
+    func didTappedInitialData() {
+        self.viewModel.fetchData()
         DispatchQueue.main.async { [weak self] in
             self?.tableView.reloadData()
         }

@@ -122,8 +122,8 @@ class SettingViewController: UIViewController {
     }
     
     private func removeAllButtonEvent() {
-        self.showMessageAlert("초기화되었습니다.")
-        DBHelper.shared.resetAllTable()
+        FirebaseManager.shared.removeFirebaseData()
+        self.showMessageAlert("초기화 되었습니다.")
     }
 
 }

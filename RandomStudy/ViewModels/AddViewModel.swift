@@ -6,27 +6,30 @@
 //
 
 import Foundation
+import FirebaseAuth
+import FirebaseFirestore
 
 protocol AddViewModelDelegate: AnyObject {
-    func didUpdate(with value: [StudyModel])
+    func didUpdate(with value: [FirebaseDataModel])
 }
 
 final class AddViewModel {
     
     weak var delegate: AddViewModelDelegate?
-    private let tableName = "study"
-    private let column = ["name", "done", "date"]
-    
-    private var elements: [StudyModel] = DBHelper.shared.readData(tableName: "study", column: ["name", "done", "date"]) {
+    private let db = Firestore.firestore()
+    private var elements: [FirebaseDataModel] = [] {
         didSet {
             delegate?.didUpdate(with: elements)
         }
+    }
+    init() {
+        self.fetchData()
     }
     var dataCount: Int {
         return elements.count
     }
     
-    var study: [StudyModel] {
+    var study: [FirebaseDataModel] {
         return elements
     }
     func isContainsElement(str: String) -> Bool {
@@ -43,26 +46,37 @@ final class AddViewModel {
     // 배열에 값 추가
     func addData(str: String) {
         if str == "" { return }
-        var data = [str]
-        for i in 0..<column.count-1 {
-            data.append("0")
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let data: [[String: String]] = [["name": str]]
+        do {
+            try db.collection("users").document(uid).updateData(["data": FieldValue.arrayUnion(data)])
+            print("addVM:: Success Data Write")
+        } catch {
+            print("addVM:: Fail Data Write")
         }
-        DBHelper.shared.insertData(tableName: tableName, columns: column, insertData: data)
-        elements = DBHelper.shared.readData(tableName: tableName, column: column)
+        self.fetchData()
     }
     
     func removeData(name: String) {
-        var index = -1
-        for i in 0..<elements.count {
-            if elements[i].name == name, let num = elements[i].id {
-                index = num
-            }
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let removed: [[String: String]] = [["name": name]]
+        print("AddVM:: removed: \(removed)")
+        do {
+            try db.collection("users").document(uid).updateData(["data": FieldValue.arrayRemove(removed)])
+            print("addVM:: Success Data Removed")
+        } catch {
+            print("addVM:: Fail Data Removed")
         }
-        DBHelper.shared.deleteData(tableName: tableName, id: index)
-        elements = DBHelper.shared.readData(tableName: tableName, column: column)
+        self.fetchData()
     }
     func fetchData() {
-        self.elements = DBHelper.shared.readData(tableName: tableName, column: column)
+        FirebaseManager.shared.getDataFromFirebase(dataName: "data") { [weak self] dataModel in
+            guard let self = self, let data = dataModel else {
+                self?.elements = []
+                return
+            }
+            self.elements = data.filter{$0.date == nil && $0.done == nil}
+        }
     }
 }
 

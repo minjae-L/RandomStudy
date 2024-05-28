@@ -10,12 +10,20 @@ import UIKit
 
 // MARK: - Model
 struct StudyModel: Equatable, Codable {
-    var id: Int?
     var name: String?
     var done: String?
     var date: String?
     
     static func ==(lhs: StudyModel, rhs: StudyModel) -> Bool {
+        return lhs.name == rhs.name
+    }
+}
+struct FirebaseDataModel: Equatable, Codable {
+    let name: String
+    var done: Bool?
+    var date: String?
+    
+    static func ==(lhs: FirebaseDataModel, rhs: FirebaseDataModel) -> Bool {
         return lhs.name == rhs.name
     }
 }

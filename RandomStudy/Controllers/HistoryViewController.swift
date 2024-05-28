@@ -15,6 +15,8 @@ class HistoryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        viewModel.delegate = self
+        print("HistoryVC:: elements: \(viewModel.completions)")
     }
     
     // UI 그리기
@@ -96,4 +98,16 @@ extension HistoryViewController:  UITableViewDelegate, UITableViewDataSource {
         return 60
     }
 
+}
+
+extension HistoryViewController: HistoryViewModelDelegate {
+    func fetchedData() {
+        print("HistoryVC:: fetchedData")
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.tableView.reloadData()
+        }
+    }
+    
+    
 }

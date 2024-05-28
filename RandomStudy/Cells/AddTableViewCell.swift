@@ -77,11 +77,9 @@ class AddTableViewCell: UITableViewCell {
         self.label.textColor = UIColor(named: "LabelTextColor")
 
     }
-    func configure(with model: StudyModel) {
+    func configure(with model: FirebaseDataModel) {
         label.text = model.name
-        if let name = model.name {
-            indexPathStudyName = name
-        }
+        indexPathStudyName = model.name
     }
 }
 
