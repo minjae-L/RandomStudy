@@ -7,12 +7,21 @@
 
 import Foundation
 
+protocol HistoryViewModelDelegate: AnyObject {
+    func fetchedData()
+}
 final class HistoryViewModel {
     
-    var completions: [StudyModel] = DBHelper.shared.readData(tableName: "history", column: ["name", "done", "date"])
-    private let tableName = "history"
-    private let column = ["name", "done", "date"]
-    
+    private(set) var completions: [FirebaseDataModel] = [] {
+        didSet {
+            delegate?.fetchedData()
+        }
+    }
+    weak var delegate: HistoryViewModelDelegate?
+    init () {
+        print("HistoryVM:: init ")
+        self.fetchData()
+    }
     var count: Int {
         return completions.count
     }
@@ -22,5 +31,13 @@ final class HistoryViewModel {
     
     var dateArray: [String] {
         return Array(Set(completions.compactMap { $0.date })).sorted()
+    }
+    private func fetchData() {
+        FirebaseManager.shared.getDataFromFirebase(dataName: "data") { [weak self] dataModel in
+            guard let self = self,
+                  let data = dataModel
+            else { return }
+            self.completions = data.filter{$0.date != nil && $0.done != nil}
+        }
     }
 }

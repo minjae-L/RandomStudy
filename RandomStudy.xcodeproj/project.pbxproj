@@ -10,6 +10,7 @@
 		2377C06B7AE0FF4CF3A9305C /* Pods_RandomStudy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 778C3D6B33E71B19EA45A1DD /* Pods_RandomStudy.framework */; };
 		513F9CADF12505788DC432AB /* Pods_RandomStudyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B0D95428544FAE132975CB /* Pods_RandomStudyTests.framework */; };
 		96132F9CE00E6573F3E178E6 /* Pods_RandomStudy_RandomStudyUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5736CE7A6A817FFF3298E51D /* Pods_RandomStudy_RandomStudyUITests.framework */; };
+		B508F9432BF8D6BF0018069A /* DataMigrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B508F9422BF8D6BF0018069A /* DataMigrationViewController.swift */; };
 		B5142D102AB5017200C3BB07 /* AddTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5142D0F2AB5017200C3BB07 /* AddTableViewCell.swift */; };
 		B51C80FF2BF0EE1900DC6D1E /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C80FE2BF0EE1900DC6D1E /* UIViewControllerExtensions.swift */; };
 		B51C8AFF2BC7F735005ADC46 /* DBHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C8AFE2BC7F735005ADC46 /* DBHelper.swift */; };
@@ -25,6 +26,7 @@
 		B58D28F62A2D830300947A24 /* RandomStudyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58D28F52A2D830300947A24 /* RandomStudyTests.swift */; };
 		B58D29002A2D830300947A24 /* RandomStudyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58D28FF2A2D830300947A24 /* RandomStudyUITests.swift */; };
 		B58D29022A2D830300947A24 /* RandomStudyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58D29012A2D830300947A24 /* RandomStudyUITestsLaunchTests.swift */; };
+		B599C0F12BFF13FB0020784E /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B599C0F02BFF13FB0020784E /* FirebaseManager.swift */; };
 		B59B658F2ADB3006008A60F1 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B658E2ADB3006008A60F1 /* HistoryViewController.swift */; };
 		B59B65912ADB3483008A60F1 /* HistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B65902ADB3483008A60F1 /* HistoryTableViewCell.swift */; };
 		B5A3705F2ADF8029000F76C1 /* HistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A3705E2ADF8029000F76C1 /* HistoryViewModel.swift */; };
@@ -39,6 +41,7 @@
 		B5BA4B4E2AC1AC9E004D7BF9 /* AddViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BA4B4D2AC1AC9E004D7BF9 /* AddViewModel.swift */; };
 		B5C126852AB3660400DBF902 /* TodayTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C126842AB3660400DBF902 /* TodayTableViewCell.swift */; };
 		B5C126872AB4180800DBF902 /* TableViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C126862AB4180800DBF902 /* TableViewExtensions.swift */; };
+		B5C7AC372BFCB6530099B85C /* DataMigrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C7AC362BFCB6530099B85C /* DataMigrationViewModel.swift */; };
 		B5CC3B1D2AB141E700D9FA24 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CC3B1C2AB141E700D9FA24 /* DataModel.swift */; };
 		B5CC3B282AB2079000D9FA24 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CC3B272AB2079000D9FA24 /* SettingViewController.swift */; };
 		B5CC3B2B2AB207E500D9FA24 /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CC3B2A2AB207E500D9FA24 /* SwitchTableViewCell.swift */; };
@@ -75,12 +78,17 @@
 		839648DEB82B2A9924B21F46 /* Pods-RandomStudyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RandomStudyTests.debug.xcconfig"; path = "Target Support Files/Pods-RandomStudyTests/Pods-RandomStudyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A2C86832494A7A42012FCEE3 /* Pods-RandomStudy-RandomStudyUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RandomStudy-RandomStudyUITests.debug.xcconfig"; path = "Target Support Files/Pods-RandomStudy-RandomStudyUITests/Pods-RandomStudy-RandomStudyUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		A6B0D95428544FAE132975CB /* Pods_RandomStudyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RandomStudyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B50149B92BFB497B002F97B7 /* FirebaseFirestore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseFirestore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B508F9422BF8D6BF0018069A /* DataMigrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataMigrationViewController.swift; sourceTree = "<group>"; };
 		B5142D0F2AB5017200C3BB07 /* AddTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTableViewCell.swift; sourceTree = "<group>"; };
+		B5151AE42BFC552C0063B3EF /* FirebaseFirestore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseFirestore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5151AE82BFC555C0063B3EF /* FirebaseFirestoreInternal.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseFirestoreInternal.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B51C80F22BF0E7AB00DC6D1E /* FirebaseCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B51C80F62BF0E7B200DC6D1E /* FirebaseAuth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseAuth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B51C80F92BF0E7CA00DC6D1E /* FirebaseFirestoreInternal_Privacy.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = FirebaseFirestoreInternal_Privacy.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		B51C80FE2BF0EE1900DC6D1E /* UIViewControllerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtensions.swift; sourceTree = "<group>"; };
 		B51C8AFE2BC7F735005ADC46 /* DBHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBHelper.swift; sourceTree = "<group>"; };
+		B52156502BFB3B5600316305 /* FirebaseFirestore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseFirestore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B53529222AD63ED700C82383 /* check.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = check.json; sourceTree = "<group>"; };
 		B54DE1D82B5AA97C00923530 /* GitSearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitSearchCollectionViewCell.swift; sourceTree = "<group>"; };
 		B552525A2BF1F634004041B0 /* FirebaseFirestoreInternal.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseFirestoreInternal.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -98,6 +106,7 @@
 		B58D28FB2A2D830300947A24 /* RandomStudyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RandomStudyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B58D28FF2A2D830300947A24 /* RandomStudyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomStudyUITests.swift; sourceTree = "<group>"; };
 		B58D29012A2D830300947A24 /* RandomStudyUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomStudyUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		B599C0F02BFF13FB0020784E /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		B59B658E2ADB3006008A60F1 /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		B59B65902ADB3483008A60F1 /* HistoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTableViewCell.swift; sourceTree = "<group>"; };
 		B5A3705E2ADF8029000F76C1 /* HistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModel.swift; sourceTree = "<group>"; };
@@ -112,6 +121,7 @@
 		B5BA4B4D2AC1AC9E004D7BF9 /* AddViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewModel.swift; sourceTree = "<group>"; };
 		B5C126842AB3660400DBF902 /* TodayTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayTableViewCell.swift; sourceTree = "<group>"; };
 		B5C126862AB4180800DBF902 /* TableViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewExtensions.swift; sourceTree = "<group>"; };
+		B5C7AC362BFCB6530099B85C /* DataMigrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataMigrationViewModel.swift; sourceTree = "<group>"; };
 		B5CC3B1C2AB141E700D9FA24 /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		B5CC3B272AB2079000D9FA24 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		B5CC3B2A2AB207E500D9FA24 /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
@@ -170,6 +180,10 @@
 		AECD81F2141ABF3146F6B2B1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B5151AE82BFC555C0063B3EF /* FirebaseFirestoreInternal.framework */,
+				B5151AE42BFC552C0063B3EF /* FirebaseFirestore.framework */,
+				B50149B92BFB497B002F97B7 /* FirebaseFirestore.framework */,
+				B52156502BFB3B5600316305 /* FirebaseFirestore.framework */,
 				B552525A2BF1F634004041B0 /* FirebaseFirestoreInternal.framework */,
 				B51C80F92BF0E7CA00DC6D1E /* FirebaseFirestoreInternal_Privacy.bundle */,
 				B51C80F62BF0E7B200DC6D1E /* FirebaseAuth.framework */,
@@ -243,6 +257,7 @@
 				B5CB35C22AC1281C003FB08D /* Models */,
 				B5CB35C12AC12812003FB08D /* ViewModels */,
 				B5CC3B292AB207C100D9FA24 /* Cells */,
+				B599C0EF2BFF13D30020784E /* Firebase */,
 				B51C8AFD2BC7F704005ADC46 /* SQLite */,
 				B58D28E72A2D830200947A24 /* Assets.xcassets */,
 				B58D28E92A2D830200947A24 /* LaunchScreen.storyboard */,
@@ -269,6 +284,14 @@
 			path = RandomStudyUITests;
 			sourceTree = "<group>";
 		};
+		B599C0EF2BFF13D30020784E /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				B599C0F02BFF13FB0020784E /* FirebaseManager.swift */,
+			);
+			path = Firebase;
+			sourceTree = "<group>";
+		};
 		B5CB35C12AC12812003FB08D /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -279,6 +302,7 @@
 				B5A98E5D2BE906F600E9CE2A /* DarkModeSettingViewModel.swift */,
 				B5EFFA962BF863040063341F /* LoginViewModel.swift */,
 				B5EFFA982BF88B3D0063341F /* SignUpViewModel.swift */,
+				B5C7AC362BFCB6530099B85C /* DataMigrationViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -303,6 +327,7 @@
 				B5A98E592BE8FB8500E9CE2A /* DarkModeSettingViewController.swift */,
 				B5AAA2262BEF699800B4FDC9 /* LoginViewController.swift */,
 				B5AAA2282BEFA45800B4FDC9 /* SignUpViewController.swift */,
+				B508F9422BF8D6BF0018069A /* DataMigrationViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -341,7 +366,7 @@
 				B58D28D72A2D830100947A24 /* Sources */,
 				B58D28D82A2D830100947A24 /* Frameworks */,
 				B58D28D92A2D830100947A24 /* Resources */,
-				73115CC6098F9C92CBD8C266 /* [CP] Embed Pods Frameworks */,
+				7015A36BE245FE20E664CCA7 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -360,7 +385,6 @@
 				B58D28ED2A2D830300947A24 /* Sources */,
 				B58D28EE2A2D830300947A24 /* Frameworks */,
 				B58D28EF2A2D830300947A24 /* Resources */,
-				24E558A5E74E2BC51BF8E94C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -380,7 +404,7 @@
 				B58D28F72A2D830300947A24 /* Sources */,
 				B58D28F82A2D830300947A24 /* Frameworks */,
 				B58D28F92A2D830300947A24 /* Resources */,
-				F57A11A14025B7E39CAABABB /* [CP] Embed Pods Frameworks */,
+				CF4F9BC3907C074EEEB13439 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -486,24 +510,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		24E558A5E74E2BC51BF8E94C /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-RandomStudyTests/Pods-RandomStudyTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-RandomStudyTests/Pods-RandomStudyTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RandomStudyTests/Pods-RandomStudyTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		73115CC6098F9C92CBD8C266 /* [CP] Embed Pods Frameworks */ = {
+		7015A36BE245FE20E664CCA7 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -542,7 +549,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F57A11A14025B7E39CAABABB /* [CP] Embed Pods Frameworks */ = {
+		CF4F9BC3907C074EEEB13439 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -595,13 +602,16 @@
 				B5C126872AB4180800DBF902 /* TableViewExtensions.swift in Sources */,
 				B58BE0112AD607970039D232 /* TodayViewModel.swift in Sources */,
 				B58D28DF2A2D830100947A24 /* AppDelegate.swift in Sources */,
+				B599C0F12BFF13FB0020784E /* FirebaseManager.swift in Sources */,
 				B59B658F2ADB3006008A60F1 /* HistoryViewController.swift in Sources */,
 				B5785DDF2BD149B0006AA50D /* AddPopUpViewController.swift in Sources */,
 				B5CC3B2B2AB207E500D9FA24 /* SwitchTableViewCell.swift in Sources */,
 				B51C8AFF2BC7F735005ADC46 /* DBHelper.swift in Sources */,
+				B508F9432BF8D6BF0018069A /* DataMigrationViewController.swift in Sources */,
 				B5CC3B1D2AB141E700D9FA24 /* DataModel.swift in Sources */,
 				B5C126852AB3660400DBF902 /* TodayTableViewCell.swift in Sources */,
 				B5AAA2272BEF699800B4FDC9 /* LoginViewController.swift in Sources */,
+				B5C7AC372BFCB6530099B85C /* DataMigrationViewModel.swift in Sources */,
 				B5B044702BB987CF00E17173 /* GitSearchViewModel.swift in Sources */,
 				B5B7EB962AA4FCA0006944A8 /* AddViewController.swift in Sources */,
 				B5EFFA992BF88B3D0063341F /* SignUpViewModel.swift in Sources */,

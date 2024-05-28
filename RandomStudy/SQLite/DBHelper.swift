@@ -8,26 +8,19 @@
 import Foundation
 import SQLite3
 
-protocol DBHelperDelegate: AnyObject {
-    func removeAllDatas()
-}
 class DBHelper {
     var db: OpaquePointer?
     var databaseName: String = "mydb.sqlite"
     static let shared = DBHelper()
     let tableNames = ["study", "todo", "history"]
     let column = ["name", "done", "date"]
-    weak var delegate: DBHelperDelegate?
+
     init() {
-        print("DB helper init")
         self.db = createDB()
         
         for i in tableNames {
             self.createTable(tableName: i, stringColumn: column)
-            print("create table \(i)")
-            print("table \(i): \(self.readData(tableName: i, column: column))")
         }
-        
     }
     
     deinit {
@@ -150,7 +143,7 @@ class DBHelper {
         while sqlite3_step(statement) == SQLITE_ROW {
             let id = sqlite3_column_int(statement, 0)
             var data = Dictionary<String, String>()
-            var d = StudyModel(id: Int(id), name: nil, done: nil, date: nil)
+            var d = StudyModel(name: nil, done: nil, date: nil)
             for  i in 0..<column.count {
                 data[column[i]] = String(cString: sqlite3_column_text(statement, Int32(i+1)))
                 let load = String(cString: sqlite3_column_text(statement, Int32(i+1)))
@@ -216,8 +209,6 @@ class DBHelper {
             self.createTable(tableName: i, stringColumn: column)
             print("\(i) reset, \(i): \(readData(tableName: i, column: column))")
         }
-        self.delegate?.removeAllDatas()
-//        self.dele
     }
 }
 

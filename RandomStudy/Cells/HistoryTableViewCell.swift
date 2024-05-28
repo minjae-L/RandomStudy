@@ -45,7 +45,7 @@ class HistoryTableViewCell: UITableViewCell {
         label.text = nil
     }
     
-    func configure(with model: StudyModel) {
+    func configure(with model: FirebaseDataModel) {
         label.text = model.name
     }
 }

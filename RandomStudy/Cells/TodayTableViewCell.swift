@@ -17,7 +17,6 @@ class TodayTableViewCell: UITableViewCell {
     static let identifier = "TodayTableViewCell"
     weak var delegate: TodayTableViewCellDelegate?
     
-    private var item: StudyModel?
     var name: String = ""
     
     // 체크버튼
@@ -117,10 +116,11 @@ class TodayTableViewCell: UITableViewCell {
         checkView.isHidden = true
     }
     
-    func configure(with model: StudyModel) {
-        item = model
+    func configure(with model: FirebaseDataModel) {
+        self.name = model.name
         label.text = model.name
-        if model.done == "0" {
+        guard let done = model.done else { return }
+        if !done {
             checkBtn.isEnabled = true
             checkView.isHidden = true
             contentView.backgroundColor = UIColor(named: "CellBackgroundColor")

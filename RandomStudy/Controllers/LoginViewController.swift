@@ -177,12 +177,15 @@ class LoginViewController: UIViewController {
         
         self.showSpinner{
             self.viewModel.login(email: email, password: password) { [weak self] result, errorMessage in
+                guard let self = self else { return }
                 if result {
+                    // 로그인 성공하면 uid 문서 생성(이미 있다면 생성하지않음)
+                    self.viewModel.makeFirebaseDocument()
                     let navigationController = UINavigationController(rootViewController: TodayViewController())
                     navigationController.modalPresentationStyle = .fullScreen
-                    self?.present(navigationController, animated: true)
+                    self.present(navigationController, animated: true)
                 } else {
-                    self?.showMessageAlert(errorMessage)
+                    self.showMessageAlert(errorMessage)
                 }
                 
             }
