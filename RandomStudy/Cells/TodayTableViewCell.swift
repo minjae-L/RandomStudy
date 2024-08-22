@@ -18,10 +18,11 @@ class TodayTableViewCell: UITableViewCell {
     weak var delegate: TodayTableViewCellDelegate?
     
     var name: String = ""
-    
     // 체크버튼
     @objc func checkButtonTapped() {
-        delegate?.checkButtonTapped(name: name)
+        self.checkView.isHidden = false
+        checkView.play()
+        delegate?.checkButtonTapped(name: self.name)
     }
     // 삭제버튼
     @objc func deleteButtonTapped() {
@@ -63,10 +64,17 @@ class TodayTableViewCell: UITableViewCell {
         view.widthAnchor.constraint(equalToConstant: 80).isActive = true
         view.heightAnchor.constraint(equalToConstant: 80).isActive = true
         view.isHidden = true
+        return view
+    }()
+    private let completedCheckView: LottieAnimationView = {
+        let view = LottieAnimationView(name: "check")
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        view.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        view.currentProgress = 20
         
         return view
     }()
-    
     private func setupButtonEvent() {
         checkBtn.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
         deleteBtn.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
@@ -91,6 +99,8 @@ class TodayTableViewCell: UITableViewCell {
         label.trailingAnchor.constraint(equalTo: deleteBtn.leadingAnchor).isActive = true
         checkView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
         checkView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        completedCheckView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
+        completedCheckView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -100,6 +110,7 @@ class TodayTableViewCell: UITableViewCell {
         contentView.addSubview(deleteBtn)
         contentView.addSubview(checkBtn)
         contentView.addSubview(checkView)
+        contentView.addSubview(completedCheckView)
         setLayout()
         setupButtonEvent()
     }
@@ -113,22 +124,17 @@ class TodayTableViewCell: UITableViewCell {
     
     override func prepareForReuse() {
         label.text = nil
-        checkView.isHidden = true
     }
-    
     func configure(with model: FirebaseDataModel) {
         self.name = model.name
         label.text = model.name
         guard let done = model.done else { return }
-        if !done {
-            checkBtn.isEnabled = true
+        
+        completedCheckView.isHidden = true
+        checkView.isHidden = true
+        if done {
+            completedCheckView.isHidden = false
             checkView.isHidden = true
-            contentView.backgroundColor = UIColor(named: "CellBackgroundColor")
-        } else {
-            contentView.backgroundColor = .gray
-            checkBtn.isEnabled = false
-            checkView.isHidden = false
-            checkView.currentProgress = 20
         }
     }
 
