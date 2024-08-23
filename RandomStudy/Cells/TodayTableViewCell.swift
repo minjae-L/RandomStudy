@@ -20,7 +20,6 @@ class TodayTableViewCell: UITableViewCell {
     var name: String = ""
     // 체크버튼
     @objc func checkButtonTapped() {
-        self.checkView.isHidden = false
         checkView.play()
         delegate?.checkButtonTapped(name: self.name)
     }
@@ -63,16 +62,6 @@ class TodayTableViewCell: UITableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.widthAnchor.constraint(equalToConstant: 80).isActive = true
         view.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        view.isHidden = true
-        return view
-    }()
-    private let completedCheckView: LottieAnimationView = {
-        let view = LottieAnimationView(name: "check")
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        view.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        view.currentProgress = 20
-        
         return view
     }()
     private func setupButtonEvent() {
@@ -99,8 +88,6 @@ class TodayTableViewCell: UITableViewCell {
         label.trailingAnchor.constraint(equalTo: deleteBtn.leadingAnchor).isActive = true
         checkView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
         checkView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
-        completedCheckView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
-        completedCheckView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -110,7 +97,6 @@ class TodayTableViewCell: UITableViewCell {
         contentView.addSubview(deleteBtn)
         contentView.addSubview(checkBtn)
         contentView.addSubview(checkView)
-        contentView.addSubview(completedCheckView)
         setLayout()
         setupButtonEvent()
     }
@@ -124,17 +110,14 @@ class TodayTableViewCell: UITableViewCell {
     
     override func prepareForReuse() {
         label.text = nil
+        checkView.currentProgress = 0
     }
     func configure(with model: FirebaseDataModel) {
         self.name = model.name
         label.text = model.name
         guard let done = model.done else { return }
-        
-        completedCheckView.isHidden = true
-        checkView.isHidden = true
         if done {
-            completedCheckView.isHidden = false
-            checkView.isHidden = true
+            checkView.currentProgress = 1
         }
     }
 
