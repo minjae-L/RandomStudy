@@ -18,10 +18,10 @@ class TodayTableViewCell: UITableViewCell {
     weak var delegate: TodayTableViewCellDelegate?
     
     var name: String = ""
-    
     // 체크버튼
     @objc func checkButtonTapped() {
-        delegate?.checkButtonTapped(name: name)
+        checkView.play()
+        delegate?.checkButtonTapped(name: self.name)
     }
     // 삭제버튼
     @objc func deleteButtonTapped() {
@@ -62,11 +62,8 @@ class TodayTableViewCell: UITableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.widthAnchor.constraint(equalToConstant: 80).isActive = true
         view.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        view.isHidden = true
-        
         return view
     }()
-    
     private func setupButtonEvent() {
         checkBtn.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
         deleteBtn.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
@@ -113,22 +110,14 @@ class TodayTableViewCell: UITableViewCell {
     
     override func prepareForReuse() {
         label.text = nil
-        checkView.isHidden = true
+        checkView.currentProgress = 0
     }
-    
     func configure(with model: FirebaseDataModel) {
         self.name = model.name
         label.text = model.name
         guard let done = model.done else { return }
-        if !done {
-            checkBtn.isEnabled = true
-            checkView.isHidden = true
-            contentView.backgroundColor = UIColor(named: "CellBackgroundColor")
-        } else {
-            contentView.backgroundColor = .gray
-            checkBtn.isEnabled = false
-            checkView.isHidden = false
-            checkView.currentProgress = 20
+        if done {
+            checkView.currentProgress = 1
         }
     }
 

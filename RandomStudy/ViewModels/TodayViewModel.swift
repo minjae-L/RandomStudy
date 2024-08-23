@@ -18,7 +18,6 @@ final class TodayViewModel {
     // MARK: Property
     weak var delegate: TodayViewModelDelegate?
     private let db = Firestore.firestore()
-    
     private(set) var todo: [FirebaseDataModel] = [] {
         didSet {
             delegate?.didUpdateToday()
@@ -75,10 +74,7 @@ final class TodayViewModel {
         } catch {
             print("TodayVM:: Complete Fail")
         }
-        self.fetchData()
-        
     }
-    // 체크 버튼 이벤트
     func insertDataToHistory(completion: FirebaseDataModel) {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         let data = [["name": completion.name, "done": true, "date": dateFommatter.string(from: Date())]]
@@ -96,7 +92,7 @@ final class TodayViewModel {
         let data = todo.filter{$0.name == name}[0]
         let removed = [["name": data.name, "done": data.done]]
         do {
-            try db.collection("users").document(uid).updateData(["todo": FieldValue.arrayRemove(removed)])
+            try db.collection("users").document(uid).updateData(["data": FieldValue.arrayRemove(removed)])
             print("TodayVM:: Remove Success")
         } catch {
             print("TodayVM:: Remove Fail")
