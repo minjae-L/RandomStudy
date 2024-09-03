@@ -9,12 +9,20 @@ import Foundation
 import FirebaseAuth
 import FirebaseFirestore
 
+protocol FirebaseManagerDelegate: AnyObject {
+    func didFinishedDataUploading()
+}
 class FirebaseManager {
     private let db = Firestore.firestore()
     static let shared = FirebaseManager()
     private let tableNames = ["study", "todo", "history"]
     private let column = ["name", "done", "date"]
+    private var uid: String
+    weak var delegate: FirebaseManagerDelegate?
+    var elements = [FirebaseDataModel]()
     init () {
+        print("FirebaseManager init")
+        self.uid = Auth.auth().currentUser?.uid ?? ""
     }
 //    MARK: Method
     // 내부DB에 데이터가 존재하는지 확인하는 함수
@@ -25,10 +33,11 @@ class FirebaseManager {
         }
         return false
     }
-    // 유저 정보 불러오기
-    private func getUserInfo(completion: @escaping (String?) -> ()) {
-        Auth.auth().addStateDidChangeListener { auth, user in
-            completion(user?.uid)
+    func fetchData() {
+        print("firebaseManager fetchData")
+        self.getDataFromFirebase() { [weak self] data in
+            self?.elements = data ?? []
+            self?.delegate?.didFinishedDataUploading()
         }
     }
     // Firebase로부터 데이터 불러오기
@@ -49,9 +58,8 @@ class FirebaseManager {
                 completion([])
                 return
             }
-            
             guard let filtered = snapshot?.documents[0].data().filter({ (key: String, value: Any) in
-                if key == dataName { return true }
+                if key == "data" { return true }
                 return false
             }) else { return }
             
@@ -66,16 +74,45 @@ class FirebaseManager {
             }
         }
     }
-    // Firebase의 데이터 지우기(Field 값 지우기)
-    func removeFirebaseData() {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        let db = Firestore.firestore()
+    // 데이터 쓰기
+    func setDataToFirebase(data: FirebaseDataModel) {
+        self.elements.append(data)
         do {
-            try db.collection("users").document(uid).updateData(["data": FieldValue.delete()])
-            print("DBHelper:: delete Success")
+            let encoded = try Firestore.Encoder().encode(data)
+            db.collection("users").document(uid).updateData(["data": FieldValue.arrayUnion([encoded])])
+            print("FirebaseManager:: Set Data to Firebase")
         } catch {
-            print("DBHelper:: do delete fail")
+            print("fail")
         }
+        print("elements: \(self.elements)")
+    }
+    // 데이터 지우기
+    func removeDataFromFirebase(data: FirebaseDataModel) {
+        for i in 0..<elements.count {
+            if elements[i].done == nil || elements[i].date != nil {
+                continue
+            }
+            if data.name == elements[i].name {
+                print("removed: \(elements[i])")
+                self.elements.remove(at: i)
+                break
+            }
+        }
+        do {
+            let encoded = try Firestore.Encoder().encode(data)
+            db.collection("users").document(uid).updateData(["data": FieldValue.arrayRemove([encoded])])
+            print("FirebaseManager:: Delete Data From Firebase")
+        } catch {
+            print("FirebaseManager:: Fail!! Delete Data From Firebase")
+        }
+    }
+    // 모든 데이터 지우기
+    func removeAllData() {
+        self.elements.removeAll()
+        db.collection("users").document(uid).updateData(["data": FieldValue.delete()])
+        print("FirebaseManager:: All Data Removed")
+    }
+}
 
 // MARK: Data Migration
 extension FirebaseManager {
