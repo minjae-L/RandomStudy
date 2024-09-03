@@ -20,6 +20,7 @@ final class TodayViewModel {
     private let db = Firestore.firestore()
     private(set) var todo: [FirebaseDataModel] = [] {
         didSet {
+            print("todo didset")
             delegate?.didUpdateToday()
         }
     }
@@ -44,72 +45,53 @@ final class TodayViewModel {
     // MARK: Method
     // 추가한 공부목록으로 부터 불러오는 메소드 (불러오기)
     func uploadStudy() {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        FirebaseManager.shared.getDataFromFirebase(dataName: "data") { [weak self] dataModel in
-            guard let self = self,
-                  let data = dataModel
-            else { return }
-            let filtered = data.filter{$0.date == nil && $0.done == nil}
-            for i in filtered {
-                let contains = self.todo.filter{$0.name == i.name}
-                if contains.isEmpty {
-                    let data = [["name": i.name, "done": false]]
-                    self.db.collection("users").document(uid).updateData(["data": FieldValue.arrayUnion(data)])
-                }
+        let arr = FirebaseManager.shared.elements.filter{ $0.done == nil && $0.date == nil}.map{$0.name}
+        let strArray = self.todo.map{$0.name}
+        for element in arr {
+            if !strArray.contains(element) {
+                let data = FirebaseDataModel(name: element, done: false)
+                FirebaseManager.shared.setDataToFirebase(data: data)
             }
-            self.fetchData()
         }
+        self.fetchData()
     }
     
     // 완료 버튼 이벤트
     func complete(name: String) {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        let previous = [["name": name, "done": false]]
-        let cp = [["name": name, "done": true]]
+        let previous = FirebaseDataModel(name: name, done: false, date: nil)
+        let next = FirebaseDataModel(name: name, done: true, date: nil)
         let completion = FirebaseDataModel(name: name, done: true, date: dateFommatter.string(from: Date()))
-        self.insertDataToHistory(completion: completion)
-        do {
-            try db.collection("users").document(uid).updateData(["data": FieldValue.arrayRemove(previous)])
-            try db.collection("users").document(uid).updateData(["data": FieldValue.arrayUnion(cp)])
-            print("TodayVM:: Complete Success")
-        } catch {
-            print("TodayVM:: Complete Fail")
-        }
-    }
-    func insertDataToHistory(completion: FirebaseDataModel) {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        let data = [["name": completion.name, "done": true, "date": dateFommatter.string(from: Date())]]
-        do {
-            try db.collection("users").document(uid).updateData(["data": FieldValue.arrayUnion(data)])
-            print("TodayVM:: insertDataToHistory Success")
-        } catch {
-            print("TodayVM:: insertDataToHistory Fail")
-        }
+        FirebaseManager.shared.removeDataFromFirebase(data: previous)
+        FirebaseManager.shared.setDataToFirebase(data: next)
+        FirebaseManager.shared.setDataToFirebase(data: completion)
     }
     
     // 삭제버튼 이벤트
     func remove(name: String) {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        let data = todo.filter{$0.name == name}[0]
-        let removed = [["name": data.name, "done": data.done]]
-        do {
-            try db.collection("users").document(uid).updateData(["data": FieldValue.arrayRemove(removed)])
-            print("TodayVM:: Remove Success")
-        } catch {
-            print("TodayVM:: Remove Fail")
-        }
+        guard let data = todo.filter{$0.name == name && $0.date == nil }.first else { return }
+        
+        print("data: \(data)")
+        FirebaseManager.shared.removeDataFromFirebase(data: data)
         self.fetchData()
     }
     // 데이터 최신화
     func fetchData() {
-        FirebaseManager.shared.getDataFromFirebase(dataName: "data") { [weak self] dataModel in
-            guard let self = self,
-            let data = dataModel
-            else { return }
-            self.todo = data.filter{$0.date == nil && $0.done != nil}
+        let arr = FirebaseManager.shared.elements
+        self.todo = arr.filter{$0.date == nil && $0.done != nil}
+        print("*** Fetched Data in TodayVC")
+        print("- FirebaseManager.elements")
+        for i in arr {
+            print(i)
+        }
+        print("- fetched todo")
+        for i in todo {
+            print(i)
         }
     }
     
+    
+}
+
 extension TodayViewModel: FirebaseManagerDelegate {
     func didFinishedDataUploading() {
         print("firebaseManagerDelegate")
