@@ -93,7 +93,6 @@ final class TodayViewController: UIViewController {
         addView()
         bindings()
         isPreviousDataExist()
-        print("TodayVC:: todo: \(viewModel.todo)")
     }
     override func viewWillAppear(_ animated: Bool) {
         viewModel.fetchData()
@@ -147,7 +146,6 @@ extension TodayViewController: UITableViewDataSource, UITableViewDelegate {
         }
         
         let study = viewModel.todo[indexPath.row]
-        print("study: \(study)")
         cell.setUIColor()
         cell.delegate = self
         cell.configure(with: study)

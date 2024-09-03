@@ -28,7 +28,7 @@ struct FirebaseDataModel: Equatable, Codable {
     }
 }
 
-// GitSearch 데이터 모델
+    // GitSearch 데이터 모델
 struct GitSearchRepository: Codable {
     let repositoryItems: [GitSearchItems]
     
