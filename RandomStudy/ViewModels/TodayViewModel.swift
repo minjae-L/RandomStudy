@@ -27,6 +27,7 @@ final class TodayViewModel {
     init() {
         print("today viewmodel init")
         self.fetchData()
+        FirebaseManager.shared.delegate = self
     }
     
     private var dateFommatter: DateFormatter = {
@@ -109,4 +110,10 @@ final class TodayViewModel {
         }
     }
     
+extension TodayViewModel: FirebaseManagerDelegate {
+    func didFinishedDataUploading() {
+        print("firebaseManagerDelegate")
+        self.fetchData()
+        delegate?.didUpdateToday()
+    }
 }
