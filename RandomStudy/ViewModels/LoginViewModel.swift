@@ -48,7 +48,6 @@ class LoginViewModel {
             if error != nil {
                 print("LoginVM:: maekFirebaseDocument Error")
             }
-            print("LoginVM:: snapshot: \(snapshot?.data())")
             // 로그인한 uid의 문서가 존재하지 않는다면 생성해준다.
             if snapshot?.data() == nil {
                 print("LoginVM:: firebase document is nil")
@@ -61,6 +60,11 @@ class LoginViewModel {
             }
             
         }
+    }
+    // 해당 계정의 데이터 불러오기
+    func fetchData() {
+        print("loginVM:: fetchData")
+        FirebaseManager.shared.fetchData()
     }
 
 }
