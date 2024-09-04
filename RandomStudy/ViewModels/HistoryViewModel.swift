@@ -33,11 +33,6 @@ final class HistoryViewModel {
         return Array(Set(completions.compactMap { $0.date })).sorted()
     }
     private func fetchData() {
-        FirebaseManager.shared.getDataFromFirebase() { [weak self] dataModel in
-            guard let self = self,
-                  let data = dataModel
-            else { return }
-            self.completions = data.filter{$0.date != nil && $0.done != nil}
-        }
+        completions = FirebaseManager.shared.getFilteredData(type: .history)
     }
 }

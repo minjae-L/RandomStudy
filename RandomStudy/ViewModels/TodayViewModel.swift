@@ -6,8 +6,6 @@
 //
 
 import Foundation
-import FirebaseAuth
-import FirebaseFirestore
 
 protocol TodayViewModelDelegate: AnyObject {
     func didUpdateToday()
@@ -17,7 +15,6 @@ final class TodayViewModel {
      
     // MARK: Property
     weak var delegate: TodayViewModelDelegate?
-    private let db = Firestore.firestore()
     private(set) var todo: [FirebaseDataModel] = [] {
         didSet {
             print("todo didset")
@@ -45,7 +42,7 @@ final class TodayViewModel {
     // MARK: Method
     // 추가한 공부목록으로 부터 불러오는 메소드 (불러오기)
     func uploadStudy() {
-        let arr = FirebaseManager.shared.elements.filter{ $0.done == nil && $0.date == nil}.map{$0.name}
+        let arr = FirebaseManager.shared.getFilteredData(type: .todo).map{$0.name}
         let strArray = self.todo.map{$0.name}
         for element in arr {
             if !strArray.contains(element) {
@@ -69,27 +66,14 @@ final class TodayViewModel {
     // 삭제버튼 이벤트
     func remove(name: String) {
         guard let data = todo.filter{$0.name == name && $0.date == nil }.first else { return }
-        
         print("data: \(data)")
         FirebaseManager.shared.removeDataFromFirebase(data: data)
         self.fetchData()
     }
     // 데이터 최신화
     func fetchData() {
-        let arr = FirebaseManager.shared.elements
-        self.todo = arr.filter{$0.date == nil && $0.done != nil}
-        print("*** Fetched Data in TodayVC")
-        print("- FirebaseManager.elements")
-        for i in arr {
-            print(i)
-        }
-        print("- fetched todo")
-        for i in todo {
-            print(i)
-        }
+        self.todo = FirebaseManager.shared.getFilteredData(type: .today)
     }
-    
-    
 }
 
 extension TodayViewModel: FirebaseManagerDelegate {

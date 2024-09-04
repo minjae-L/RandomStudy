@@ -6,8 +6,6 @@
 //
 
 import Foundation
-import FirebaseAuth
-import FirebaseFirestore
 
 protocol AddViewModelDelegate: AnyObject {
     func didUpdate(with value: [FirebaseDataModel])
@@ -16,7 +14,6 @@ protocol AddViewModelDelegate: AnyObject {
 final class AddViewModel {
     
     weak var delegate: AddViewModelDelegate?
-    private let db = Firestore.firestore()
     private var elements: [FirebaseDataModel] = [] {
         didSet {
             delegate?.didUpdate(with: elements)
@@ -56,8 +53,7 @@ final class AddViewModel {
         self.fetchData()
     }
     func fetchData() {
-        let arr = FirebaseManager.shared.elements.filter{ $0.date == nil && $0.done == nil}
-        self.elements = arr
+        self.elements = FirebaseManager.shared.getFilteredData(type: .todo)
     }
 }
 
