@@ -18,6 +18,11 @@ struct StudyModel: Equatable, Codable {
         return lhs.name == rhs.name
     }
 }
+enum DataModelType {
+    case todo
+    case today
+    case history
+}
 struct FirebaseDataModel: Equatable, Codable {
     let name: String
     var done: Bool?

@@ -24,6 +24,17 @@ class FirebaseManager {
         print("FirebaseManager init")
         self.uid = Auth.auth().currentUser?.uid ?? ""
     }
+    
+    func getFilteredData(type: DataModelType) -> [FirebaseDataModel] {
+        switch type {
+        case .todo:
+            return elements.filter{$0.date == nil && $0.done == nil }
+        case .today:
+            return elements.filter{$0.date == nil && $0.done != nil }
+        case .history:
+            return elements.filter{$0.date != nil && $0.done != nil }
+        }
+    }
 //    MARK: Method
     // 내부DB에 데이터가 존재하는지 확인하는 함수
     func isDataExist() -> Bool{
