@@ -41,9 +41,9 @@ final class AddViewModel {
     }
     
     // 배열에 값 추가
-    func insert(str: String) {
-        if str == "" { return }
-        let data = FirebaseDataModel(name: str)
+    func insert(name: String) {
+        if name == "" { return }
+        let data = FirebaseDataModel(name: name)
         FirebaseManager.shared.setDataToFirebase(data: data)
         self.fetchData()
     }
