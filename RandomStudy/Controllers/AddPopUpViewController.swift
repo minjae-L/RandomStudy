@@ -142,7 +142,7 @@ class AddPopUpViewController: UIViewController {
             errorLabel.isHidden = false
         } else {
             errorLabel.isHidden = true
-            viewModel.insert(str: text)
+            viewModel.insert(name: text)
             delegate?.sendedDataFromPopUp()
             self.dismiss(animated: true)
         }
