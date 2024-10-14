@@ -55,12 +55,12 @@ final class TodayViewModel {
     
     // 완료 버튼 이벤트
     func complete(name: String) {
-        let previous = FirebaseDataModel(name: name, done: false, date: nil)
-        let next = FirebaseDataModel(name: name, done: true, date: nil)
-        let completion = FirebaseDataModel(name: name, done: true, date: dateFommatter.string(from: Date()))
-        FirebaseManager.shared.removeDataFromFirebase(data: previous)
-        FirebaseManager.shared.setDataToFirebase(data: next)
-        FirebaseManager.shared.setDataToFirebase(data: completion)
+        let todayData = FirebaseDataModel(name: name, done: false, date: nil)
+        let completedTodayData = FirebaseDataModel(name: name, done: true, date: nil)
+        let historyData = FirebaseDataModel(name: name, done: true, date: dateFommatter.string(from: Date()))
+        FirebaseManager.shared.removeDataFromFirebase(data: todayData)
+        FirebaseManager.shared.setDataToFirebase(data: completedTodayData)
+        FirebaseManager.shared.setDataToFirebase(data: historyData)
     }
     
     // 삭제버튼 이벤트
