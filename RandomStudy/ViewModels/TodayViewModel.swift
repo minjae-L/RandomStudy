@@ -21,13 +21,6 @@ final class TodayViewModel {
             delegate?.didUpdateToday()
         }
     }
-    
-    init() {
-        print("today viewmodel init")
-        self.fetchData()
-        FirebaseManager.shared.delegate = self
-    }
-    
     private var dateFommatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "YYYY년MM월dd일"
@@ -73,13 +66,5 @@ final class TodayViewModel {
     // 데이터 최신화
     func fetchData() {
         self.todo = FirebaseManager.shared.getFilteredData(type: .today)
-    }
-}
-
-extension TodayViewModel: FirebaseManagerDelegate {
-    func didFinishedDataUploading() {
-        print("firebaseManagerDelegate")
-        self.fetchData()
-        delegate?.didUpdateToday()
     }
 }

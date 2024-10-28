@@ -9,16 +9,12 @@ import Foundation
 import FirebaseAuth
 import FirebaseFirestore
 
-protocol FirebaseManagerDelegate: AnyObject {
-    func didFinishedDataUploading()
-}
 class FirebaseManager {
     private let db = Firestore.firestore()
     static let shared = FirebaseManager()
     private let tableNames = ["study", "todo", "history"]
     private let column = ["name", "done", "date"]
     private var uid: String
-    weak var delegate: FirebaseManagerDelegate?
     var elements = [FirebaseDataModel]()
     init () {
         print("FirebaseManager init")
@@ -48,11 +44,10 @@ class FirebaseManager {
         print("firebaseManager fetchData")
         self.getDataFromFirebase() { [weak self] data in
             self?.elements = data ?? []
-            self?.delegate?.didFinishedDataUploading()
         }
     }
     // Firebase로부터 데이터 불러오기
-    func getDataFromFirebase(completion: @escaping ([FirebaseDataModel]?) -> ()) {
+    private func getDataFromFirebase(completion: @escaping ([FirebaseDataModel]?) -> ()) {
         guard let uid = Auth.auth().currentUser?.uid else {
             completion(nil)
             return
