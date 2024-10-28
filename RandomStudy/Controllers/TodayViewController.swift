@@ -87,19 +87,24 @@ final class TodayViewController: UIViewController {
         btn.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         btn.addTarget(self, action: #selector(fetchStudyList), for: .touchUpInside)
     }
-    
+    // 로그인 후 메인화면 첫 진입시 데이터 바로 불러오고 UI로 띄우기
+    private func firstConnetionDataload() {
+        self.showSpinner { [weak self] in
+            guard let self = self else { return }
+            self.viewModel.fetchData()
+            self.hideSpinner { }
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         addView()
         bindings()
         isPreviousDataExist()
-    }
-    override func viewWillAppear(_ animated: Bool) {
-        viewModel.fetchData()
+        firstConnetionDataload()
         settingUI()
         configureNavigationbar()
     }
-    
+    	
     @objc private func goSettingVC() {
         let vc = SettingViewController()
         self.navigationController?.pushViewController(vc, animated: true)
