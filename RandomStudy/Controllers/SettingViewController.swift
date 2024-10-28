@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import FirebaseAuth
 
 // MARK: - Main
 class SettingViewController: UIViewController {
@@ -105,16 +104,12 @@ class SettingViewController: UIViewController {
                                               icon: nil,
                                               iconBackgroundColor: .clear,
                                               handler: {
-                                                  do {
-                                                      try Auth.auth().signOut()
-                                                      self.showReConfirmAlert("정말 로그아웃하시겠습니까?") { confirm in
-                                                          if confirm {
-                                                              self.navigationController?.popToRootViewController(animated: false)
-                                                              self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)
-                                                          }
+                                                  self.showReConfirmAlert("정말 로그아웃하시겠습니까?") { confirm in
+                                                      if confirm {
+                                                          FirebaseManager.shared.logout()
+                                                          self.navigationController?.popToRootViewController(animated: false)
+                                                          self.view.window!.rootViewController?.dismiss(animated: true,completion: nil)
                                                       }
-                                                  }catch {
-                                                      print("logout fail")
                                                   }
                                               },
                                               accessoryType: .none

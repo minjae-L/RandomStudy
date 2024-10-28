@@ -173,6 +173,14 @@ class FirebaseManager {
             }
         }
     }
+    // 로그아웃
+    func logout() {
+        do {
+            try Auth.auth().signOut()
+        } catch {
+            print("logout Error")
+        }
+    }
 
 }
 
