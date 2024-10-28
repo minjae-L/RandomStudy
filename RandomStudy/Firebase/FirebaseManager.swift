@@ -31,7 +31,7 @@ class FirebaseManager {
             return elements.filter{$0.date != nil && $0.done != nil }
         }
     }
-//    MARK: Method
+//    MARK: - Data Method
     // 내부DB에 데이터가 존재하는지 확인하는 함수
     func isDataExist() -> Bool{
         for i in tableNames {
@@ -118,6 +118,35 @@ class FirebaseManager {
         db.collection("users").document(uid).updateData(["data": FieldValue.delete()])
         print("FirebaseManager:: All Data Removed")
     }
+    // uid문서 생성
+    func makeFirebaeDocument() {
+        db.collection("users").document(self.uid).getDocument { [weak self] snapshot, error in
+            guard let self = self else { return }
+            if error != nil {
+                let error = error?.localizedDescription
+                print("FirebaseManager:: makeFirebaseDocument Error: \(String(describing: error))")
+                return
+            }
+            if snapshot?.data() == nil {
+                db.collection("users").document(self.uid).setData(["uid": self.uid])
+                print("FirebaseManager:: makeFirebaseDocument Success")
+            }
+        }
+    }
+    // MARK: Auth Methods
+    // 회원가입
+    func signUp(email: String, password: String, completion: @escaping (Bool, String) -> Void) {
+        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+            guard let user = authResult?.user, error == nil else {
+                print("Create User Fail")
+                guard let authError = error as? NSError else { return }
+                completion(false, authError.localizedDescription)
+                return
+            }
+            completion(true, "")
+            print("Created User")
+        }
+    }
     // 로그인
     func login(email: String, password: String, completion: @escaping (Bool, String) -> Void) {
         Auth.auth().signIn(withEmail: email, password: password) { AuthDataResult, error in	
@@ -144,21 +173,7 @@ class FirebaseManager {
             }
         }
     }
-    // uid문서 생성
-    func makeFirebaeDocument() {
-        db.collection("users").document(self.uid).getDocument { [weak self] snapshot, error in
-            guard let self = self else { return }
-            if error != nil {
-                let error = error?.localizedDescription
-                print("FirebaseManager:: makeFirebaseDocument Error: \(String(describing: error))")
-                return
-            }
-            if snapshot?.data() == nil {
-                db.collection("users").document(self.uid).setData(["uid": self.uid])
-                print("FirebaseManager:: makeFirebaseDocument Success")
-            }
-        }
-    }
+
 }
 
 // MARK: Data Migration
