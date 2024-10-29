@@ -78,7 +78,7 @@ extension AddViewController: AddPopUpViewControllerDelegate {
 
 extension AddViewController: AddViewControllerButtonDelegate {
     func cellDeleteButtonTapped(name: String) {
-        viewModel.removeData(name: name)
+        viewModel.remove(name: name)
     }
 }
 extension AddViewController: AddViewModelDelegate {

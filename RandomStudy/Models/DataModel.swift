@@ -18,6 +18,11 @@ struct StudyModel: Equatable, Codable {
         return lhs.name == rhs.name
     }
 }
+enum DataModelType {
+    case todo
+    case today
+    case history
+}
 struct FirebaseDataModel: Equatable, Codable {
     let name: String
     var done: Bool?
@@ -28,7 +33,7 @@ struct FirebaseDataModel: Equatable, Codable {
     }
 }
 
-// GitSearch 데이터 모델
+    // GitSearch 데이터 모델
 struct GitSearchRepository: Codable {
     let repositoryItems: [GitSearchItems]
     

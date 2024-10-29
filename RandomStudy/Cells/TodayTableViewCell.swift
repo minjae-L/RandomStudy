@@ -20,8 +20,8 @@ class TodayTableViewCell: UITableViewCell {
     var name: String = ""
     // 체크버튼
     @objc func checkButtonTapped() {
-        checkView.play()
         delegate?.checkButtonTapped(name: self.name)
+        checkView.play()
     }
     // 삭제버튼
     @objc func deleteButtonTapped() {
@@ -111,6 +111,7 @@ class TodayTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         label.text = nil
         checkView.currentProgress = 0
+        checkBtn.isEnabled = true
     }
     func configure(with model: FirebaseDataModel) {
         self.name = model.name
@@ -118,6 +119,7 @@ class TodayTableViewCell: UITableViewCell {
         guard let done = model.done else { return }
         if done {
             checkView.currentProgress = 1
+            checkBtn.isEnabled = false
         }
     }
 

@@ -6,8 +6,6 @@
 //
 
 import Foundation
-import FirebaseAuth
-import FirebaseFirestore
 
 protocol AddViewModelDelegate: AnyObject {
     func didUpdate(with value: [FirebaseDataModel])
@@ -16,7 +14,6 @@ protocol AddViewModelDelegate: AnyObject {
 final class AddViewModel {
     
     weak var delegate: AddViewModelDelegate?
-    private let db = Firestore.firestore()
     private var elements: [FirebaseDataModel] = [] {
         didSet {
             delegate?.didUpdate(with: elements)
@@ -44,42 +41,19 @@ final class AddViewModel {
     }
     
     // 배열에 값 추가
-    func addData(str: String) {
-        if str == "" { return }
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        let data: [[String: String]] = [["name": str]]
-        do {
-            try db.collection("users").document(uid).updateData(["data": FieldValue.arrayUnion(data)])
-            print("addVM:: Success Data Write")
-        } catch {
-            print("addVM:: Fail Data Write")
-        }
+    func insert(name: String) {
+        if name == "" { return }
+        let data = FirebaseDataModel(name: name)
+        FirebaseManager.shared.setDataToFirebase(data: data)
         self.fetchData()
     }
-    
-    func removeData(name: String) {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        let removed: [[String: String]] = [["name": name]]
-        print("AddVM:: removed: \(removed)")
-        do {
-            try db.collection("users").document(uid).updateData(["data": FieldValue.arrayRemove(removed)])
-            print("addVM:: Success Data Removed")
-        } catch {
-            print("addVM:: Fail Data Removed")
-        }
+    func remove(name: String) {
+        let data = FirebaseDataModel(name: name)
+        FirebaseManager.shared.removeDataFromFirebase(data: data)
         self.fetchData()
     }
     func fetchData() {
-        FirebaseManager.shared.getDataFromFirebase(dataName: "data") { [weak self] dataModel in
-            guard let self = self, let data = dataModel else {
-                self?.elements = []
-                return
-            }
-            self.elements = data.filter{$0.date == nil && $0.done == nil}
-        }
+        self.elements = FirebaseManager.shared.getFilteredData(type: .todo)
     }
 }
-
-
-
 

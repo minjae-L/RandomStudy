@@ -181,6 +181,7 @@ class LoginViewController: UIViewController {
                 if result {
                     // 로그인 성공하면 uid 문서 생성(이미 있다면 생성하지않음)
                     self.viewModel.makeFirebaseDocument()
+                    self.viewModel.fetchData()
                     let navigationController = UINavigationController(rootViewController: TodayViewController())
                     navigationController.modalPresentationStyle = .fullScreen
                     self.present(navigationController, animated: true)
