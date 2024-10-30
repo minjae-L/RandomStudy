@@ -12,13 +12,13 @@ class HistoryViewController: UIViewController {
     private var viewModel = HistoryViewModel()
     private let searchBar: UISearchBar = {
         let sb = UISearchBar()
-        sb.showsCancelButton = true
         return sb
     }()
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
         viewModel.delegate = self
+        searchBar.delegate = self
         print("HistoryVC:: elements: \(viewModel.completions)")
     }
     
@@ -123,4 +123,20 @@ extension HistoryViewController: HistoryViewModelDelegate {
     }
     
     
+}
+
+extension HistoryViewController: UISearchBarDelegate {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = false
+        searchBar.text = ""
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"),
+                                                                style: .done,
+                                                                target: self,
+                                                              action: #selector(didTappedSearchButton))
+        self.navigationItem.title = "내 기록"
+    }
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = true
+        print("start")
+    }
 }
