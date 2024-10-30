@@ -30,10 +30,10 @@ class HistoryViewController: UIViewController {
         appearance.backgroundColor = UIColor(named: "ViewBackgroundColor")
         tableView.backgroundColor = UIColor(named: "ViewBackgroundColor")
         appearance.backgroundImage = UIImage()
-        self.navigationItem.rightBarButtonItems = [UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"),
-                                                                                          style: .done,
-                                                                                          target: self,
-                                                                                        action: #selector(didTappedSearchButton))]
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"),
+                                                                style: .done,
+                                                                target: self,
+                                                              action: #selector(didTappedSearchButton))
         self.navigationController?.navigationBar.standardAppearance = appearance
         self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
         self.navigationItem.largeTitleDisplayMode = .never
