@@ -8,10 +8,13 @@
 import UIKit
 
 class HistoryViewController: UIViewController {
-
     private var tableView = UITableView()
     private var viewModel = HistoryViewModel()
-    
+    private let searchBar: UISearchBar = {
+        let sb = UISearchBar()
+        sb.showsCancelButton = true
+        return sb
+    }()
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
@@ -27,6 +30,10 @@ class HistoryViewController: UIViewController {
         appearance.backgroundColor = UIColor(named: "ViewBackgroundColor")
         tableView.backgroundColor = UIColor(named: "ViewBackgroundColor")
         appearance.backgroundImage = UIImage()
+        self.navigationItem.rightBarButtonItems = [UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"),
+                                                                                          style: .done,
+                                                                                          target: self,
+                                                                                        action: #selector(didTappedSearchButton))]
         self.navigationController?.navigationBar.standardAppearance = appearance
         self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
         self.navigationItem.largeTitleDisplayMode = .never
@@ -48,6 +55,12 @@ class HistoryViewController: UIViewController {
         tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         
+    }
+    @objc func didTappedSearchButton() {
+        print("tapped")
+        searchBar.frame = CGRect(x: 0, y: 0, width: tableView.layer.frame.width - 50, height: 100)
+        self.navigationItem.title = ""
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: searchBar)
     }
 }
 
