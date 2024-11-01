@@ -95,12 +95,8 @@ class FirebaseManager {
     // 데이터 지우기
     func removeDataFromFirebase(data: FirebaseDataModel) {
         for i in 0..<elements.count {
-            if elements[i].done == nil || elements[i].date != nil {
-                continue
-            }
-            if data.name == elements[i].name {
-                print("removed: \(elements[i])")
-                self.elements.remove(at: i)
+            if elements[i] == data {
+                elements.remove(at: i)
                 break
             }
         }
