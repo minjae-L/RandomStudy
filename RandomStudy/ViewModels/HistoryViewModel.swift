@@ -96,5 +96,23 @@ final class HistoryViewModel {
         }
         return Array(Set(output.compactMap{ $0.date})).sorted()
     }
+    // Section별 Cell의 개수를 최신화 하는 메서드
+    private func getSectionCellCountArray() {
+        var output = [Int]()
+        let dateArray = self.dateArray()
+        for date in dateArray {
+            output.append(completions.filter{$0.date == date}.count)
+        }
+        sectionCellCount = output
+    }
+    // 한 section의 cell개수를 계산하기 위해 이전까지의 section별 cell의 개수를 구하는 메서드
+    func getPreviousSectionCellCount(section num: Int) -> Int {
+        if num == 0 { return 0 }
+        var sum = 0
+        for i in 0..<num {
+            sum += sectionCellCount[i]
+        }
+        return sum
+    }
     }
 }
