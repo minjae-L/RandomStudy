@@ -29,7 +29,7 @@ struct FirebaseDataModel: Equatable, Codable {
     var date: String?
     
     static func ==(lhs: FirebaseDataModel, rhs: FirebaseDataModel) -> Bool {
-        return lhs.name == rhs.name
+        return lhs.name == rhs.name && lhs.done == rhs.done && lhs.date == rhs.date
     }
 }
 
