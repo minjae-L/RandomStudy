@@ -76,5 +76,25 @@ final class HistoryViewModel {
     }
     private func fetchData() {
         completions = FirebaseManager.shared.getFilteredData(type: .history)
+    // 기록 데이터중 완료날짜 개수
+    func dateCount() -> Int {
+        var output: [FirebaseDataModel] = []
+        if searchEditing {
+            output = self.filteredCompletions(text: self.searchText)
+        } else {
+            output = self.historyData
+        }
+        return Array(Set(output.compactMap{ $0.date})).count
+    }
+    // 데이터중 날짜만 중복없이 리턴
+    func dateArray() -> [String] {
+        var output: [FirebaseDataModel] = []
+        if searchEditing {
+            output = self.filteredCompletions(text: self.searchText)
+        } else {
+            output = self.historyData
+        }
+        return Array(Set(output.compactMap{ $0.date})).sorted()
+    }
     }
 }
