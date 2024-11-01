@@ -10,16 +10,17 @@ import UIKit
 class HistoryViewController: UIViewController {
     private var tableView = UITableView()
     private var viewModel = HistoryViewModel()
-    private let searchBar: UISearchBar = {
+    lazy private var searchBar: UISearchBar = {
         let sb = UISearchBar()
+        sb.delegate = self
+        
         return sb
     }()
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
         viewModel.delegate = self
-        searchBar.delegate = self
-        print("HistoryVC:: elements: \(viewModel.completions)")
+        print("HistoryVC:: elements: \n \(viewModel.completions)")
     }
     
     // UI 그리기
@@ -125,6 +126,7 @@ extension HistoryViewController: HistoryViewModelDelegate {
     
 }
 
+// MARK: Searchbar Delegate
 extension HistoryViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.showsCancelButton = false
@@ -134,9 +136,19 @@ extension HistoryViewController: UISearchBarDelegate {
                                                                 target: self,
                                                               action: #selector(didTappedSearchButton))
         self.navigationItem.title = "내 기록"
+        viewModel.searchEditing = false
     }
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         searchBar.showsCancelButton = true
-        print("start")
+    }
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        print("current: \(searchText)")
+        if searchText == "" {
+            viewModel.searchEditing = false
+        } else {
+            viewModel.searchEditing = true
+        }
+        viewModel.searchText = searchText
+        tableView.reloadData()
     }
 }
