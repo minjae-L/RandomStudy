@@ -114,5 +114,28 @@ final class HistoryViewModel {
         }
         return sum
     }
+    // 검색어와 일치하는지 구별하는 메서드
+    private func isContains(searchText: String, data: FirebaseDataModel) -> Bool {
+        let stringArray = separatingString(text: data.name, length: searchText.count)
+        if stringArray.contains(searchText) {
+            return true
+        }
+        return false
+    }
+    // 검색어의 크기와 같은 문자 경우의수를 모두 구하고 배열로 리턴
+    private func separatingString(text: String, length: Int) -> [String] {
+        var stringArray = Array(text).map{String($0)}
+        var output = [String]()
+        if length >= stringArray.count {
+            return [text]
+        }
+        for i in 0...stringArray.count - length {
+            var str = ""
+            for j in 0..<length {
+                str += stringArray[i+j]
+            }
+            output.append(str)
+        }
+        return output
     }
 }
