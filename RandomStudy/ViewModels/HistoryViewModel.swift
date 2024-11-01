@@ -43,14 +43,10 @@ final class HistoryViewModel {
         print("HistoryVM:: init ")
         self.fetchData()
     }
-    var count: Int {
-        return completions.count
     // Firebase에서 데이터 가져오기
     private func fetchData() {
         historyData = FirebaseManager.shared.getFilteredData(type: .history)
     }
-    var dateCount: Int {
-        return Array(Set(completions.compactMap { $0.date })).count
     // Cell에 뿌려질 데이터배열 최신화 메서드
     private func makeCompletions(){
         var output: [FirebaseDataModel] = []
@@ -61,9 +57,6 @@ final class HistoryViewModel {
         }
         completions = output
     }
-    
-    var dateArray: [String] {
-        return Array(Set(completions.compactMap { $0.date })).sorted()
     // Cell에 뿌려지는 데이터배열을 검색어와 일치하는 배열로 변환하는 메서드
     private func filteredCompletions(text: String) -> [FirebaseDataModel] {
         var output: [FirebaseDataModel] = []
@@ -74,8 +67,6 @@ final class HistoryViewModel {
         }
         return output
     }
-    private func fetchData() {
-        completions = FirebaseManager.shared.getFilteredData(type: .history)
     // 기록 데이터중 완료날짜 개수
     func dateCount() -> Int {
         var output: [FirebaseDataModel] = []

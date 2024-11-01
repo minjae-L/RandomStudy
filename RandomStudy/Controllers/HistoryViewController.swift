@@ -64,27 +64,28 @@ class HistoryViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: searchBar)
     }
 }
-
+// MARK: TableView Delegate , Datasource
 extension HistoryViewController:  UITableViewDelegate, UITableViewDataSource {
     // Section 개수
     func numberOfSections(in tableView: UITableView) -> Int {
-        if viewModel.dateCount == 0 {
+        if viewModel.dateCount() == 0 {
             tableView.setEmptyView(title: "비어있음", message: "오늘의 목표를 달성해보세요.")
         } else {
             tableView.restore()
         }
-        return viewModel.dateCount
+        return viewModel.dateCount()
     }
     
     // Section안의 cell의 개수
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let date = viewModel.dateArray[section]
-        return viewModel.completions.filter{ $0.date == date}.count
+        let date = viewModel.dateArray()[section]
+        
+        return viewModel.completions.filter{$0.date == date}.count
     }
     
     // Section 타이틀 설정
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return String(viewModel.dateArray[section])
+        return String(viewModel.dateArray()[section])
     }
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if let view = view as? UITableViewHeaderFooterView {
@@ -94,8 +95,6 @@ extension HistoryViewController:  UITableViewDelegate, UITableViewDataSource {
     
     // Cell 구성
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let date = viewModel.dateArray[indexPath.section]
-        let finished = viewModel.completions.filter{ $0.date == date}[indexPath.row]
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: HistoryTableViewCell.identifier,
             for: indexPath
@@ -103,7 +102,8 @@ extension HistoryViewController:  UITableViewDelegate, UITableViewDataSource {
             return UITableViewCell()
         }
         cell.setUIColor()
-        cell.configure(with: finished)
+        let previousSectionCellCount = viewModel.getPreviousSectionCellCount(section: indexPath.section)
+        cell.configure(with: viewModel.completions[indexPath.row + previousSectionCellCount])
         return cell
     }
     
@@ -114,6 +114,7 @@ extension HistoryViewController:  UITableViewDelegate, UITableViewDataSource {
 
 }
 
+// MARK: ViewModel Delegate
 extension HistoryViewController: HistoryViewModelDelegate {
     func fetchedData() {
         print("HistoryVC:: fetchedData")
