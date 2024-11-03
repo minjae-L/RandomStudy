@@ -13,7 +13,6 @@ class HistoryViewController: UIViewController {
     lazy private var searchBar: UISearchBar = {
         let sb = UISearchBar()
         sb.delegate = self
-        
         return sb
     }()
     override func viewDidLoad() {
@@ -68,12 +67,12 @@ class HistoryViewController: UIViewController {
 extension HistoryViewController:  UITableViewDelegate, UITableViewDataSource {
     // Section 개수
     func numberOfSections(in tableView: UITableView) -> Int {
-        if viewModel.dateCount() == 0 {
+        if viewModel.dateArray().count == 0 {
             tableView.setEmptyView(title: "비어있음", message: "오늘의 목표를 달성해보세요.")
         } else {
             tableView.restore()
         }
-        return viewModel.dateCount()
+        return viewModel.dateArray().count
     }
     
     // Section안의 cell의 개수
@@ -132,24 +131,25 @@ extension HistoryViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.showsCancelButton = false
         searchBar.text = ""
+        viewModel.searchText = ""
+        viewModel.searchEditing = false
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"),
                                                                 style: .done,
                                                                 target: self,
                                                               action: #selector(didTappedSearchButton))
         self.navigationItem.title = "내 기록"
-        viewModel.searchEditing = false
     }
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        searchBar.showsCancelButton = true
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = false
     }
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         print("current: \(searchText)")
+        searchBar.showsCancelButton = true
         if searchText == "" {
             viewModel.searchEditing = false
         } else {
             viewModel.searchEditing = true
         }
         viewModel.searchText = searchText
-        tableView.reloadData()
     }
 }
