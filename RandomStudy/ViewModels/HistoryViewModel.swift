@@ -107,7 +107,6 @@ final class HistoryViewModel {
     }
     // 검색어와 일치하는지 구별하는 메서드
     private func isContains(searchText: String, data: FirebaseDataModel) -> Bool {
-        let stringArray = separatingString(text: data.name, length: searchText.count)
         if stringArray.contains(searchText) {
             return true
         }
